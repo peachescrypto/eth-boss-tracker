@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ETH Boss Tracker
 
-## Getting Started
+A fun web app that tracks the current ETH price against historic daily candle tops since January 2021. Shows progress indicators for each historic high, helping visualize how close ETH is to breaking previous daily highs.
 
-First, run the development server:
+## Features
+
+- **Live Price Tracking**: Fetches current ETH price every 15 seconds from multiple providers (Coinbase, Binance, CoinGecko)
+- **Historic Daily Highs**: Displays all daily candle tops sorted from lowest to highest
+- **Progress Indicators**: Shows how close the current price is to each historic high
+- **Responsive Design**: Works on desktop and mobile
+- **Error Handling**: Graceful fallbacks when price APIs are unavailable
+
+## Tech Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Data Fetching**: SWR for client-side polling
+- **Deployment**: Vercel
+
+## Price Data Sources
+
+The app uses multiple free APIs with fallback logic:
+
+1. **Primary**: Coinbase Exchange API
+   - Endpoint: `https://api.exchange.coinbase.com/products/ETH-USD/ticker`
+   - No API key required
+   - Real-time USD price
+
+2. **Fallback 1**: Binance API
+   - Endpoint: `https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT`
+   - No API key required
+   - USDT price (very close to USD)
+
+3. **Fallback 2**: CoinGecko API
+   - Endpoint: `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`
+   - No API key required
+   - Slower but reliable
+
+## Development
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Data Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Daily highs are stored in `data/eth-daily-highs.json`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```json
+[
+  {
+    "date": "2021-01-01",
+    "high": 737.80
+  }
+]
+```
 
-## Learn More
+## Progress Calculation
 
-To learn more about Next.js, take a look at the following resources:
+For each daily high, progress is calculated as:
+```
+progress = (currentPrice - previousHigh) / (targetHigh - previousHigh)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Progress is clamped between 0% and 100%
+- When current price ≥ target high, progress = 100%
+- When target high = previous high, progress = 100% if current ≥ target, else 0%
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+The app is designed to deploy on Vercel with zero configuration. The serverless API routes handle price fetching with appropriate caching and error handling.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Future Enhancements
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Expand daily highs dataset to full 2021→present
+- Add search and filtering capabilities
+- Implement historical price charts
+- Add more cryptocurrencies
+- Real-time WebSocket price updates
+
+## License
+
+MIT

@@ -14,24 +14,24 @@ How to use:
 ## In Progress
 
 ## Backlog (MVP)
-- [ ] Scaffold project (Next.js app, ESLint/Prettier)
-- [ ] Add data file: `data/eth-daily-highs.json` (hardcode initial subset)
-- [ ] Serverless price endpoint `app/api/price/route.ts`
-  - [ ] Primary: Coinbase `https://api.exchange.coinbase.com/products/ETH-USD/ticker`
-  - [ ] Fallback: Binance `https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT`
-  - [ ] Fallback: CoinGecko `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`
-  - [ ] Normalize `{ priceUsd, source, ts }`, timeout + retry, 5–15s in-memory cache
-- [ ] Page `app/page.tsx`: load highs JSON, client fetch `/api/price` (SWR, 10–15s)
-- [ ] Table sorted ascending by `high`; show price (USD) and date (UTC)
-- [ ] Progress calc per row:
-  - [ ] `prev = previous?.high ?? 0`
-  - [ ] `progress = clamp((currentPrice - prev) / (row.high - prev), 0, 1)`
-  - [ ] If `row.high === prev`, treat as 1 if `current >= row.high` else 0
-- [ ] Simple progress bar UI; 100% when `current >= row.high`
-- [ ] Formatting: Intl for USD + date `YYYY-MM-DD`
-- [ ] Error states: API failure → last good price + message
+- [x] Scaffold project (Next.js app, ESLint/Prettier)
+- [x] Add data file: `data/eth-daily-highs.json` (hardcode initial subset)
+- [x] Serverless price endpoint `app/api/price/route.ts`
+  - [x] Primary: Coinbase `https://api.exchange.coinbase.com/products/ETH-USD/ticker`
+  - [x] Fallback: Binance `https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT`
+  - [x] Fallback: CoinGecko `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`
+  - [x] Normalize `{ priceUsd, source, ts }`, timeout + retry, 5–15s in-memory cache
+- [x] Page `app/page.tsx`: load highs JSON, client fetch `/api/price` (SWR, 10–15s)
+- [x] Table sorted ascending by `high`; show price (USD) and date (UTC)
+- [x] Progress calc per row:
+  - [x] `prev = previous?.high ?? 0`
+  - [x] `progress = clamp((currentPrice - prev) / (row.high - prev), 0, 1)`
+  - [x] If `row.high === prev`, treat as 1 if `current >= row.high` else 0
+- [x] Simple progress bar UI; 100% when `current >= row.high`
+- [x] Formatting: Intl for USD + date `YYYY-MM-DD`
+- [x] Error states: API failure → last good price + message
 - [ ] Deploy to Vercel; verify API route works
-- [ ] Minimal `README.md` with provider notes
+- [x] Minimal `README.md` with provider notes
 
 ## Nice-to-have (post-MVP)
 - [ ] Expand `eth-daily-highs.json` to full 2021→present
