@@ -32,6 +32,7 @@ How to use:
 - [x] Error states: API failure → last good price + message
 - [ ] Deploy to Vercel; verify API route works
 - [x] Minimal `README.md` with provider notes
+- [x] Create data fetching script with real historical data (Binance API, 2020 onwards, $4000+)
 
 ## Nice-to-have (post-MVP)
 - [ ] Expand `eth-daily-highs.json` to full 2021→present

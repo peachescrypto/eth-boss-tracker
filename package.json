@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fetch-data": "node scripts/fetch-eth-highs.js",
+    "fetch-data-binance": "node scripts/fetch-eth-highs-binance.js"
   },
   "dependencies": {
     "next": "15.4.6",

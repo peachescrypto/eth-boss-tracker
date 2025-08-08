@@ -40,6 +40,9 @@ The app uses multiple free APIs with fallback logic:
 ## Development
 
 ```bash
+# Update historical data from Binance (2020 onwards, above $4000)
+npm run fetch-data-binance
+
 # Install dependencies
 npm install
 
