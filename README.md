@@ -55,7 +55,7 @@ npm start
 
 ## Data Structure
 
-Daily highs are stored in `data/eth-daily-highs.json`:
+Daily highs are stored in `public/eth-daily-highs.json`:
 
 ```json
 [

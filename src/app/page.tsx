@@ -53,14 +53,23 @@ export default function Home() {
 
   // Load daily highs data
   useEffect(() => {
-    fetch('/data/eth-daily-highs.json')
-      .then(res => res.json())
+    fetch('/eth-daily-highs.json')
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data: DailyHigh[]) => {
         // Sort by high price ascending
         const sorted = [...data].sort((a, b) => a.high - b.high);
         setDailyHighs(sorted);
       })
-      .catch(err => console.error('Failed to load daily highs:', err));
+      .catch(err => {
+        console.error('Failed to load daily highs:', err);
+        // Set some fallback data to prevent infinite loading
+        setDailyHighs([]);
+      });
   }, []);
 
   if (dailyHighs.length === 0) {
