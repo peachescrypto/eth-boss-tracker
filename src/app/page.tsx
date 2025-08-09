@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import useSWR from 'swr';
+import { getCurrentBossShareUrl, generateTwitterShareText } from '@/lib/share-cards';
 
 interface DailyHigh {
   date: string;
@@ -265,6 +266,65 @@ export default function Home() {
                         ></div>
                       </div>
                     </div>
+                  </div>
+                </div>
+                
+                {/* Share Battle Card */}
+                <div className="mt-8 text-center">
+                  <h3 className="text-lg font-bold text-white mb-4">📢 Share This Battle</h3>
+                  <div className="flex flex-wrap justify-center gap-4">
+                    <button
+                      onClick={() => {
+                        const twitterText = generateTwitterShareText('current', {
+                          bossName: currentBoss.name || `Boss #${currentBossIndex + 1}`,
+                          bossLevel: currentBossIndex + 1,
+                          targetPrice: formatPrice(currentBoss.high),
+                          currentPrice: formatPrice(priceData?.priceUsd || 0),
+                          progress: Math.round(progress * 100),
+                          hp: currentHP,
+                          image: currentBoss.image,
+                        });
+                        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}&url=${encodeURIComponent(window.location.href)}`;
+                        window.open(twitterUrl, '_blank');
+                      }}
+                      className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                      </svg>
+                      Share on Twitter
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        const shareUrl = getCurrentBossShareUrl({
+                          bossName: currentBoss.name || `Boss #${currentBossIndex + 1}`,
+                          bossLevel: currentBossIndex + 1,
+                          targetPrice: formatPrice(currentBoss.high),
+                          currentPrice: formatPrice(priceData?.priceUsd || 0),
+                          progress: Math.round(progress * 100),
+                          hp: currentHP,
+                          image: currentBoss.image,
+                        });
+                        
+                        if (navigator.share) {
+                          navigator.share({
+                            title: `ETH Boss Hunter - ${currentBoss.name || `Boss #${currentBossIndex + 1}`}`,
+                            text: `ETH is ${Math.round(progress * 100)}% through defeating ${currentBoss.name || `Boss #${currentBossIndex + 1}`}!`,
+                            url: shareUrl,
+                          });
+                        } else {
+                          navigator.clipboard.writeText(shareUrl);
+                          alert('Share URL copied to clipboard!');
+                        }
+                      }}
+                      className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                      </svg>
+                      Copy Link
+                    </button>
                   </div>
                 </div>
               </div>

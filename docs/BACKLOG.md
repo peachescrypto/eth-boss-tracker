@@ -12,29 +12,21 @@ How to use:
 - Basic error handling and formatting.
 
 ## In Progress
-- [ ] **Boss Battle Terminology** - "Defeated", "In Battle", "Next Boss", "Boss HP"
-- [ ] **Progress Messaging** - "87% through the $4,500 boss fight!"
-- [ ] **Daily Boss Challenges** - "Today's Boss: $4,150 - Can ETH defeat it?"
 - [ ] **Real-time Notifications** - Alert when bosses are defeated
+- [ ] **Share Cards** - Generate beautiful social media images for sharing using Open Graph/Twitter card 
 
 # Backlog
 
 ## App
 - [ ] Restyle/theme to look pretty
-- [ ] Current battle overview
-- [ ] Add hitpoint of current boss
 - [ ] Add boss tier to current boss
 - [ ] New boss spawns on new weekly candles above 4k
 - [ ] Add defeated count to Bosses, maybe they could change to look more epic each time
 
-
 ## Maintenance
-- [ ] Deploy from github, and post to twitter afterwards
 - [ ] Unit tests (progress calc, API normalizer)
 
 ## Viral Features
-- [x] **Rebrand to "ETH Boss Hunter"** - more engaging gaming terminology
-- [ ] **Share Cards** - Generate beautiful social media images for sharing
 - [ ] **Achievement System** - "First Boss Slayer", "Boss Rush", "Legendary Hunter"
 - [ ] **Community Leaderboards** - "Boss Hunter of the Week"
 - [ ] **Social Integration** - One-click share to Twitter/X
@@ -50,6 +42,13 @@ How to use:
 - [ ] **Boss Lore** - Backstories for each boss character
 
 ## Done
+- [x] Deploy from github, and post to twitter afterwards
+- [x] **Rebrand to "ETH Boss Hunter"** - more engaging gaming terminology
+- [x] Current battle overview
+- [x] Add hitpoint of current boss
+- [x] **Boss Battle Terminology** - "Defeated", "In Battle", "Next Boss", "Boss HP"
+- [x] **Progress Messaging** - "87% through the $4,500 boss fight!"
+- [x] **Daily Boss Challenges** - "Today's Boss: $4,150 - Can ETH defeat it?"
 - [x] Scaffold project (Next.js app, ESLint/Prettier)
 - [x] Add data file: `data/eth-daily-highs.json` (hardcode initial subset)
 - [x] Serverless price endpoint `app/api/price/route.ts`
