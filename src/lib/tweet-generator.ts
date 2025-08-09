@@ -1,4 +1,4 @@
-import { BattleState, BossData, getBattleStatusEmoji, getBattleStatusText } from './battle-analysis';
+import { BattleState, BossData } from './battle-analysis';
 
 // Note: For Node.js compatibility, the main tweet generation logic 
 // is now in /lib/tweet-templates.js. This file provides TypeScript 
@@ -11,19 +11,88 @@ interface TweetOptions {
 
 export function generateDailyStatusTweet(
   battleState: BattleState,
-  options: TweetOptions = {}
+  _options: TweetOptions = {}
 ): { text: string; image?: string } {
-  const { currentBoss, currentPrice, progress, battleStatus, remainingDamage, damageDealt } = battleState;
-  
-  if (!currentBoss) {
+  if (!battleState.currentBoss) {
     // All bosses defeated - legendary status
     const legendaryTweet = generateAllBossesDefeatedTweet(battleState);
     return { text: legendaryTweet, image: undefined };
   }
   
-  // Use the Node.js version for consistency - import the logic
-  const nodeJsTweetLib = require('../../lib/tweet-templates');
-  return nodeJsTweetLib.generateDailyStatusTweet(battleState, options);
+  // Reimplemented logic to avoid Node.js require() in TypeScript build
+  const { 
+    currentBoss, 
+    nextBoss, 
+    bossesDefeated, 
+    totalBosses, 
+    currentPrice 
+  } = battleState;
+
+  // Calculate HP metrics
+  const maxHP = Math.round(currentBoss.high / 100);
+  const currentHP = Math.max(0, Math.round((currentBoss.high - currentPrice) / 100));
+  const damageDealt = maxHP - currentHP;
+  const hpPercentage = Math.round((currentHP / maxHP) * 100);
+
+  // Create HP bar visualization (10 segments)
+  const filledSegments = Math.floor((1 - currentHP / maxHP) * 10);
+  const hpBar = '█'.repeat(filledSegments) + '░'.repeat(10 - filledSegments);
+
+  // Determine battle phase and flavor text
+  let flavorText = "";
+  let battlePhase = "";
+
+  if (hpPercentage >= 80) {
+    battlePhase = "Epic Battle";
+    flavorText = currentBoss.name ? 
+      `${currentBoss.name} stands strong, barely wounded!` :
+      "The boss stands strong, barely wounded!";
+  } else if (hpPercentage >= 50) {
+    battlePhase = "Fierce Combat";
+    flavorText = currentBoss.name ?
+      `${currentBoss.name} is showing signs of damage!` :
+      "The boss is showing signs of damage!";
+  } else if (hpPercentage >= 20) {
+    battlePhase = "Final Push";
+    flavorText = currentBoss.name ?
+      `${currentBoss.name} is on the ropes!` :
+      "The boss is on the ropes!";
+  } else {
+    battlePhase = "Victory Imminent";
+    flavorText = currentBoss.name ?
+      `${currentBoss.name} is almost defeated!` :
+      "The boss is almost defeated!";
+  }
+
+  // Format price
+  const formattedPrice = `$${currentPrice.toLocaleString()}`;
+  const formattedTarget = `$${currentBoss.high.toLocaleString()}`;
+  const formattedRemaining = `$${Math.max(0, currentBoss.high - currentPrice).toLocaleString()}`;
+
+  // Build the tweet
+  const bossName = currentBoss.name || `Boss ${bossesDefeated + 1}`;
+  
+  let tweet = `🏹 ETH Boss Hunter - Daily Report\n\n`;
+  tweet += `⚔️ ${battlePhase}: ${bossName}\n`;
+  tweet += `💰 Current Price: ${formattedPrice}\n`;
+  tweet += `🎯 Target: ${formattedTarget}\n\n`;
+  tweet += `❤️ Boss HP: ${currentHP}/${maxHP} (${hpPercentage}%)\n`;
+  tweet += `📊 ${hpBar}\n\n`;
+  tweet += `💥 Damage Dealt: ${damageDealt}\n`;
+  tweet += `🛡️ To Victory: ${formattedRemaining}\n\n`;
+  tweet += `${flavorText}\n\n`;
+  tweet += `📈 Bosses Defeated: ${bossesDefeated}/${totalBosses}\n`;
+  
+  if (nextBoss) {
+    tweet += `🔮 Next Boss: $${nextBoss.high.toLocaleString()}\n`;
+  }
+  
+  tweet += `\n#ETH #BossHunter #Crypto`;
+
+  return { 
+    text: tweet, 
+    image: currentBoss.image || undefined 
+  };
 }
 
 export function generateBossDefeatTweet(

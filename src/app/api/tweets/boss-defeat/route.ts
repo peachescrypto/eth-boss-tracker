@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { analyzeBattleState } from '@/lib/battle-analysis';
 import { generateBossDefeatTweet } from '@/lib/tweet-generator';
 import { postToBossHunterTwitter } from '@/lib/twitter';
@@ -22,7 +22,7 @@ interface PriceData {
 let lastCheckedPrice = 0;
 let lastDefeatedBossIndex = -1;
 
-export async function POST(_request: NextRequest) {
+export async function POST() {
   try {
     // This endpoint will be called by a cron job or price monitoring system
     

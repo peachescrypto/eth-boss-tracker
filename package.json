@@ -12,7 +12,8 @@
     "fetch-weekly-data": "node scripts/fetch-eth-highs-binance.js",
     "test-twitter": "node scripts/test-twitter.js",
     "test-boss-hunter": "node scripts/test-boss-hunter.js",
-    "iterate-tweets": "node scripts/iterate-tweets.js"
+    "iterate-tweets": "node scripts/iterate-tweets.js",
+    "prepare": "husky"
   },
   "dependencies": {
     "dotenv": "^17.2.1",
@@ -29,6 +30,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
