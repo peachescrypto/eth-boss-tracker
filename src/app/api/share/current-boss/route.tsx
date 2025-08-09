@@ -32,6 +32,7 @@ export async function GET(request: NextRequest) {
           {/* Header */}
           <div
             style={{
+              display: 'flex',
               fontSize: '48px',
               fontWeight: '900',
               color: '#06b6d4',
@@ -123,6 +124,7 @@ export async function GET(request: NextRequest) {
               </div>
               <div
                 style={{
+                  display: 'flex',
                   width: '100%',
                   height: '20px',
                   backgroundColor: '#1f2937',
@@ -133,6 +135,7 @@ export async function GET(request: NextRequest) {
               >
                 <div
                   style={{
+                    display: 'flex',
                     width: `${hp}%`,
                     height: '100%',
                     background: hp > 0 
@@ -168,6 +171,7 @@ export async function GET(request: NextRequest) {
               </div>
               <div
                 style={{
+                  display: 'flex',
                   width: '100%',
                   height: '20px',
                   backgroundColor: '#1f2937',
@@ -178,6 +182,7 @@ export async function GET(request: NextRequest) {
               >
                 <div
                   style={{
+                    display: 'flex',
                     width: `${progress}%`,
                     height: '100%',
                     background: progress >= 100
@@ -212,6 +217,7 @@ export async function GET(request: NextRequest) {
           {/* Footer */}
           <div
             style={{
+              display: 'flex',
               marginTop: '30px',
               fontSize: '16px',
               color: '#9ca3af',
