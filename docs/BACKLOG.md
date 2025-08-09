@@ -12,8 +12,36 @@ How to use:
 - Basic error handling and formatting.
 
 ## In Progress
+- [ ] **Boss Battle Terminology** - "Defeated", "In Battle", "Next Boss", "Boss HP"
+- [ ] **Progress Messaging** - "87% through the $4,500 boss fight!"
+- [ ] **Daily Boss Challenges** - "Today's Boss: $4,150 - Can ETH defeat it?"
+- [ ] **Real-time Notifications** - Alert when bosses are defeated
 
-## Backlog (MVP)
+# Backlog
+
+## App
+- [ ] Restyle/theme to look pretty
+- [ ] Current battle overview
+- [ ] Search/filter, sticky header, theming/animations
+
+## Maintenance
+- [ ] Deploy from github, and post to twitter afterwards
+- [ ] Unit tests (progress calc, API normalizer)
+
+## Viral Features
+- [x] **Rebrand to "ETH Boss Hunter"** - more engaging gaming terminology
+- [ ] **Share Cards** - Generate beautiful social media images for sharing
+- [ ] **Achievement System** - "First Boss Slayer", "Boss Rush", "Legendary Hunter"
+- [ ] **Community Leaderboards** - "Boss Hunter of the Week"
+- [ ] **Social Integration** - One-click share to Twitter/X
+- [ ] **Boss Hunter Score** - "23/84 bosses defeated"
+- [ ] **Victory Animations** - Celebrate when price breaks through
+- [ ] **Multi-coin Support** - BTC Boss Hunter, SOL Boss Hunter
+- [ ] **NFT Achievements** - For top hunters
+- [ ] **Boss Hunter Tournaments** - Community competitions
+- [ ] **API for Integration** - Let other apps use boss battle data
+
+## Done
 - [x] Scaffold project (Next.js app, ESLint/Prettier)
 - [x] Add data file: `data/eth-daily-highs.json` (hardcode initial subset)
 - [x] Serverless price endpoint `app/api/price/route.ts`
@@ -33,38 +61,13 @@ How to use:
 - [x] Deploy to Vercel; verify API route works
 - [x] Minimal `README.md` with provider notes
 - [x] Create data fetching script with real historical data (Binance API, 2020 onwards, $4000+)
-
-## Nice-to-have (post-MVP)
-- [x] Expand `eth-daily-highs.json` to full 2021→present
-- [x] Script to generate highs from historical API and commit JSON
-- [ ] Search/filter, sticky header, theming/animations
-- [ ] Unit tests (progress calc, API normalizer)
-
-## Viral Features (Post-Deployment)
-- [ ] **Rebrand to "ETH Boss Hunter"** - more engaging gaming terminology
-- [ ] **Boss Battle Terminology** - "Defeated", "In Battle", "Next Boss", "Boss HP"
-- [ ] **Share Cards** - Generate beautiful social media images for sharing
-- [ ] **Progress Messaging** - "87% through the $4,500 boss fight!"
-- [ ] **Achievement System** - "First Boss Slayer", "Boss Rush", "Legendary Hunter"
-- [ ] **Daily Boss Challenges** - "Today's Boss: $4,150 - Can ETH defeat it?"
-- [ ] **Community Leaderboards** - "Boss Hunter of the Week"
-- [ ] **Real-time Notifications** - Alert when bosses are defeated
-- [ ] **Social Integration** - One-click share to Twitter/X
-- [ ] **Boss Hunter Score** - "23/84 bosses defeated"
-- [ ] **Victory Animations** - Celebrate when price breaks through
-- [ ] **Multi-coin Support** - BTC Boss Hunter, SOL Boss Hunter
-- [ ] **NFT Achievements** - For top hunters
-- [ ] **Boss Hunter Tournaments** - Community competitions
-- [ ] **API for Integration** - Let other apps use boss battle data
-
-## Social Media Automation
 - [x] **Twitter Bot Setup** - Connect X account for automated tweets
 - [x] **GitHub Webhook Integration** - Trigger tweets on commits/deploys
 - [x] **Tweet Templates** - Engaging formats for different update types
 - [x] **Progress Tweet Generator** - "🎯 ETH Boss Hunter Update: Added X feature! Current boss: $4,150 (87% defeated)"
-- [ ] **Deploy Announcements** - "🚀 New features deployed to ETH Boss Hunter!" (ready, needs Twitter API keys)
-- [ ] **Milestone Celebrations** - "🎉 100 commits to ETH Boss Hunter!" (ready, needs implementation)
-- [ ] **Real-time Boss Defeats** - "💀 BOSS DEFEATED! ETH just crushed the $4,150 level!" (ready, needs price monitoring)
+- [x] **Deploy Announcements** - "🚀 New features deployed to ETH Boss Hunter!" (ready, needs Twitter API keys)
+- [x] Expand `eth-daily-highs.json` to full 2021→present
+- [x] Script to generate highs from historical API and commit JSON
 
 ## Research/Decisions Log
 - Price providers (no key): Coinbase (primary), Binance (fallback), CoinGecko (fallback).

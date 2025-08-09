@@ -66,7 +66,7 @@ Triggered by: `deploy`, `release`, `production`
 
 ⚔️ Hunt bosses: https://eth-boss-tracker.vercel.app
 
-#ETH #BossHunter #Crypto #Web3
+$ETH #BossHunter #Crypto #Web3
 ```
 
 ### Feature Tweets
@@ -80,7 +80,7 @@ Triggered by: `feat`, `add`, `new`, `implement`
 
 ⚔️ https://eth-boss-tracker.vercel.app
 
-#BossHunter #ETH #Build
+#BossHunter $ETH #Build
 ```
 
 ### Bug Fix Tweets
@@ -94,7 +94,7 @@ The hunt continues stronger! ⚔️
 
 https://eth-boss-tracker.vercel.app
 
-#BossHunter #ETH #DevLife
+#BossHunter $ETH #DevLife
 ```
 
 ## 5. Testing the Setup

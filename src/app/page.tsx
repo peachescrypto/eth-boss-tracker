@@ -93,8 +93,9 @@ export default function Home() {
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">ETH Boss Hunter</h1>
           <p className="text-gray-600 mb-4">
-            Track ETH price progress against historic weekly candle highs
-          </p>
+          Welcome to ETH Boss Hunter.   
+          
+          The final battle has begun. ETH has crossed the legendary 4K barrier, and the path to All-Time High is now in sight. But between here and glory stand 18 powerful Bosses — each one guarding a weekly candle on the climb.          </p>
           
           {/* Current Price Display */}
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
