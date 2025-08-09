@@ -1,4 +1,3 @@
-/** @jsxImportSource react */
 import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';
 
@@ -15,26 +14,10 @@ export async function GET(request: NextRequest) {
     const currentPrice = searchParams.get('current') || '$3,500';
     const progress = Math.min(100, Math.max(0, parseInt(searchParams.get('progress') || '50')));
     const hp = Math.min(100, Math.max(0, parseInt(searchParams.get('hp') || '50')));
-    const bossImage = searchParams.get('image') || null;
-    
-    // Fetch boss image if provided
-    let imageData = null;
-    if (bossImage) {
-      try {
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-        const imageUrl = `${baseUrl}${bossImage}`;
-        const imageResponse = await fetch(imageUrl);
-        if (imageResponse.ok) {
-          const arrayBuffer = await imageResponse.arrayBuffer();
-          imageData = `data:image/png;base64,${Buffer.from(arrayBuffer).toString('base64')}`;
-        }
-      } catch (error) {
-        console.log('Failed to fetch boss image:', error);
-      }
-    }
     
     return new ImageResponse(
-      <div
+      (
+        <div
           style={{
             height: '100%',
             width: '100%',
@@ -43,82 +26,35 @@ export async function GET(request: NextRequest) {
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: '#0f0729',
-            backgroundImage: `
-              radial-gradient(circle at 25% 25%, #7c3aed 0%, transparent 50%),
-              radial-gradient(circle at 75% 75%, #06b6d4 0%, transparent 50%)
-            `,
             fontFamily: 'Arial, sans-serif',
           }}
         >
           {/* Header */}
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
+              fontSize: '48px',
+              fontWeight: '900',
+              color: '#06b6d4',
               marginBottom: '40px',
+              textAlign: 'center',
             }}
           >
-            <div
-              style={{
-                fontSize: '48px',
-                fontWeight: '900',
-                background: 'linear-gradient(45deg, #06b6d4, #8b5cf6)',
-                backgroundClip: 'text',
-                color: 'transparent',
-                textAlign: 'center',
-              }}
-            >
-              ETH BOSS HUNTER
-            </div>
+            ETH BOSS HUNTER
           </div>
 
           {/* Boss Card */}
           <div
             style={{
               display: 'flex',
-              flexDirection: 'row',
+              flexDirection: 'column',
               alignItems: 'center',
               backgroundColor: 'rgba(0, 0, 0, 0.6)',
               border: '2px solid #06b6d4',
               borderRadius: '20px',
               padding: '40px',
-              boxShadow: '0 0 50px rgba(6, 182, 212, 0.3)',
-              minWidth: '900px',
-              gap: '40px',
+              minWidth: '600px',
             }}
           >
-            {/* Boss Image */}
-            {imageData && (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <img
-                  src={imageData}
-                  style={{
-                    width: '200px',
-                    height: '250px',
-                    objectFit: 'contain',
-                    borderRadius: '15px',
-                    border: '3px solid #06b6d4',
-                    boxShadow: '0 0 30px rgba(6, 182, 212, 0.5)',
-                  }}
-                  alt={bossName}
-                />
-              </div>
-            )}
-            
-            {/* Boss Stats */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                flex: 1,
-              }}
-            >
             {/* Boss Info */}
             <div
               style={{
@@ -199,7 +135,6 @@ export async function GET(request: NextRequest) {
                     background: hp > 0 
                       ? 'linear-gradient(to right, #ef4444, #f97316, #eab308)'
                       : '#374151',
-                    transition: 'all 0.5s ease',
                   }}
                 />
               </div>
@@ -269,7 +204,6 @@ export async function GET(request: NextRequest) {
                 {currentPrice}
               </span>
             </div>
-            </div>
           </div>
 
           {/* Footer */}
@@ -283,7 +217,8 @@ export async function GET(request: NextRequest) {
           >
             eth-boss-tracker.vercel.app
           </div>
-        </div>,
+        </div>
+      ),
       {
         width: 1200,
         height: 630,

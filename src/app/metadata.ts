@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       image: '/images/gorath.png'
     };
 
-    const shareCardUrl = `/api/share/current-boss?boss=${encodeURIComponent(defaultBoss.name)}&level=${defaultBoss.level}&target=${encodeURIComponent(defaultBoss.targetPrice)}&current=${encodeURIComponent(defaultBoss.currentPrice)}&progress=${defaultBoss.progress}&hp=${defaultBoss.hp}&image=${encodeURIComponent(defaultBoss.image)}`;
+    const shareCardUrl = `/api/share/current-boss?boss=${encodeURIComponent(defaultBoss.name)}&level=${defaultBoss.level}&target=${encodeURIComponent(defaultBoss.targetPrice)}&current=${encodeURIComponent(defaultBoss.currentPrice)}&progress=${defaultBoss.progress}&hp=${defaultBoss.hp}&image=${encodeURIComponent(defaultBoss.image)}&v=2`;
 
     return {
       title: "ETH Boss Hunter",
