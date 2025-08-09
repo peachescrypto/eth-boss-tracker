@@ -121,15 +121,18 @@ async function main() {
   console.log('');
 
   // Generate tweet using centralized function
-  let tweet = generateDailyStatusTweet(battleState);
+  const tweetContent = generateDailyStatusTweet(battleState);
   
   // Add timestamp for testing to avoid duplicate content errors
-  tweet += `\n\n🧪 Test: ${new Date().toLocaleTimeString()}`;
+  const tweet = tweetContent.text + `\n\n🧪 Test: ${new Date().toLocaleTimeString()}`;
   console.log('📝 Generated Tweet:');
   console.log('='.repeat(50));
   console.log(tweet);
   console.log('='.repeat(50));
   console.log(`Length: ${tweet.length} characters`);
+  if (tweetContent.image) {
+    console.log(`🖼️ Image: ${tweetContent.image}`);
+  }
   console.log('');
 
   // Check credentials
