@@ -27,10 +27,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Get current ETH price
-    const baseUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
-      : 'http://localhost:3000';
-    const priceResponse = await fetch(`${baseUrl}/api/price`);
+    const priceUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://eth-boss-tracker.vercel.app/api/price'
+      : 'http://localhost:3000/api/price';
+    const priceResponse = await fetch(priceUrl);
     if (!priceResponse.ok) {
       throw new Error('Failed to fetch current price');
     }
@@ -83,10 +83,10 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   try {
     // Get current ETH price
-    const baseUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
-      : 'http://localhost:3000';
-    const priceResponse = await fetch(`${baseUrl}/api/price`);
+    const priceUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://eth-boss-tracker.vercel.app/api/price'
+      : 'http://localhost:3000/api/price';
+    const priceResponse = await fetch(priceUrl);
     if (!priceResponse.ok) {
       throw new Error('Failed to fetch current price');
     }
