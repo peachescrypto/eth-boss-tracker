@@ -9,35 +9,35 @@ export const TWEET_TEMPLATES: Record<string, TweetTemplate> = {
       emoji: '🚀',
       title: 'DEPLOYED',
       format: (message) => 
-        `🚀 ETH Boss Hunter DEPLOYED!\n\n"${message}"\n\n⚔️ Hunt bosses: https://eth-boss-tracker.vercel.app\n\n#ETH #BossHunter #Crypto #Web3`
+        `🚀 ETH Boss Hunter DEPLOYED!\n\n"${message}"\n\n⚔️ Hunt bosses: https://eth-boss-tracker.vercel.app\n\n$ETH #BossHunter #Crypto #Web3`
     },
     
     feature: {
       emoji: '⚡',
       title: 'NEW FEATURE',
       format: (message, extra) => 
-        `⚡ ETH Boss Hunter UPDATE!\n\n🔥 ${message}\n\n${extra || 'Fresh feature deployed!'}\n\n⚔️ https://eth-boss-tracker.vercel.app\n\n#BossHunter #ETH #Build`
+        `⚡ ETH Boss Hunter UPDATE!\n\n🔥 ${message}\n\n${extra || 'Fresh feature deployed!'}\n\n⚔️ https://eth-boss-tracker.vercel.app\n\n#BossHunter $ETH #Build`
     },
   
       fix: {
       emoji: '🛠️',
       title: 'FIXED',
       format: (message) => 
-        `🛠️ ETH Boss Hunter FIXED!\n\n✅ ${message}\n\nThe hunt continues stronger! ⚔️\n\nhttps://eth-boss-tracker.vercel.app\n\n#BossHunter #ETH #DevLife`
+        `🛠️ ETH Boss Hunter FIXED!\n\n✅ ${message}\n\nThe hunt continues stronger! ⚔️\n\nhttps://eth-boss-tracker.vercel.app\n\n#BossHunter $ETH #DevLife`
     },
   
   milestone: {
     emoji: '🎉',
     title: 'MILESTONE',
     format: (message, extra) => 
-      `🎉 ETH Boss Hunter MILESTONE!\n\n🏆 ${message}\n\n${extra || 'Another step forward!'}\n\n⚔️ https://eth-boss-tracker.vercel.app\n\n#BossHunter #ETH #Milestone`
+      `🎉 ETH Boss Hunter MILESTONE!\n\n🏆 ${message}\n\n${extra || 'Another step forward!'}\n\n⚔️ https://eth-boss-tracker.vercel.app\n\n#BossHunter $ETH #Milestone`
   },
   
   default: {
     emoji: '🎯',
     title: 'UPDATE',
     format: (message, extra) => 
-      `🎯 ETH Boss Hunter progress!\n\n"${message}"\n\n${extra || 'Latest update'} pushed to production\n\n⚔️ https://eth-boss-tracker.vercel.app\n\n#ETH #BossHunter #Crypto`
+      `🎯 ETH Boss Hunter progress!\n\n"${message}"\n\n${extra || 'Latest update'} pushed to production\n\n⚔️ https://eth-boss-tracker.vercel.app\n\n$ETH #BossHunter #Crypto`
   }
 };
 
@@ -307,7 +307,7 @@ function generateBossHunterOAuthSignature() {
 
 // Special tweet for when ETH defeats a boss level
 export function generateBossDefeatTweet(price: number, bossLevel: number): string {
-  return `💀 BOSS DEFEATED! 💀\n\nETH just CRUSHED the $${bossLevel.toLocaleString()} level!\n\nCurrent price: $${price.toLocaleString()}\n\n⚔️ Another boss falls to the ETH army!\n\nhttps://eth-boss-tracker.vercel.app\n\n#ETH #BossHunter #DEFEATED #Crypto`;
+  return `💀 BOSS DEFEATED! 💀\n\nETH just CRUSHED the $${bossLevel.toLocaleString()} level!\n\nCurrent price: $${price.toLocaleString()}\n\n⚔️ Another boss falls to the ETH army!\n\nhttps://eth-boss-tracker.vercel.app\n\n$ETH #BossHunter #DEFEATED #Crypto`;
 }
 
 // Tweet for daily progress updates
@@ -315,5 +315,5 @@ export function generateDailyProgressTweet(currentPrice: number, nextBoss: numbe
   const progressPercent = Math.round(progress * 100);
   const remainingDollars = nextBoss - currentPrice;
   
-  return `⚔️ Daily Boss Battle Report!\n\nETH: $${currentPrice.toLocaleString()}\nNext Boss: $${nextBoss.toLocaleString()}\nProgress: ${progressPercent}% 📊\n\nOnly $${remainingDollars.toFixed(2)} to victory!\n\nhttps://eth-boss-tracker.vercel.app\n\n#ETH #BossHunter #DailyReport`;
+  return `⚔️ Daily Boss Battle Report!\n\nETH: $${currentPrice.toLocaleString()}\nNext Boss: $${nextBoss.toLocaleString()}\nProgress: ${progressPercent}% 📊\n\nOnly $${remainingDollars.toFixed(2)} to victory!\n\nhttps://eth-boss-tracker.vercel.app\n\n$ETH #BossHunter #DailyReport`;
 }

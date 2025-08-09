@@ -22,7 +22,7 @@ interface PriceData {
 let lastCheckedPrice = 0;
 let lastDefeatedBossIndex = -1;
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     // This endpoint will be called by a cron job or price monitoring system
     

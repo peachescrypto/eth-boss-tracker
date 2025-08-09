@@ -1,4 +1,4 @@
-import { BattleState, getBattleStatusEmoji, getBattleStatusText } from './battle-analysis';
+import { BattleState, BossData, getBattleStatusEmoji, getBattleStatusText } from './battle-analysis';
 
 // Note: For Node.js compatibility, the main tweet generation logic 
 // is now in /lib/tweet-templates.js. This file provides TypeScript 
@@ -45,13 +45,12 @@ export function generateDailyStatusTweet(
 }
 
 export function generateBossDefeatTweet(
-  defeatedBoss: any,
+  defeatedBoss: BossData,
   newPrice: number,
   battleState: BattleState
 ): string {
   const bossName = defeatedBoss.name || `Boss Level ${battleState.bossesDefeated}`;
   const damageDealt = Math.round(newPrice - defeatedBoss.high);
-  const formattedPrice = `$${newPrice.toLocaleString()}`;
   const formattedTarget = `$${defeatedBoss.high.toLocaleString()}`;
   
   let tweet = `💀 BOSS DEFEATED! 💀\n\n`;

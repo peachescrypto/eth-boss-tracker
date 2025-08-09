@@ -1,11 +1,11 @@
-interface BossData {
+export interface BossData {
   date: string;
   high: number;
   name?: string;
   image?: string;
 }
 
-interface BattleState {
+export interface BattleState {
   currentBoss: BossData | null;
   nextBoss: BossData | null;
   currentPrice: number;
@@ -69,8 +69,8 @@ export function analyzeBattleState(
   const remainingDamage = currentBoss ? currentBoss.high - currentPrice : 0;
   
   return {
-    currentBoss,
-    nextBoss,
+    currentBoss: currentBoss || null,
+    nextBoss: nextBoss || null,
     currentPrice,
     progress,
     battleStatus,
