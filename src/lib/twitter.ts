@@ -5,26 +5,26 @@ interface TweetTemplate {
 }
 
 export const TWEET_TEMPLATES: Record<string, TweetTemplate> = {
-  deploy: {
-    emoji: '🚀',
-    title: 'DEPLOYED',
-    format: (message, extra) => 
-      `🚀 ETH Boss Hunter DEPLOYED!\n\n"${message}"\n\n⚔️ Hunt bosses: https://eth-boss-tracker.vercel.app\n\n#ETH #BossHunter #Crypto #Web3`
-  },
+      deploy: {
+      emoji: '🚀',
+      title: 'DEPLOYED',
+      format: (message) => 
+        `🚀 ETH Boss Hunter DEPLOYED!\n\n"${message}"\n\n⚔️ Hunt bosses: https://eth-boss-tracker.vercel.app\n\n#ETH #BossHunter #Crypto #Web3`
+    },
+    
+    feature: {
+      emoji: '⚡',
+      title: 'NEW FEATURE',
+      format: (message, extra) => 
+        `⚡ ETH Boss Hunter UPDATE!\n\n🔥 ${message}\n\n${extra || 'Fresh feature deployed!'}\n\n⚔️ https://eth-boss-tracker.vercel.app\n\n#BossHunter #ETH #Build`
+    },
   
-  feature: {
-    emoji: '⚡',
-    title: 'NEW FEATURE',
-    format: (message, extra) => 
-      `⚡ ETH Boss Hunter UPDATE!\n\n🔥 ${message}\n\n${extra || 'Fresh feature deployed!'}\n\n⚔️ https://eth-boss-tracker.vercel.app\n\n#BossHunter #ETH #Build`
-  },
-  
-  fix: {
-    emoji: '🛠️',
-    title: 'FIXED',
-    format: (message, extra) => 
-      `🛠️ ETH Boss Hunter FIXED!\n\n✅ ${message}\n\nThe hunt continues stronger! ⚔️\n\nhttps://eth-boss-tracker.vercel.app\n\n#BossHunter #ETH #DevLife`
-  },
+      fix: {
+      emoji: '🛠️',
+      title: 'FIXED',
+      format: (message) => 
+        `🛠️ ETH Boss Hunter FIXED!\n\n✅ ${message}\n\nThe hunt continues stronger! ⚔️\n\nhttps://eth-boss-tracker.vercel.app\n\n#BossHunter #ETH #DevLife`
+    },
   
   milestone: {
     emoji: '🎉',
@@ -41,7 +41,7 @@ export const TWEET_TEMPLATES: Record<string, TweetTemplate> = {
   }
 };
 
-export function detectTweetType(commitMessage: string, fileChanges?: string[]): string {
+export function detectTweetType(commitMessage: string): string {
   const msg = commitMessage.toLowerCase();
   
   // Check for deployment keywords
@@ -72,7 +72,7 @@ export function generateTweet(
   commitCount: number, 
   fileChanges?: string[]
 ): string {
-  const type = detectTweetType(commitMessage, fileChanges);
+  const type = detectTweetType(commitMessage);
   const template = TWEET_TEMPLATES[type];
   
   // Clean commit message (first line only, max 100 chars)
@@ -122,7 +122,7 @@ export async function postToTwitter(content: string): Promise<{ success: boolean
   
   try {
     // Generate OAuth 1.0a signature
-    const oauthData = generateOAuthSignature(content);
+    const oauthData = generateOAuthSignature();
     
     const response = await fetch('https://api.twitter.com/2/tweets', {
       method: 'POST',
@@ -156,7 +156,8 @@ export async function postToTwitter(content: string): Promise<{ success: boolean
   }
 }
 
-function generateOAuthSignature(tweetContent: string) {
+function generateOAuthSignature() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const crypto = require('crypto');
   
   // OAuth 1.0a parameters
