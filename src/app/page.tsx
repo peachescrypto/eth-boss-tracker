@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import useSWR from 'swr';
+import Image from 'next/image';
 import { getCurrentBossShareUrl, generateTwitterShareText } from '@/lib/share-cards';
 
 interface DailyHigh {
@@ -188,12 +189,14 @@ export default function Home() {
                       <div className="absolute -inset-4 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-full blur-lg opacity-75 animate-pulse"></div>
                       <div className="relative">
                         {currentBoss.image ? (
-                          <img 
+                          <Image 
                             className="w-60 max-h-90 rounded-lg object-contain border-2 border-cyan-400/50 shadow-lg shadow-cyan-400/50" 
                             src={currentBoss.image} 
                             alt={currentBoss.name || 'Current Boss'} 
-                            onError={(e) => {
-                              e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentBoss.name || 'Boss')}&background=gradient&color=fff&size=192`;
+                            width={240}
+                            height={360}
+                            onError={() => {
+                              // Fallback handled by Next.js Image component
                             }}
                           />
                         ) : (
@@ -398,13 +401,15 @@ export default function Home() {
                           <div className="relative">
                             {isFutureBoss ? (
                               // Future boss - use card-reverse with thick white border
-                              <img 
+                              <Image 
                                 className="mx-auto rounded-lg object-contain w-20 max-h-40 border-4 border-grey shadow-lg shadow-white/50"
                                 src="/images/card-reverse.png" 
                                 alt="Mystery Boss" 
+                                width={80}
+                                height={160}
                               />
                             ) : boss.image ? (
-                              <img 
+                              <Image 
                                 className={`mx-auto rounded-lg object-contain border-2 shadow-lg ${
                                   isCurrentBoss
                                     ? 'w-32 max-h-48 border-cyan-400 shadow-cyan-400/70' 
@@ -414,8 +419,10 @@ export default function Home() {
                                 }`}
                                 src={boss.image} 
                                 alt={boss.name || 'Boss'} 
-                                onError={(e) => {
-                                  e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(boss.name || 'Boss')}&background=gradient&color=fff&size=128`;
+                                width={isCurrentBoss ? 128 : 80}
+                                height={isCurrentBoss ? 192 : 160}
+                                onError={() => {
+                                  // Fallback handled by Next.js Image component
                                 }}
                               />
                             ) : (

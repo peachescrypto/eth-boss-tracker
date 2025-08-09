@@ -4,14 +4,10 @@ import { BattleState, BossData } from './battle-analysis';
 // is now in /lib/tweet-templates.js. This file provides TypeScript 
 // interfaces and imports the Node.js functions.
 
-interface TweetOptions {
-  includeImage?: boolean;
-  customHashtags?: string[];
-}
+
 
 export function generateDailyStatusTweet(
-  battleState: BattleState,
-  _options: TweetOptions = {}
+  battleState: BattleState
 ): { text: string; image?: string } {
   if (!battleState.currentBoss) {
     // All bosses defeated - legendary status

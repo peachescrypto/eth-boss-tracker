@@ -60,7 +60,7 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       },
     };
-  } catch (error) {
+  } catch {
     // Fallback metadata
     return {
       title: "ETH Boss Hunter",
