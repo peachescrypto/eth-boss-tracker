@@ -1,0 +1,17 @@
+name: Daily ETH Boss Status Tweet
+
+on:
+  schedule:
+    # Runs daily at 7 AM EST (9:00 UTC)
+    - cron: '0 9 * * *'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  daily-tweet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post Daily Boss Status
+        run: |
+          curl -X POST "https://eth-boss-tracker.vercel.app/api/tweets/daily-status" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json"

@@ -27,7 +27,10 @@ export async function POST(_request: NextRequest) {
     // This endpoint will be called by a cron job or price monitoring system
     
     // Get current ETH price
-    const priceResponse = await fetch(`${process.env.VERCEL_URL || 'http://localhost:3000'}/api/price`);
+    const baseUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : 'http://localhost:3000';
+    const priceResponse = await fetch(`${baseUrl}/api/price`);
     if (!priceResponse.ok) {
       throw new Error('Failed to fetch current price');
     }
@@ -99,7 +102,10 @@ export async function POST(_request: NextRequest) {
 export async function GET() {
   try {
     // Get current ETH price
-    const priceResponse = await fetch(`${process.env.VERCEL_URL || 'http://localhost:3000'}/api/price`);
+    const baseUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : 'http://localhost:3000';
+    const priceResponse = await fetch(`${baseUrl}/api/price`);
     if (!priceResponse.ok) {
       throw new Error('Failed to fetch current price');
     }
