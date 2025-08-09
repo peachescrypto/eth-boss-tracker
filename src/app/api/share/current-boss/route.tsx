@@ -66,6 +66,7 @@ export async function GET(request: NextRequest) {
             >
               <div
                 style={{
+                  display: 'flex',
                   fontSize: '32px',
                   fontWeight: 'bold',
                   color: '#ffffff',
@@ -77,6 +78,7 @@ export async function GET(request: NextRequest) {
               </div>
               <div
                 style={{
+                  display: 'flex',
                   fontSize: '18px',
                   color: '#06b6d4',
                   marginBottom: '5px',
@@ -86,6 +88,7 @@ export async function GET(request: NextRequest) {
               </div>
               <div
                 style={{
+                  display: 'flex',
                   fontSize: '24px',
                   color: '#a855f7',
                   fontWeight: 'bold',
@@ -111,10 +114,10 @@ export async function GET(request: NextRequest) {
                   marginBottom: '8px',
                 }}
               >
-                <span style={{ color: '#ec4899', fontSize: '18px', fontWeight: 'bold' }}>
+                <span style={{ display: 'flex', color: '#ec4899', fontSize: '18px', fontWeight: 'bold' }}>
                   HP
                 </span>
-                <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: 'bold' }}>
+                <span style={{ display: 'flex', color: '#ffffff', fontSize: '18px', fontWeight: 'bold' }}>
                   {hp}/100
                 </span>
               </div>
@@ -156,10 +159,10 @@ export async function GET(request: NextRequest) {
                   marginBottom: '8px',
                 }}
               >
-                <span style={{ color: '#06b6d4', fontSize: '18px', fontWeight: 'bold' }}>
+                <span style={{ display: 'flex', color: '#06b6d4', fontSize: '18px', fontWeight: 'bold' }}>
                   PROGRESS
                 </span>
-                <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: 'bold' }}>
+                <span style={{ display: 'flex', color: '#ffffff', fontSize: '18px', fontWeight: 'bold' }}>
                   {progress}%
                 </span>
               </div>
@@ -197,10 +200,10 @@ export async function GET(request: NextRequest) {
                 padding: '15px 25px',
               }}
             >
-              <span style={{ color: '#06b6d4', fontSize: '16px', marginRight: '10px' }}>
+              <span style={{ display: 'flex', color: '#06b6d4', fontSize: '16px', marginRight: '10px' }}>
                 CURRENT ETH:
               </span>
-              <span style={{ color: '#ffffff', fontSize: '24px', fontWeight: 'bold' }}>
+              <span style={{ display: 'flex', color: '#ffffff', fontSize: '24px', fontWeight: 'bold' }}>
                 {currentPrice}
               </span>
             </div>
