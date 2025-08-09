@@ -1,6 +1,6 @@
-# ETH Boss Tracker
+# ETH Boss Hunter
 
-A fun web app that tracks the current ETH price against historic daily candle tops since January 2021. Shows progress indicators for each historic high, helping visualize how close ETH is to breaking previous daily highs.
+A fun web app that tracks the current ETH price against historic daily candle tops since January 2020. Shows progress indicators for each historic high, helping visualize how close ETH is to breaking previous daily highs.
 
 ## Features
 
@@ -9,6 +9,7 @@ A fun web app that tracks the current ETH price against historic daily candle to
 - **Progress Indicators**: Shows how close the current price is to each historic high
 - **Responsive Design**: Works on desktop and mobile
 - **Error Handling**: Graceful fallbacks when price APIs are unavailable
+- **Twitter Bot**: Automated tweets for development progress and milestones
 
 ## Tech Stack
 
@@ -42,6 +43,9 @@ The app uses multiple free APIs with fallback logic:
 ```bash
 # Update historical data from Binance (2020 onwards, above $4000)
 npm run fetch-data-binance
+
+# Test Twitter bot functionality (requires .env.local setup)
+npm run test-twitter
 
 # Install dependencies
 npm install
@@ -82,7 +86,76 @@ progress = (currentPrice - previousHigh) / (targetHigh - previousHigh)
 
 ## Deployment
 
+### Initial Deployment to Vercel
+
 The app is designed to deploy on Vercel with zero configuration. The serverless API routes handle price fetching with appropriate caching and error handling.
+
+**Option 1: Deploy via GitHub (Recommended)**
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com) and sign in with GitHub
+3. Click "Add New" → "Project"
+4. Import your repository
+5. Vercel will auto-detect Next.js settings
+6. Click "Deploy"
+
+**Option 2: Deploy via Vercel CLI**
+```bash
+# Install Vercel CLI globally (if not already installed)
+npm install -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy to production
+vercel --prod
+```
+
+### Deploying Changes
+
+Once your initial deployment is set up, future updates are automatic:
+
+**Via GitHub (Auto-deployment)**
+- Simply push changes to your main branch
+- Vercel will automatically detect changes and redeploy
+- No manual intervention needed
+
+```bash
+git add .
+git commit -m "Your change description"
+git push origin main
+# Vercel automatically deploys within 1-2 minutes
+```
+
+**Via Vercel CLI (Manual deployment)**
+```bash
+# Deploy latest changes to production
+vercel --prod
+
+# Deploy to preview (for testing)
+vercel
+```
+
+### Environment Variables
+
+For basic functionality, no environment variables are required - the app uses public APIs without authentication.
+
+For Twitter bot integration, add to `.env.local`:
+```bash
+TWITTER_API_KEY=your_api_key_here
+TWITTER_API_SECRET=your_api_secret_here
+TWITTER_ACCESS_TOKEN=your_access_token_here
+TWITTER_ACCESS_TOKEN_SECRET=your_access_token_secret_here
+```
+
+See `docs/TWITTER_SETUP.md` for detailed Twitter bot configuration.
+
+### Build Settings
+
+Vercel automatically detects the following settings:
+- **Build Command**: `next build`
+- **Output Directory**: `.next`
+- **Install Command**: `npm install`
+- **Development Command**: `next dev`
 
 ## Future Enhancements
 

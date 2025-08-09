@@ -77,7 +77,7 @@ export default function Home() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading ETH boss tracker...</p>
+          <p className="text-gray-600">Loading ETH boss hunter...</p>
         </div>
       </div>
     );
@@ -87,7 +87,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4">
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">ETH Boss Tracker</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">ETH Boss Hunter</h1>
           <p className="text-gray-600 mb-4">
             Track ETH price progress against historic daily candle tops
           </p>

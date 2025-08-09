@@ -1,4 +1,4 @@
-# ETH Boss Tracker — Decisions Log
+# ETH Boss Hunter — Decisions Log
 
 Purpose:
 - Record key choices and why. Update if decisions change.

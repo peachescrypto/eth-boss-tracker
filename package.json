@@ -8,9 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "fetch-data": "node scripts/fetch-eth-highs.js",
-    "fetch-data-binance": "node scripts/fetch-eth-highs-binance.js"
+    "fetch-data-binance": "node scripts/fetch-eth-highs-binance.js",
+    "test-twitter": "node scripts/test-twitter.js"
   },
   "dependencies": {
+    "dotenv": "^17.2.1",
     "next": "15.4.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",

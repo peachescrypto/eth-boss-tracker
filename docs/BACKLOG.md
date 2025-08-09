@@ -1,4 +1,4 @@
-# ETH Boss Tracker — Backlog
+# ETH Boss Hunter — Backlog
 
 How to use:
 - Move items between sections (Backlog → In Progress → Done).
@@ -56,6 +56,15 @@ How to use:
 - [ ] **NFT Achievements** - For top hunters
 - [ ] **Boss Hunter Tournaments** - Community competitions
 - [ ] **API for Integration** - Let other apps use boss battle data
+
+## Social Media Automation
+- [x] **Twitter Bot Setup** - Connect X account for automated tweets
+- [x] **GitHub Webhook Integration** - Trigger tweets on commits/deploys
+- [x] **Tweet Templates** - Engaging formats for different update types
+- [x] **Progress Tweet Generator** - "🎯 ETH Boss Hunter Update: Added X feature! Current boss: $4,150 (87% defeated)"
+- [ ] **Deploy Announcements** - "🚀 New features deployed to ETH Boss Hunter!" (ready, needs Twitter API keys)
+- [ ] **Milestone Celebrations** - "🎉 100 commits to ETH Boss Hunter!" (ready, needs implementation)
+- [ ] **Real-time Boss Defeats** - "💀 BOSS DEFEATED! ETH just crushed the $4,150 level!" (ready, needs price monitoring)
 
 ## Research/Decisions Log
 - Price providers (no key): Coinbase (primary), Binance (fallback), CoinGecko (fallback).
