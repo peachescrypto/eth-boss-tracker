@@ -157,8 +157,10 @@ export async function postToTwitter(content: string): Promise<{ success: boolean
   }
 }
 
-// Dedicated function for ETH Boss Hunter account
-export async function postToBossHunterTwitter(content: string): Promise<{ success: boolean; tweetId?: string; error?: string }> {
+// Dedicated function for ETH Boss Hunter account with image support
+export async function postToBossHunterTwitter(
+  content: string | { text: string; image?: string }
+): Promise<{ success: boolean; tweetId?: string; error?: string }> {
   // Check for required ETH Boss Hunter environment variables
   const requiredVars = [
     'BOSS_HUNTER_API_KEY',
@@ -176,9 +178,15 @@ export async function postToBossHunterTwitter(content: string): Promise<{ succes
   }
   
   try {
+    // Extract text and image from content
+    const tweetText = typeof content === 'string' ? content : content.text;
+    const imagePath = typeof content === 'object' ? content.image : undefined;
+    
     // Generate OAuth 1.0a signature for Boss Hunter account
     const oauthData = generateBossHunterOAuthSignature();
     
+    // For now, post without image (Twitter image upload requires separate media endpoint)
+    // TODO: Implement image upload via Twitter Media API
     const response = await fetch('https://api.twitter.com/2/tweets', {
       method: 'POST',
       headers: {
@@ -186,7 +194,7 @@ export async function postToBossHunterTwitter(content: string): Promise<{ succes
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        text: content
+        text: imagePath ? `${tweetText}\n\n🖼️ Boss Image: ${imagePath}` : tweetText
       })
     });
     

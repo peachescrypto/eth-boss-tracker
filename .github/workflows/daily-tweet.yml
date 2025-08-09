@@ -2,7 +2,7 @@ name: Daily ETH Boss Status Tweet
 
 on:
   schedule:
-    # Runs daily at 7 AM EST (9:00 UTC)
+    # Runs daily at 9 AM EST (9:00 UTC)
     - cron: '0 9 * * *'
   workflow_dispatch: # Allows manual trigger
 

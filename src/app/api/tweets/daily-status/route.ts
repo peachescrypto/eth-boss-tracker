@@ -44,17 +44,17 @@ export async function POST(request: NextRequest) {
     // Analyze current battle state
     const battleState = analyzeBattleState(priceData.priceUsd, bossData);
 
-    // Generate daily status tweet
-    const tweetText = generateDailyStatusTweet(battleState);
+    // Generate daily status tweet with boss image
+    const tweetContent = generateDailyStatusTweet(battleState);
 
     // Post to Boss Hunter Twitter
-    const tweetResult = await postToBossHunterTwitter(tweetText);
+    const tweetResult = await postToBossHunterTwitter(tweetContent);
 
     if (tweetResult.success) {
       return NextResponse.json({
         success: true,
         tweetId: tweetResult.tweetId,
-        tweetText,
+        tweetText: typeof tweetContent === 'string' ? tweetContent : tweetContent.text,
         battleState: {
           currentBoss: battleState.currentBoss?.name || 'All Defeated',
           progress: Math.round(battleState.progress * 100),
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: false,
         error: tweetResult.error,
-        tweetText
+        tweetText: typeof tweetContent === 'string' ? tweetContent : tweetContent.text
       }, { status: 500 });
     }
 
@@ -101,11 +101,13 @@ export async function GET() {
     const battleState = analyzeBattleState(priceData.priceUsd, bossData);
 
     // Generate daily status tweet (preview only)
-    const tweetText = generateDailyStatusTweet(battleState);
+    const tweetContent = generateDailyStatusTweet(battleState);
 
     return NextResponse.json({
       preview: true,
-      tweetText,
+      tweetText: typeof tweetContent === 'string' ? tweetContent : tweetContent.text,
+      hasImage: typeof tweetContent === 'object' && tweetContent.image ? true : false,
+      imagePath: typeof tweetContent === 'object' ? tweetContent.image : null,
       battleState: {
         currentBoss: battleState.currentBoss?.name || 'All Defeated',
         currentPrice: battleState.currentPrice,

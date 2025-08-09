@@ -54,15 +54,27 @@ function testTweets() {
   printSeparator('Daily Status Tweet - Resting State');
   const restingState = analyzeBattleState(4050, bossData);
   const dailyTweet = generateDailyStatusTweet(restingState);
-  console.log(dailyTweet);
-  console.log(`\nLength: ${dailyTweet.length}/280 characters`);
+  if (typeof dailyTweet === 'object' && dailyTweet.text) {
+    console.log(dailyTweet.text);
+    console.log(`\nLength: ${dailyTweet.text.length}/280 characters`);
+    if (dailyTweet.image) console.log(`Image: ${dailyTweet.image}`);
+  } else {
+    console.log(dailyTweet);
+    console.log(`\nLength: ${dailyTweet.length}/280 characters`);
+  }
 
   // Example 2: Daily Status Tweet (critical battle)
   printSeparator('Daily Status Tweet - Critical Battle');
   const criticalState = analyzeBattleState(4350, bossData);
   const criticalTweet = generateDailyStatusTweet(criticalState);
-  console.log(criticalTweet);
-  console.log(`\nLength: ${criticalTweet.length}/280 characters`);
+  if (typeof criticalTweet === 'object' && criticalTweet.text) {
+    console.log(criticalTweet.text);
+    console.log(`\nLength: ${criticalTweet.text.length}/280 characters`);
+    if (criticalTweet.image) console.log(`Image: ${criticalTweet.image}`);
+  } else {
+    console.log(criticalTweet);
+    console.log(`\nLength: ${criticalTweet.length}/280 characters`);
+  }
 
   // Example 3: Boss Defeat Tweet
   printSeparator('Boss Defeat Tweet');
@@ -133,8 +145,16 @@ if (args.length > 0) {
   }
   
   printSeparator(`${type.toUpperCase()} TWEET`);
-  console.log(tweet);
-  console.log(`\nLength: ${tweet.length}/280 characters`);
+  if (typeof tweet === 'object' && tweet.text) {
+    console.log(tweet);
+    console.log(`\nLength: ${tweet.text.length}/280 characters`);
+    if (tweet.image) {
+      console.log(`Image: ${tweet.image}`);
+    }
+  } else {
+    console.log(tweet);
+    console.log(`\nLength: ${tweet.length}/280 characters`);
+  }
   
 } else {
   testTweets();

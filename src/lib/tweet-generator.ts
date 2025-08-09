@@ -12,36 +12,18 @@ interface TweetOptions {
 export function generateDailyStatusTweet(
   battleState: BattleState,
   options: TweetOptions = {}
-): string {
-  const { currentBoss, currentPrice, progress, battleStatus, remainingDamage } = battleState;
+): { text: string; image?: string } {
+  const { currentBoss, currentPrice, progress, battleStatus, remainingDamage, damageDealt } = battleState;
   
   if (!currentBoss) {
     // All bosses defeated - legendary status
-    return generateAllBossesDefeatedTweet(battleState);
+    const legendaryTweet = generateAllBossesDefeatedTweet(battleState);
+    return { text: legendaryTweet, image: undefined };
   }
   
-  const emoji = getBattleStatusEmoji(battleStatus);
-  const statusText = getBattleStatusText(battleStatus);
-  const progressPercent = Math.round(progress * 100);
-  
-  const bossName = currentBoss.name || `Boss Level ${battleState.bossesDefeated + 1}`;
-  const formattedPrice = `$${currentPrice.toLocaleString()}`;
-  const formattedTarget = `$${currentBoss.high.toLocaleString()}`;
-  const formattedRemaining = `$${remainingDamage.toFixed(0)}`;
-  
-  // Build the tweet
-  let tweet = `⚔️ Daily Boss Report\n\n`;
-  tweet += `Current Target: ${bossName} (${formattedTarget})\n`;
-  tweet += `ETH Price: ${formattedPrice}\n`;
-  tweet += `Progress: ${progressPercent}% 📊\n\n`;
-  tweet += `Battle Status: ${emoji} ${statusText}\n`;
-  tweet += `Remaining: ${formattedRemaining} to victory\n\n`;
-  
-  // Add hashtags
-  const hashtags = options.customHashtags || ['#ETHBossHunter', '$ETH'];
-  tweet += hashtags.join(' ');
-  
-  return tweet;
+  // Use the Node.js version for consistency - import the logic
+  const nodeJsTweetLib = require('../../lib/tweet-templates');
+  return nodeJsTweetLib.generateDailyStatusTweet(battleState, options);
 }
 
 export function generateBossDefeatTweet(
