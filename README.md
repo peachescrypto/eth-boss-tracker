@@ -1,11 +1,11 @@
 # ETH Boss Hunter
 
-A fun web app that tracks the current ETH price against historic daily candle tops since January 2020. Shows progress indicators for each historic high, helping visualize how close ETH is to breaking previous daily highs.
+A fun web app that tracks the current ETH price against historic weekly candle highs since January 2020. Shows progress indicators for each historic high, helping visualize how close ETH is to breaking previous weekly highs.
 
 ## Features
 
 - **Live Price Tracking**: Fetches current ETH price every 15 seconds from multiple providers (Coinbase, Binance, CoinGecko)
-- **Historic Daily Highs**: Displays all daily candle tops sorted from lowest to highest
+- **Historic Weekly Highs**: Displays all weekly candle highs sorted from lowest to highest
 - **Progress Indicators**: Shows how close the current price is to each historic high
 - **Responsive Design**: Works on desktop and mobile
 - **Error Handling**: Graceful fallbacks when price APIs are unavailable
@@ -44,6 +44,9 @@ The app uses multiple free APIs with fallback logic:
 # Update historical data from Binance (2020 onwards, above $4000)
 npm run fetch-data-binance
 
+# Update weekly historical data (recommended - fewer bosses, more engaging)
+npm run fetch-weekly-data
+
 # Test Twitter bot functionality (requires .env.local setup)
 npm run test-twitter
 
@@ -62,7 +65,7 @@ npm start
 
 ## Data Structure
 
-Daily highs are stored in `public/eth-daily-highs.json`:
+Weekly highs are stored in `public/eth-weekly-highs.json`:
 
 ```json
 [

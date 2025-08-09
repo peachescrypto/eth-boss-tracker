@@ -6,6 +6,8 @@ import useSWR from 'swr';
 interface DailyHigh {
   date: string;
   high: number;
+  name?: string;
+  image?: string;
 }
 
 interface PriceData {
@@ -15,6 +17,8 @@ interface PriceData {
 }
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
+
+const MIN_PRICE = 4000;
 
 function formatPrice(price: number): string {
   return new Intl.NumberFormat('en-US', {
@@ -51,9 +55,9 @@ export default function Home() {
     revalidateOnFocus: true
   });
 
-  // Load daily highs data
+  // Load weekly highs data
   useEffect(() => {
-    fetch('/eth-daily-highs.json')
+    fetch('/eth-weekly-highs.json')
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
@@ -66,7 +70,7 @@ export default function Home() {
         setDailyHighs(sorted);
       })
       .catch(err => {
-        console.error('Failed to load daily highs:', err);
+        console.error('Failed to load weekly highs:', err);
         // Set some fallback data to prevent infinite loading
         setDailyHighs([]);
       });
@@ -89,7 +93,7 @@ export default function Home() {
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">ETH Boss Hunter</h1>
           <p className="text-gray-600 mb-4">
-            Track ETH price progress against historic daily candle tops
+            Track ETH price progress against historic weekly candle highs
           </p>
           
           {/* Current Price Display */}
@@ -119,16 +123,20 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Daily Highs Table */}
+        {/* Weekly Highs Table */}
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">Daily Candle Tops (Sorted Low to High)</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Weekly Boss Levels (Sorted Low to High)</h2>
+            <p className="text-sm text-gray-600 mt-1">{dailyHighs.length} weekly highs above ${MIN_PRICE.toLocaleString()}</p>
           </div>
           
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Boss
+                  </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Date
                   </th>
@@ -150,6 +158,34 @@ export default function Home() {
                   
                   return (
                     <tr key={high.date} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10">
+                            {high.image ? (
+                              <img 
+                                className="h-10 w-10 rounded-full object-cover" 
+                                src={high.image} 
+                                alt={high.name || 'Boss'} 
+                                onError={(e) => {
+                                  // Use placeholder if image fails to load
+                                  e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(high.name || 'Boss')}&background=random&color=fff&size=40`;
+                                }}
+                              />
+                            ) : (
+                              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-xs">
+                                {(high.name || 'B').charAt(0).toUpperCase()}
+                              </div>
+                            )}</div>
+                          <div className={high.image ? "ml-4" : ""}>
+                            <div className="text-sm font-medium text-gray-900">
+                              {high.name || `Boss #${index + 1}`}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              Level {index + 1}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {formatDate(high.date)}
                       </td>

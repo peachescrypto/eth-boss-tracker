@@ -4,17 +4,17 @@ const path = require('path');
 // Configuration
 const START_DATE = '2020-01-01';
 const MIN_PRICE = 4000; // Only prices above $4000
-const OUTPUT_FILE = path.join(__dirname, '../public/eth-daily-highs.json');
+const OUTPUT_FILE = path.join(__dirname, '../public/eth-weekly-highs.json');
 
 async function fetchHistoricalData() {
-  console.log('Fetching ETH historical data from Binance (year by year)...');
+  console.log('Fetching ETH weekly historical data from Binance (year by year)...');
   
   try {
     const today = new Date();
     const startYear = 2020;
     const currentYear = today.getFullYear();
     
-    let allDailyHighs = [];
+    let allWeeklyHighs = [];
     
     // Fetch data year by year from 2020 to current year
     for (let year = startYear; year <= currentYear; year++) {
@@ -29,8 +29,8 @@ async function fetchHistoricalData() {
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
       
-      // Binance API: klines endpoint with 1 day interval
-      const url = `https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=1d&startTime=${yearStart.getTime()}&endTime=${yearEnd.getTime()}&limit=1000`;
+      // Binance API: klines endpoint with 1 week interval
+      const url = `https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=1w&startTime=${yearStart.getTime()}&endTime=${yearEnd.getTime()}&limit=1000`;
       
       let response, data;
       try {
@@ -61,22 +61,22 @@ async function fetchHistoricalData() {
         continue;
       }
       
-      console.log(`   Received ${data.length} daily candles for ${year}`);
+      console.log(`   Received ${data.length} weekly candles for ${year}`);
       
-      // Process the data to find daily highs above $4000
-      const yearDailyHighs = processDailyHighs(data);
+      // Process the data to find weekly highs above $4000
+      const yearWeeklyHighs = processWeeklyHighs(data);
       
-      console.log(`   Found ${yearDailyHighs.length} daily highs above $${MIN_PRICE.toLocaleString()} in ${year}`);
+      console.log(`   Found ${yearWeeklyHighs.length} weekly highs above $${MIN_PRICE.toLocaleString()} in ${year}`);
       
-      allDailyHighs = allDailyHighs.concat(yearDailyHighs);
+      allWeeklyHighs = allWeeklyHighs.concat(yearWeeklyHighs);
     }
     
-    if (allDailyHighs.length === 0) {
+    if (allWeeklyHighs.length === 0) {
       throw new Error('No data found for any year');
     }
     
     // Remove duplicates (in case of overlapping dates)
-    const uniqueHighs = removeDuplicates(allDailyHighs);
+    const uniqueHighs = removeDuplicates(allWeeklyHighs);
     
     // Sort by date (oldest first)
     uniqueHighs.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -102,8 +102,8 @@ async function fetchHistoricalData() {
   }
 }
 
-function processDailyHighs(candles) {
-  const dailyHighs = [];
+function processWeeklyHighs(candles) {
+  const weeklyHighs = [];
   
   candles.forEach(candle => {
     // Binance klines format: [openTime, open, high, low, close, volume, closeTime, ...]
@@ -112,21 +112,23 @@ function processDailyHighs(candles) {
     
     // Only include if high price is above our minimum
     if (highPrice >= MIN_PRICE) {
-      const date = new Date(openTime).toISOString().split('T')[0];
+      // For weekly data, use the week start date (Monday)
+      const weekStartDate = new Date(openTime);
+      const date = weekStartDate.toISOString().split('T')[0];
       
-      dailyHighs.push({
+      weeklyHighs.push({
         date: date,
         high: Math.round(highPrice * 100) / 100 // Round to 2 decimal places
       });
     }
   });
   
-  return dailyHighs;
+  return weeklyHighs;
 }
 
-function removeDuplicates(dailyHighs) {
+function removeDuplicates(weeklyHighs) {
   const seen = new Set();
-  return dailyHighs.filter(entry => {
+  return weeklyHighs.filter(entry => {
     const key = entry.date;
     if (seen.has(key)) {
       return false;

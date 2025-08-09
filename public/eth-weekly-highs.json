@@ -1,0 +1,90 @@
+[
+  {
+    "date": "2024-12-09",
+    "high": 4006.17,
+    "name": "Gorath",
+    "image": "/images/gorath.png"
+  },
+  {
+    "date": "2021-08-30",
+    "high": 4027.88,
+    "name": "Nyxara",
+    "image": "/images/nyxara.png"
+  },
+  {
+    "date": "2025-08-04",
+    "high": 4071
+  },
+  {
+    "date": "2024-12-02",
+    "high": 4087.73,
+    "name": "Volcan",
+    "image": "/images/volcan.png"
+  },
+  {
+    "date": "2024-03-11",
+    "high": 4093.92
+  },
+  {
+    "date": "2024-12-16",
+    "high": 4107.8,
+    "name": "Voltaris",
+    "image": "/images/voltaris.png"
+  },
+  {
+    "date": "2021-12-27",
+    "high": 4127.46
+  },
+  {
+    "date": "2021-12-13",
+    "high": 4142.75
+  },
+  {
+    "date": "2021-12-20",
+    "high": 4150,
+    "name": "Baelgor",
+    "image": "/images/baelgor.png"
+  },
+  {
+    "date": "2021-05-10",
+    "high": 4372.72
+  },
+  {
+    "date": "2021-10-18",
+    "high": 4375
+  },
+  {
+    "date": "2021-10-25",
+    "high": 4460.47
+  },
+  {
+    "date": "2021-12-06",
+    "high": 4488
+  },
+  {
+    "date": "2021-11-22",
+    "high": 4551
+  },
+  {
+    "date": "2021-11-01",
+    "high": 4665.87
+  },
+  {
+    "date": "2021-11-15",
+    "high": 4772.01,
+    "name": "Lurathos",
+    "image": "/images/lurathos.png"
+  },
+  {
+    "date": "2021-11-29",
+    "high": 4778.75,
+    "name": "Iskara",
+    "image": "/images/iskara.png"
+  },
+  {
+    "date": "2021-11-08",
+    "high": 4868,
+    "name": "Athion",
+    "image": "/images/athion.png"
+  }
+]
