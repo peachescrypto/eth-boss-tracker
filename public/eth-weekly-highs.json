@@ -37,7 +37,9 @@
   },
   {
     "date": "2021-12-27",
-    "high": 4127.46
+    "high": 4127.46,
+    "name": "Maltherion",
+    "image": "/images/maltherion.png"
   },
   {
     "date": "2021-12-13",
@@ -53,11 +55,15 @@
   },
   {
     "date": "2021-05-10",
-    "high": 4372.72
+    "high": 4372.72,
+    "name": "Kronthar",
+    "image": "/images/kronthar.png"
   },
   {
     "date": "2021-10-18",
-    "high": 4375
+    "high": 4375,
+    "name": "Abythra",
+    "image": "/images/abythra.png"
   },
   {
     "date": "2021-10-25",
@@ -67,11 +73,15 @@
   },
   {
     "date": "2021-12-06",
-    "high": 4488
+    "high": 4488,
+    "name": "Vexarion",
+    "image": "/images/vexarion.png"
   },
   {
     "date": "2021-11-22",
-    "high": 4551
+    "high": 4551,
+    "name": "Zepheros",
+    "image": "/images/zepheros.png"
   },
   {
     "date": "2021-11-01",

@@ -84,6 +84,24 @@ async function postToBossHunterTwitter(content) {
     
     if (!response.ok) {
       const errorData = await response.json();
+      
+      // Show rate limit headers for 429 errors
+      if (response.status === 429) {
+        console.log('\n🔴 Rate Limit Headers:');
+        console.log('x-rate-limit-remaining:', response.headers.get('x-rate-limit-remaining'));
+        console.log('x-rate-limit-reset:', response.headers.get('x-rate-limit-reset'));
+        console.log('x-rate-limit-limit:', response.headers.get('x-rate-limit-limit'));
+        
+        const resetTime = response.headers.get('x-rate-limit-reset');
+        if (resetTime) {
+          const resetDate = new Date(parseInt(resetTime) * 1000);
+          console.log('Rate limit resets at:', resetDate.toLocaleString());
+          const minutesUntilReset = Math.ceil((resetDate.getTime() - Date.now()) / (1000 * 60));
+          console.log(`Minutes until reset: ${minutesUntilReset}`);
+        }
+        console.log('');
+      }
+      
       throw new Error(`Boss Hunter Twitter API error: ${response.status} - ${JSON.stringify(errorData)}`);
     }
     
