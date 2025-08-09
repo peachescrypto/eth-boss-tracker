@@ -182,20 +182,36 @@ export async function postToBossHunterTwitter(
     const tweetText = typeof content === 'string' ? content : content.text;
     const imagePath = typeof content === 'object' ? content.image : undefined;
     
+    // If we have an image, we need to upload it first via Twitter Media API
+    let mediaId = undefined;
+    if (imagePath) {
+      try {
+        mediaId = await uploadImageToTwitter(imagePath);
+      } catch (imageError) {
+        console.warn('Failed to upload image, posting without:', imageError);
+        // Continue without image rather than failing the entire tweet
+      }
+    }
+    
     // Generate OAuth 1.0a signature for Boss Hunter account
     const oauthData = generateBossHunterOAuthSignature();
     
-    // For now, post without image (Twitter image upload requires separate media endpoint)
-    // TODO: Implement image upload via Twitter Media API
+    // Post tweet with optional media
+    const tweetPayload: { text: string; media?: { media_ids: string[] } } = {
+      text: tweetText
+    };
+    
+    if (mediaId) {
+      tweetPayload.media = { media_ids: [mediaId] };
+    }
+    
     const response = await fetch('https://api.twitter.com/2/tweets', {
       method: 'POST',
       headers: {
         'Authorization': oauthData.authHeader,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        text: imagePath ? `${tweetText}\n\n🖼️ Boss Image: ${imagePath}` : tweetText
-      })
+      body: JSON.stringify(tweetPayload)
     });
     
     if (!response.ok) {
@@ -264,6 +280,87 @@ function generateOAuthSignature() {
     .join(', ');
   
   return { authHeader };
+}
+
+async function uploadImageToTwitter(imagePath: string): Promise<string> {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const fs = require('fs');
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const path = require('path');
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const crypto = require('crypto');
+  
+  // Resolve the full path to the image
+  const fullImagePath = path.join(process.cwd(), 'public', imagePath.startsWith('/') ? imagePath.substring(1) : imagePath);
+  
+  // Check if file exists
+  if (!fs.existsSync(fullImagePath)) {
+    throw new Error(`Image file not found: ${fullImagePath}`);
+  }
+  
+  // Read and encode the image
+  const imageData = fs.readFileSync(fullImagePath);
+  const base64Image = imageData.toString('base64');
+  
+  // Use OAuth 1.0a for v1.1 media upload (same credentials as tweet posting)
+  const oauthParams = {
+    oauth_consumer_key: process.env.BOSS_HUNTER_API_KEY!,
+    oauth_token: process.env.BOSS_HUNTER_ACCESS_TOKEN!,
+    oauth_signature_method: 'HMAC-SHA1',
+    oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
+    oauth_nonce: crypto.randomBytes(16).toString('hex'),
+    oauth_version: '1.0'
+  };
+  
+  const method = 'POST';
+  const url = 'https://upload.twitter.com/1.1/media/upload.json';
+  
+  // For OAuth 1.0a with application/x-www-form-urlencoded, include body params in signature
+  const bodyParams = {
+    media_data: base64Image,
+    media_category: 'tweet_image'
+  };
+  
+  // Combine OAuth and body parameters for signature generation
+  const allParams = { ...oauthParams, ...bodyParams };
+  const paramString = Object.keys(allParams)
+    .sort()
+    .map(key => `${key}=${encodeURIComponent(allParams[key as keyof typeof allParams])}`)
+    .join('&');
+  
+  const signatureBaseString = `${method}&${encodeURIComponent(url)}&${encodeURIComponent(paramString)}`;
+  const signingKey = `${encodeURIComponent(process.env.BOSS_HUNTER_API_SECRET!)}&${encodeURIComponent(process.env.BOSS_HUNTER_ACCESS_TOKEN_SECRET!)}`;
+  const signature = crypto.createHmac('sha1', signingKey).update(signatureBaseString).digest('base64');
+  
+  // Create OAuth header
+  const authParams = { ...oauthParams, oauth_signature: signature };
+  const authHeader = 'OAuth ' + Object.keys(authParams)
+    .sort()
+    .map(key => `${key}="${encodeURIComponent(authParams[key as keyof typeof authParams])}"`)
+    .join(', ');
+  
+  // Create form body with media data
+  const formDataParams = new URLSearchParams();
+  formDataParams.append('media_data', base64Image);
+  formDataParams.append('media_category', 'tweet_image');
+  
+  // Upload to v1.1 media endpoint using OAuth 1.0a
+  const uploadResponse = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': authHeader,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: formDataParams.toString()
+  });
+  
+  if (!uploadResponse.ok) {
+    const errorData = await uploadResponse.json();
+    throw new Error(`Twitter v1.1 media upload failed: ${uploadResponse.status} - ${JSON.stringify(errorData)}`);
+  }
+  
+  const uploadResult = await uploadResponse.json();
+  return uploadResult.media_id_string;
 }
 
 function generateBossHunterOAuthSignature() {
