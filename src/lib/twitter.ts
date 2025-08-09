@@ -103,6 +103,7 @@ export function generateTweet(
   return template.format(cleanMessage, extra);
 }
 
+// Main function for Peaches dev account (existing functionality)
 export async function postToTwitter(content: string): Promise<{ success: boolean; tweetId?: string; error?: string }> {
   // Check for required environment variables (OAuth 1.0a)
   const requiredVars = [
@@ -156,6 +157,60 @@ export async function postToTwitter(content: string): Promise<{ success: boolean
   }
 }
 
+// Dedicated function for ETH Boss Hunter account
+export async function postToBossHunterTwitter(content: string): Promise<{ success: boolean; tweetId?: string; error?: string }> {
+  // Check for required ETH Boss Hunter environment variables
+  const requiredVars = [
+    'BOSS_HUNTER_API_KEY',
+    'BOSS_HUNTER_API_SECRET', 
+    'BOSS_HUNTER_ACCESS_TOKEN',
+    'BOSS_HUNTER_ACCESS_TOKEN_SECRET'
+  ];
+  
+  const missingVars = requiredVars.filter(varName => !process.env[varName]);
+  if (missingVars.length > 0) {
+    return { 
+      success: false, 
+      error: `Missing Boss Hunter Twitter credentials: ${missingVars.join(', ')}` 
+    };
+  }
+  
+  try {
+    // Generate OAuth 1.0a signature for Boss Hunter account
+    const oauthData = generateBossHunterOAuthSignature();
+    
+    const response = await fetch('https://api.twitter.com/2/tweets', {
+      method: 'POST',
+      headers: {
+        'Authorization': oauthData.authHeader,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text: content
+      })
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Boss Hunter Twitter API error: ${response.status} - ${JSON.stringify(errorData)}`);
+    }
+    
+    const result = await response.json();
+    
+    return {
+      success: true,
+      tweetId: result.data?.id
+    };
+    
+  } catch (error) {
+    console.error('Failed to post Boss Hunter tweet:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
 function generateOAuthSignature() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const crypto = require('crypto');
@@ -182,6 +237,53 @@ function generateOAuthSignature() {
   
   // Create signing key
   const signingKey = `${encodeURIComponent(process.env.TWITTER_API_SECRET!)}&${encodeURIComponent(process.env.TWITTER_ACCESS_TOKEN_SECRET!)}`;
+  
+  // Generate signature
+  const signature = crypto
+    .createHmac('sha1', signingKey)
+    .update(signatureBaseString)
+    .digest('base64');
+  
+  // Create authorization header
+  const authParams = {
+    ...oauthParams,
+    oauth_signature: signature
+  };
+  
+  const authHeader = 'OAuth ' + Object.keys(authParams)
+    .sort()
+    .map(key => `${key}="${encodeURIComponent(authParams[key as keyof typeof authParams])}"`)
+    .join(', ');
+  
+  return { authHeader };
+}
+
+function generateBossHunterOAuthSignature() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const crypto = require('crypto');
+  
+  // OAuth 1.0a parameters for Boss Hunter account
+  const oauthParams = {
+    oauth_consumer_key: process.env.BOSS_HUNTER_API_KEY!,
+    oauth_token: process.env.BOSS_HUNTER_ACCESS_TOKEN!,
+    oauth_signature_method: 'HMAC-SHA1',
+    oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
+    oauth_nonce: crypto.randomBytes(16).toString('hex'),
+    oauth_version: '1.0'
+  };
+  
+  // Create signature base string
+  const method = 'POST';
+  const url = 'https://api.twitter.com/2/tweets';
+  const paramString = Object.keys(oauthParams)
+    .sort()
+    .map(key => `${key}=${encodeURIComponent(oauthParams[key as keyof typeof oauthParams])}`)
+    .join('&');
+  
+  const signatureBaseString = `${method}&${encodeURIComponent(url)}&${encodeURIComponent(paramString)}`;
+  
+  // Create signing key
+  const signingKey = `${encodeURIComponent(process.env.BOSS_HUNTER_API_SECRET!)}&${encodeURIComponent(process.env.BOSS_HUNTER_ACCESS_TOKEN_SECRET!)}`;
   
   // Generate signature
   const signature = crypto

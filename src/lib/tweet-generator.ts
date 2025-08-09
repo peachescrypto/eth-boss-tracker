@@ -1,0 +1,134 @@
+import { BattleState, getBattleStatusEmoji, getBattleStatusText } from './battle-analysis';
+
+// Note: For Node.js compatibility, the main tweet generation logic 
+// is now in /lib/tweet-templates.js. This file provides TypeScript 
+// interfaces and imports the Node.js functions.
+
+interface TweetOptions {
+  includeImage?: boolean;
+  customHashtags?: string[];
+}
+
+export function generateDailyStatusTweet(
+  battleState: BattleState,
+  options: TweetOptions = {}
+): string {
+  const { currentBoss, currentPrice, progress, battleStatus, remainingDamage } = battleState;
+  
+  if (!currentBoss) {
+    // All bosses defeated - legendary status
+    return generateAllBossesDefeatedTweet(battleState);
+  }
+  
+  const emoji = getBattleStatusEmoji(battleStatus);
+  const statusText = getBattleStatusText(battleStatus);
+  const progressPercent = Math.round(progress * 100);
+  
+  const bossName = currentBoss.name || `Boss Level ${battleState.bossesDefeated + 1}`;
+  const formattedPrice = `$${currentPrice.toLocaleString()}`;
+  const formattedTarget = `$${currentBoss.high.toLocaleString()}`;
+  const formattedRemaining = `$${remainingDamage.toFixed(0)}`;
+  
+  // Build the tweet
+  let tweet = `⚔️ Daily Boss Report\n\n`;
+  tweet += `Current Target: ${bossName} (${formattedTarget})\n`;
+  tweet += `ETH Price: ${formattedPrice}\n`;
+  tweet += `Progress: ${progressPercent}% 📊\n\n`;
+  tweet += `Battle Status: ${emoji} ${statusText}\n`;
+  tweet += `Remaining: ${formattedRemaining} to victory\n\n`;
+  
+  // Add hashtags
+  const hashtags = options.customHashtags || ['#ETHBossHunter', '$ETH'];
+  tweet += hashtags.join(' ');
+  
+  return tweet;
+}
+
+export function generateBossDefeatTweet(
+  defeatedBoss: any,
+  newPrice: number,
+  battleState: BattleState
+): string {
+  const bossName = defeatedBoss.name || `Boss Level ${battleState.bossesDefeated}`;
+  const damageDealt = Math.round(newPrice - defeatedBoss.high);
+  const formattedPrice = `$${newPrice.toLocaleString()}`;
+  const formattedTarget = `$${defeatedBoss.high.toLocaleString()}`;
+  
+  let tweet = `💀 BOSS DEFEATED! 💀\n\n`;
+  tweet += `${bossName} has fallen!\n`;
+  tweet += `Level ${battleState.bossesDefeated} ✅ (${formattedTarget})\n\n`;
+  tweet += `ETH Army dealt $${damageDealt} damage!\n\n`;
+  
+  if (battleState.nextBoss) {
+    const nextBossName = battleState.nextBoss.name || `Boss Level ${battleState.bossesDefeated + 1}`;
+    const nextTarget = `$${battleState.nextBoss.high.toLocaleString()}`;
+    tweet += `Next Target: ${nextBossName} (${nextTarget})\n`;
+  }
+  
+  tweet += `🏆 Progress: ${battleState.bossesDefeated}/${battleState.totalBosses} bosses defeated\n\n`;
+  tweet += `#ETHBossHunter #BossDefeated $ETH`;
+  
+  return tweet;
+}
+
+export function generateAllBossesDefeatedTweet(battleState: BattleState): string {
+  const formattedPrice = `$${battleState.currentPrice.toLocaleString()}`;
+  
+  let tweet = `🏆 LEGENDARY STATUS ACHIEVED! 🏆\n\n`;
+  tweet += `ALL ${battleState.totalBosses} BOSSES DEFEATED!\n\n`;
+  tweet += `ETH Price: ${formattedPrice}\n`;
+  tweet += `Status: 👑 LEGENDARY WARRIOR\n\n`;
+  tweet += `The ETH Army has conquered every boss!\n`;
+  tweet += `New all-time highs = NEW BOSSES! 📈\n\n`;
+  tweet += `#ETHBossHunter #AllBossesDefeated #Legendary $ETH`;
+  
+  return tweet;
+}
+
+export function generateMilestoneTweet(
+  battleState: BattleState,
+  milestone: number
+): string {
+  const { currentBoss, currentPrice, progress } = battleState;
+  
+  if (!currentBoss) return '';
+  
+  const bossName = currentBoss.name || `Boss Level ${battleState.bossesDefeated + 1}`;
+  const formattedPrice = `$${currentPrice.toLocaleString()}`;
+  const formattedTarget = `$${currentBoss.high.toLocaleString()}`;
+  const progressPercent = Math.round(progress * 100);
+  
+  let tweet = '';
+  
+  if (milestone === 90) {
+    tweet = `🚨 CRITICAL BATTLE ALERT! 🚨\n\n`;
+    tweet += `ETH has pushed ${bossName} to ${progressPercent}% defeated!\n`;
+    tweet += `Current: ${formattedPrice} | Target: ${formattedTarget}\n\n`;
+    tweet += `The ETH Army is ${100 - progressPercent}% away from VICTORY!\n`;
+    tweet += `Rally the troops! ⚔️\n\n`;
+    tweet += `#CriticalBattle #ETHArmy #AlmostThere $ETH`;
+  } else if (milestone === 75) {
+    tweet = `🔥 BATTLE INTENSIFIES! 🔥\n\n`;
+    tweet += `${bossName} is ${progressPercent}% defeated!\n`;
+    tweet += `Current: ${formattedPrice}\n`;
+    tweet += `Target: ${formattedTarget}\n\n`;
+    tweet += `The battle rages on! ⚔️\n\n`;
+    tweet += `#BattleIntensifies #ETHBossHunter $ETH`;
+  } else if (milestone === 50) {
+    tweet = `⚡ BATTLE ENGAGED! ⚡\n\n`;
+    tweet += `${bossName} fight has begun!\n`;
+    tweet += `Progress: ${progressPercent}%\n`;
+    tweet += `Current: ${formattedPrice}\n\n`;
+    tweet += `The ETH Army marches forward! 🪖\n\n`;
+    tweet += `#BattleEngaged #ETHBossHunter $ETH`;
+  }
+  
+  return tweet;
+}
+
+export function formatTweetWithImage(tweet: string, imagePath?: string): { text: string; media?: string } {
+  return {
+    text: tweet,
+    media: imagePath
+  };
+}

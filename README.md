@@ -5,11 +5,14 @@ A fun web app that tracks the current ETH price against historic weekly candle h
 ## Features
 
 - **Live Price Tracking**: Fetches current ETH price every 15 seconds from multiple providers (Coinbase, Binance, CoinGecko)
-- **Historic Weekly Highs**: Displays all weekly candle highs sorted from lowest to highest
-- **Progress Indicators**: Shows how close the current price is to each historic high
-- **Responsive Design**: Works on desktop and mobile
+- **Historic Weekly Highs**: Displays all weekly candle highs above $4000 since 2020, sorted from lowest to highest
+- **Boss Battle System**: Each weekly high represents a "boss" with names, images, and battle progression
+- **Progress Indicators**: Shows how close the current price is to defeating each boss level
+- **Responsive Design**: Works on desktop and mobile with boss avatars and battle status
 - **Error Handling**: Graceful fallbacks when price APIs are unavailable
-- **Twitter Bot**: Automated tweets for development progress and milestones
+- **Twitter Bot Integration**: 
+  - Development account for commit/deploy tweets
+  - ETH Boss Hunter account for automated battle status and boss defeat celebrations
 
 ## Tech Stack
 
@@ -41,15 +44,6 @@ The app uses multiple free APIs with fallback logic:
 ## Development
 
 ```bash
-# Update historical data from Binance (2020 onwards, above $4000)
-npm run fetch-data-binance
-
-# Update weekly historical data (recommended - fewer bosses, more engaging)
-npm run fetch-weekly-data
-
-# Test Twitter bot functionality (requires .env.local setup)
-npm run test-twitter
-
 # Install dependencies
 npm install
 
@@ -61,6 +55,20 @@ npm run build
 
 # Start production server
 npm start
+
+# Update weekly historical data (weekly highs above $4000 since 2020)
+npm run fetch-weekly-data
+
+# Twitter Bot Testing
+npm run test-twitter        # Test development account (commit tweets)
+npm run test-boss-hunter    # Test ETH Boss Hunter account (battle tweets)
+npm run iterate-tweets      # Preview all tweet types without posting
+
+# Test specific tweet types
+npm run iterate-tweets defeat             # run all the variants
+npm run iterate-tweets defeat 4100        # Boss defeat tweet at $4100
+npm run iterate-tweets daily 4200         # Daily status at $4200
+npm run iterate-tweets milestone 4300 90  # 90% milestone tweet
 ```
 
 ## Data Structure
@@ -70,22 +78,44 @@ Weekly highs are stored in `public/eth-weekly-highs.json`:
 ```json
 [
   {
-    "date": "2021-01-01",
-    "high": 737.80
+    "date": "2024-12-09",
+    "high": 4006.17,
+    "name": "Gorath",
+    "image": "/images/gorath.png"
+  },
+  {
+    "date": "2021-08-30", 
+    "high": 4027.88,
+    "name": "Nyxara",
+    "image": "/images/nyxara.png"
   }
 ]
 ```
 
-## Progress Calculation
+- `name` and `image` fields are optional for boss customization
+- Missing boss images fall back to generated avatars
+- Data is sorted by price (lowest to highest) for boss progression
 
-For each daily high, progress is calculated as:
+## Battle Mechanics
+
+For each boss battle, progress is calculated as:
 ```
-progress = (currentPrice - previousHigh) / (targetHigh - previousHigh)
+progress = (currentPrice - previousBossPrice) / (targetBossPrice - previousBossPrice)
 ```
 
-- Progress is clamped between 0% and 100%
-- When current price ≥ target high, progress = 100%
-- When target high = previous high, progress = 100% if current ≥ target, else 0%
+**Battle States:**
+- **😴 Resting** (0-25%): Boss is dormant
+- **⚡ Approaching** (25-50%): Battle begins
+- **🔥 Heating Up** (50-75%): Battle intensifies
+- **🚨 Critical** (75-90%): Critical battle phase
+- **⚔️ Final Assault** (90-100%): Final push to victory
+- **🏆 Defeated** (≥100%): Boss defeated, move to next boss
+
+**Tweet Types:**
+- **Daily Status**: Battle progress reports
+- **Boss Defeats**: Celebration when bosses fall
+- **Milestones**: Special alerts at 50%, 75%, 90% progress
+- **Legendary Status**: All bosses defeated celebration
 
 ## Deployment
 
@@ -144,10 +174,17 @@ For basic functionality, no environment variables are required - the app uses pu
 
 For Twitter bot integration, add to `.env.local`:
 ```bash
+# Development Account (Peaches) - for commit/deploy tweets
 TWITTER_API_KEY=your_api_key_here
 TWITTER_API_SECRET=your_api_secret_here
 TWITTER_ACCESS_TOKEN=your_access_token_here
 TWITTER_ACCESS_TOKEN_SECRET=your_access_token_secret_here
+
+# ETH Boss Hunter Account - for battle tweets
+BOSS_HUNTER_API_KEY=your_boss_hunter_api_key_here
+BOSS_HUNTER_API_SECRET=your_boss_hunter_api_secret_here
+BOSS_HUNTER_ACCESS_TOKEN=your_boss_hunter_access_token_here
+BOSS_HUNTER_ACCESS_TOKEN_SECRET=your_boss_hunter_access_token_secret_here
 ```
 
 See `docs/TWITTER_SETUP.md` for detailed Twitter bot configuration.
@@ -160,13 +197,33 @@ Vercel automatically detects the following settings:
 - **Install Command**: `npm install`
 - **Development Command**: `next dev`
 
+## Twitter Bot Features
+
+### Development Account
+- **Commit Tweets**: Automatic tweets when code is pushed to main branch
+- **Deploy Notifications**: Alerts when new features go live
+- **Milestone Celebrations**: Development progress updates
+
+### ETH Boss Hunter Account  
+- **Daily Status Reports**: Morning battle status with current boss and progress
+- **Boss Defeat Celebrations**: Immediate tweets when ETH breaks through boss levels
+- **Critical Battles**: Special alerts when approaching victory (90%+ progress)
+- **Legendary Status**: Epic celebration when all bosses are defeated
+
+## API Endpoints
+
+- `/api/price` - Current ETH price with fallback providers
+- `/api/tweets/daily-status` - Generate and post daily battle status
+- `/api/tweets/boss-defeat` - Monitor and celebrate boss defeats
+- `/api/webhook/github` - Handle GitHub push events for commit tweets
+
 ## Future Enhancements
 
-- Expand daily highs dataset to full 2021→present
-- Add search and filtering capabilities
-- Implement historical price charts
-- Add more cryptocurrencies
-- Real-time WebSocket price updates
+- **Scheduled Daily Tweets**: Automated morning battle reports
+- **Real-time Boss Detection**: Instant boss defeat notifications
+- **Community Features**: Army recruitment, battle predictions, victory celebrations
+- **Rich Media**: Tweet boss images and battle progress charts
+- **Historical Analysis**: Track ETH's journey through all boss levels
 
 ## License
 

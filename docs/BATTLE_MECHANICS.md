@@ -49,6 +49,7 @@ Remaining: $115 to victory
 
 **Template**:
 ```
+[INSERT BOSS TIER]
 💀 BOSS DEFEATED! 💀
 
 Gorath has fallen!
@@ -61,6 +62,11 @@ Next Target: Nyxara ($4,027)
 
 #ETHBossHunter #BossDefeated $ETH
 ```
+**Variations by Boss tiers**:
+- **Jan-June 2021%**: GODLIKE
+- **July-December 2021%**: LEGENDARY
+- **2024%**: ULTIMATE
+- **2025**: AWESOME
 
 ### 3. **Special Event Tweets**
 **Purpose**: Narrative building, community engagement

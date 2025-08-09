@@ -10,7 +10,9 @@
     "fetch-data": "node scripts/fetch-eth-highs.js",
     "fetch-data-binance": "node scripts/fetch-eth-highs-binance.js",
     "fetch-weekly-data": "node scripts/fetch-eth-highs-binance.js",
-    "test-twitter": "node scripts/test-twitter.js"
+    "test-twitter": "node scripts/test-twitter.js",
+    "test-boss-hunter": "node scripts/test-boss-hunter.js",
+    "iterate-tweets": "node scripts/iterate-tweets.js"
   },
   "dependencies": {
     "dotenv": "^17.2.1",

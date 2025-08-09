@@ -24,7 +24,7 @@ Make sure your Twitter app has:
 Add these to your `.env.local` file (create if it doesn't exist):
 
 ```bash
-# Twitter Bot Configuration (OAuth 1.0a)
+# Development Account (Peaches) - for commit/deploy tweets
 TWITTER_API_KEY=your_api_key_here
 TWITTER_API_SECRET=your_api_secret_here
 TWITTER_ACCESS_TOKEN=your_access_token_here
@@ -32,6 +32,14 @@ TWITTER_ACCESS_TOKEN_SECRET=your_access_token_secret_here
 
 # Optional: GitHub Webhook Secret (for security)
 GITHUB_WEBHOOK_SECRET=your_github_webhook_secret_here
+
+# ETH Boss Hunter Account - for battle tweets  
+BOSS_HUNTER_API_KEY=your_api_key_here
+BOSS_HUNTER_API_SECRET=your_api_secret_here
+BOSS_HUNTER_ACCESS_TOKEN=your_access_token_here
+BOSS_HUNTER_ACCESS_TOKEN_SECRET=your_access_token_secret_here
+
+
 ```
 
 ## 3. GitHub Webhook Setup
@@ -99,6 +107,32 @@ https://eth-boss-tracker.vercel.app
 
 ## 5. Testing the Setup
 
+### Test Development Account (Commit Tweets)
+```bash
+npm run test-twitter
+```
+
+### Test Boss Hunter Account (Battle Tweets)  
+```bash
+npm run test-boss-hunter
+```
+
+Example output:
+```
+🎯 Testing ETH Boss Hunter Twitter Bot...
+
+📊 Current Battle State:
+Current Price: $4,160
+Current Boss: Boss Level 10
+Progress: 5%
+Status: resting
+Bosses Defeated: 9/18
+
+🐦 Posting to ETH Boss Hunter Twitter...
+✅ Tweet posted successfully!
+Tweet ID: 1234567890
+```
+
 ### Test Webhook Locally
 ```bash
 # Start development server
@@ -130,10 +164,19 @@ git push origin main
 1. Go to Vercel dashboard > Your Project > Settings
 2. Navigate to **Environment Variables**
 3. Add each Twitter credential:
+   
+   **Development Account (Peaches):**
    - `TWITTER_API_KEY`
    - `TWITTER_API_SECRET` 
    - `TWITTER_ACCESS_TOKEN`
    - `TWITTER_ACCESS_TOKEN_SECRET`
+   
+   **ETH Boss Hunter Account:**
+   - `BOSS_HUNTER_API_KEY`
+   - `BOSS_HUNTER_API_SECRET`
+   - `BOSS_HUNTER_ACCESS_TOKEN`
+   - `BOSS_HUNTER_ACCESS_TOKEN_SECRET`
+   
 4. Redeploy to apply changes
 
 ### Deploy Changes

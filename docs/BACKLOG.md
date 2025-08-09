@@ -22,7 +22,11 @@ How to use:
 ## App
 - [ ] Restyle/theme to look pretty
 - [ ] Current battle overview
-- [ ] Search/filter, sticky header, theming/animations
+- [ ] Add hitpoint of current boss
+- [ ] Add boss tier to current boss
+- [ ] New boss spawns on new weekly candles above 4k
+- [ ] Add defeated count to Bosses, maybe they could change to look more epic each time
+
 
 ## Maintenance
 - [ ] Deploy from github, and post to twitter afterwards
@@ -40,6 +44,10 @@ How to use:
 - [ ] **NFT Achievements** - For top hunters
 - [ ] **Boss Hunter Tournaments** - Community competitions
 - [ ] **API for Integration** - Let other apps use boss battle data
+- [ ] **Army Recruitment** - Track follower count as "army size"
+- [ ] **Battle Predictions** - Community polls on next boss timing
+- [ ] **Victory Celebrations** - User-generated content campaigns
+- [ ] **Boss Lore** - Backstories for each boss character
 
 ## Done
 - [x] Scaffold project (Next.js app, ESLint/Prettier)
