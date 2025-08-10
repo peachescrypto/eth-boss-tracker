@@ -14,6 +14,23 @@ export async function GET(request: NextRequest) {
     const currentPrice = searchParams.get('current') || '$3,500';
     const progress = Math.min(100, Math.max(0, parseInt(searchParams.get('progress') || '50')));
     const hp = Math.min(100, Math.max(0, parseInt(searchParams.get('hp') || '50')));
+    const bossImage = searchParams.get('image') || null;
+    
+    // Fetch boss image if provided
+    let imageData = null;
+    if (bossImage) {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eth-boss-tracker.vercel.app';
+        const imageUrl = `${baseUrl}${bossImage}`;
+        const imageResponse = await fetch(imageUrl);
+        if (imageResponse.ok) {
+          const arrayBuffer = await imageResponse.arrayBuffer();
+          imageData = `data:image/png;base64,${Buffer.from(arrayBuffer).toString('base64')}`;
+        }
+      } catch (error) {
+        console.log('Failed to fetch boss image:', error);
+      }
+    }
     
     return new ImageResponse(
       (
@@ -47,15 +64,48 @@ export async function GET(request: NextRequest) {
           <div
             style={{
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: 'row',
               alignItems: 'center',
               backgroundColor: 'rgba(0, 0, 0, 0.6)',
               border: '2px solid #06b6d4',
               borderRadius: '20px',
               padding: '40px',
-              minWidth: '600px',
+              minWidth: '900px',
+              gap: '40px',
             }}
           >
+            {/* Boss Image */}
+            {imageData && (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <img
+                  src={imageData}
+                  style={{
+                    width: '200px',
+                    height: '250px',
+                    objectFit: 'contain',
+                    borderRadius: '15px',
+                    border: '3px solid #06b6d4',
+                    boxShadow: '0 0 30px rgba(6, 182, 212, 0.5)',
+                  }}
+                  alt={bossName}
+                />
+              </div>
+            )}
+            
+            {/* Boss Stats */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1,
+              }}
+            >
             {/* Boss Info */}
             <div
               style={{
@@ -211,6 +261,7 @@ export async function GET(request: NextRequest) {
               <span style={{ display: 'flex', color: '#ffffff', fontSize: '24px', fontWeight: 'bold' }}>
                 {currentPrice}
               </span>
+            </div>
             </div>
           </div>
 
