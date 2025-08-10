@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       image: '/images/gorath.png'
     };
 
-    const shareCardUrl = `/api/share/current-boss?boss=${encodeURIComponent(defaultBoss.name)}&level=${defaultBoss.level}&target=${encodeURIComponent(defaultBoss.targetPrice)}&current=${encodeURIComponent(defaultBoss.currentPrice)}&progress=${defaultBoss.progress}&hp=${defaultBoss.hp}&image=${encodeURIComponent(defaultBoss.image)}&v=2`;
+                const shareCardUrl = `/api/share/current-boss?boss=${encodeURIComponent(defaultBoss.name)}&level=${defaultBoss.level}&target=${encodeURIComponent(defaultBoss.targetPrice)}&current=${encodeURIComponent(defaultBoss.currentPrice)}&progress=${defaultBoss.progress}&hp=${defaultBoss.hp}&image=${encodeURIComponent(defaultBoss.image)}&v=3`;
 
     return {
       title: "ETH Boss Hunter",
@@ -41,13 +41,14 @@ export async function generateMetadata(): Promise<Metadata> {
           },
         ],
       },
-      twitter: {
-        card: "summary_large_image",
-        title: "ETH Boss Hunter",
-        description: "Track ETH's epic battle against historical weekly high prices. Each price level is a boss to defeat!",
-        creator: "@ethbosshunter",
-        images: [shareCardUrl],
-      },
+                    twitter: {
+                card: "summary_large_image",
+                title: "ETH Boss Hunter",
+                description: "Track ETH's epic battle against historical weekly high prices. Each price level is a boss to defeat!",
+                creator: "@ethbosshunter",
+                site: "@ethbosshunter",
+                images: [shareCardUrl],
+              },
       robots: {
         index: true,
         follow: true,
