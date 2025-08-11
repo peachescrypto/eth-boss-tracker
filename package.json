@@ -10,8 +10,10 @@
     "fetch-data": "node scripts/fetch-eth-highs.js",
     "fetch-data-binance": "node scripts/fetch-eth-highs-binance.js",
     "fetch-weekly-data": "node scripts/fetch-eth-highs-binance.js",
+    "test-image-upload": "node scripts/test-image-upload.js",
     "test-twitter": "node scripts/test-twitter.js",
-    "test-boss-hunter": "node scripts/test-boss-hunter.js",
+    "test-boss-hunter": "tsx scripts/test-boss-hunter.ts",
+    "test-auth": "tsx scripts/test-auth.ts",
     "iterate-tweets": "node scripts/iterate-tweets.js",
     "prepare": "husky"
   },
@@ -34,6 +36,8 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.1.5",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5"
   }
 }

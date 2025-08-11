@@ -13,6 +13,7 @@ How to use:
 
 ## In Progress
 - [ ] Fix tweets, test-image-upload works, but test-boss-hunter and twitter.ts doesnt. unify those all
+- [ ] Consolidate tweet-templates
 - [ ] **Real-time Notifications** - Alert when bosses are defeated
 - [ ] **Share Cards Improvements** - Add share card to each boss, they will each need their own url, but also one each for defeated, active and hiding states so that cards are up-to-date when they are shared. Sharing the home page should share the current boss. Remove price and progress from these cards as they change too often.
 

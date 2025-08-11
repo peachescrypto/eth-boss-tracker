@@ -38,25 +38,7 @@ async function postToBossHunterTwitter(content) {
         console.warn('Continuing with text-only tweet...');
       }
     }
-    
-    // Get OAuth 2.0 Bearer token for tweet posting
-    let bearerToken;
-    if (process.env.BOSS_HUNTER_V2_CLIENT_ID && process.env.BOSS_HUNTER_V2_CLIENT_SECRET) {
-      const tokenResponse = await fetch('https://api.twitter.com/oauth2/token', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Basic ${Buffer.from(`${process.env.BOSS_HUNTER_V2_CLIENT_ID}:${process.env.BOSS_HUNTER_V2_CLIENT_SECRET}`).toString('base64')}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'grant_type=client_credentials'
-      });
-      
-      if (tokenResponse.ok) {
-        const tokenData = await tokenResponse.json();
-        bearerToken = tokenData.access_token;
-      }
-    }
-    
+       
     const tweetPayload = {
       text: tweetText
     };
@@ -65,16 +47,11 @@ async function postToBossHunterTwitter(content) {
       tweetPayload.media = { media_ids: [mediaId] };
     }
     
-    // Use OAuth 2.0 Bearer token if available, otherwise fall back to OAuth 1.0a
-    const headers = bearerToken 
-      ? {
-          'Authorization': `Bearer ${bearerToken}`,
-          'Content-Type': 'application/json',
-        }
-      : {
-          'Authorization': generateBossHunterOAuthSignature().authHeader,
-          'Content-Type': 'application/json',
-        };
+    const headers =
+    {
+      'Authorization': generateBossHunterOAuthSignature().authHeader,
+      'Content-Type': 'application/json',
+    };
     
     const response = await fetch('https://api.twitter.com/2/tweets', {
       method: 'POST',
