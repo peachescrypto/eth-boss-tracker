@@ -12,13 +12,16 @@ How to use:
 - Basic error handling and formatting.
 
 ## In Progress
+- [ ] Fix tweets, test-image-upload works, but test-boss-hunter and twitter.ts doesnt. unify those all
 - [ ] **Real-time Notifications** - Alert when bosses are defeated
-- [ ] **Share Cards** - Generate beautiful social media images for sharing using Open Graph/Twitter card 
+- [ ] **Share Cards Improvements** - Add share card to each boss, they will each need their own url, but also one each for defeated, active and hiding states so that cards are up-to-date when they are shared. Sharing the home page should share the current boss. Remove price and progress from these cards as they change too often.
 
 # Backlog
 
 ## App
-- [ ] Restyle/theme to look pretty
+- [ ] Add header bar with Follow on X button. 
+- [ ] Make the boss cards look 3D
+- [ ] Add scrolling tickets to banner to make the site feel more lively (Maybe price/battle updates)
 - [ ] Add boss tier to current boss
 - [ ] New boss spawns on new weekly candles above 4k
 - [ ] Add defeated count to Bosses, maybe they could change to look more epic each time
@@ -42,6 +45,7 @@ How to use:
 - [ ] **Boss Lore** - Backstories for each boss character
 
 ## Done
+- [x] **Share Cards** - Generate beautiful social media images for sharing using Open Graph/Twitter card 
 - [x] Deploy from github, and post to twitter afterwards
 - [x] **Rebrand to "ETH Boss Hunter"** - more engaging gaming terminology
 - [x] Current battle overview
