@@ -12,6 +12,21 @@ jobs:
     steps:
       - name: Post Daily Boss Status
         run: |
-          curl -X POST "https://eth-boss-tracker.vercel.app/api/tweets/daily-status" \
+          response=$(curl -s -w "%{http_code}" -X POST "https://eth-boss-tracker.vercel.app/api/tweets/daily-status" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            -H "Content-Type: application/json"
+            -H "Content-Type: application/json")
+          
+          # Extract status code and response body
+          http_code="${response: -3}"
+          response_body="${response%???}"
+          
+          echo "Response: $response_body"
+          echo "HTTP Status: $http_code"
+          
+          # Fail the workflow if the API returns an error status
+          if [ "$http_code" -ge 400 ]; then
+            echo "❌ API returned error status: $http_code"
+            exit 1
+          else
+            echo "✅ Daily status tweet posted successfully"
+          fi
