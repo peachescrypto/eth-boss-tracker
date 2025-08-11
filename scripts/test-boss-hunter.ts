@@ -7,7 +7,7 @@ dotenv.config({ path: path.join(process.cwd(), '.env.local') });
 
 // Import TypeScript functions
 import { postToBossHunterTwitter } from '../src/lib/twitter.js';
-import { analyzeBattleState, generateDailyStatusTweet } from '../lib/tweet-templates.js';
+import { analyzeBattleState, generateDailyStatusTweet } from '../src/lib/tweet-templates.js';
 
 async function main() {
   console.log('🎯 Testing ETH Boss Hunter Twitter Bot...\n');
@@ -24,13 +24,17 @@ async function main() {
   
   console.log('📊 Current Battle State:');
   console.log(`Current Price: $${battleState.currentPrice.toLocaleString()}`);
-  console.log(`Current Boss: ${battleState.currentBoss.name} ($${battleState.currentBoss.high.toLocaleString()})`);
+  if (battleState.currentBoss) {
+    console.log(`Current Boss: ${battleState.currentBoss.name || 'Unknown'} ($${battleState.currentBoss.high.toLocaleString()})`);
+  } else {
+    console.log('Current Boss: All bosses defeated!');
+  }
   console.log(`Progress: ${battleState.progress.toFixed(1)}%`);
   console.log(`Bosses Defeated: ${battleState.bossesDefeated}/${battleState.totalBosses}\n`);
 
   // Generate tweet with image
-  const tweetContent = generateDailyStatusTweet(battleState) as { text: string; image: string | null };
-  const imagePath = tweetContent.image || `/images/${battleState.currentBoss.name.toLowerCase()}.png`;
+  const tweetContent = generateDailyStatusTweet(battleState);
+  const imagePath = tweetContent.image || (battleState.currentBoss?.name ? `/images/${battleState.currentBoss.name.toLowerCase()}.png` : undefined);
   
   console.log('🐦 Generated Tweet:');
   console.log(tweetContent.text);

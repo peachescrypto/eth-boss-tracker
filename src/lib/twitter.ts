@@ -65,7 +65,7 @@ export async function postToBossHunterTwitter(
        if (response.status === 429) {
         const resetTime = response.headers.get('x-rate-limit-reset');
         if (resetTime) {
-          const resetDate = new Date(parseInt(resetTime) * 1000);
+          // const resetDate = new Date(parseInt(resetTime) * 1000);
           // const minutesUntilReset = Math.ceil((resetDate.getTime() - Date.now()) / (1000 * 60));
         }
       }

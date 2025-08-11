@@ -1,7 +1,37 @@
-// Node.js compatible tweet generation library
+// TypeScript tweet generation library
 // Used by both API routes and test scripts
 
-function getBattleStatusEmoji(status) {
+export type BattleStatus = 'resting' | 'approaching' | 'heating_up' | 'critical' | 'final_assault' | 'defeated';
+
+export interface BossData {
+  date: string;
+  high: number;
+  name?: string;
+  image?: string;
+}
+
+export interface BattleState {
+  currentBoss: BossData | null;
+  nextBoss: BossData | null;
+  currentPrice: number;
+  progress: number;
+  battleStatus: BattleStatus;
+  bossesDefeated: number;
+  totalBosses: number;
+  damageDealt: number;
+  remainingDamage: number;
+}
+
+export interface TweetOptions {
+  customHashtags?: string[];
+}
+
+export interface TweetWithImage {
+  text: string;
+  image?: string | null;
+}
+
+export function getBattleStatusEmoji(status: BattleStatus): string {
   switch (status) {
     case 'resting': return '😴';
     case 'approaching': return '⚡';
@@ -13,7 +43,7 @@ function getBattleStatusEmoji(status) {
   }
 }
 
-function getBattleStatusText(status) {
+export function getBattleStatusText(status: BattleStatus): string {
   switch (status) {
     case 'resting': return 'Boss is resting';
     case 'approaching': return 'Battle begins!';
@@ -25,12 +55,12 @@ function getBattleStatusText(status) {
   }
 }
 
-function analyzeBattleState(currentPrice, bossData) {
+export function analyzeBattleState(currentPrice: number, bossData: BossData[]): BattleState {
   // Sort bosses by price (lowest to highest)
   const sortedBosses = [...bossData].sort((a, b) => a.high - b.high);
   
   // Find current target boss (first undefeated boss)
-  const currentBoss = sortedBosses.find(boss => currentPrice < boss.high);
+  const currentBoss = sortedBosses.find(boss => currentPrice < boss.high) || null;
   const currentBossIndex = currentBoss ? sortedBosses.indexOf(currentBoss) : sortedBosses.length;
   
   // Calculate previous boss price for progress calculation
@@ -39,7 +69,7 @@ function analyzeBattleState(currentPrice, bossData) {
   
   // Calculate progress and battle status
   let progress = 0;
-  let battleStatus = 'resting';
+  let battleStatus: BattleStatus = 'resting';
   
   if (currentBoss) {
     const targetPrice = currentBoss.high;
@@ -86,7 +116,7 @@ function analyzeBattleState(currentPrice, bossData) {
   };
 }
 
-function generateDailyStatusTweet(battleState, options = {}) {
+export function generateDailyStatusTweet(battleState: BattleState, options: TweetOptions = {}): TweetWithImage {
   const { currentBoss, currentPrice, progress, battleStatus, remainingDamage, damageDealt } = battleState;
   
   if (!currentBoss) {
@@ -164,7 +194,7 @@ function generateDailyStatusTweet(battleState, options = {}) {
   };
 }
 
-function generateBossDefeatTweet(defeatedBoss, newPrice, battleState) {
+export function generateBossDefeatTweet(defeatedBoss: BossData, newPrice: number, battleState: BattleState): string {
   const bossName = defeatedBoss.name || `Boss Level ${battleState.bossesDefeated}`;
   const damageDealt = Math.round(newPrice - defeatedBoss.high);
   const formattedTarget = `$${defeatedBoss.high.toLocaleString()}`;
@@ -186,7 +216,7 @@ function generateBossDefeatTweet(defeatedBoss, newPrice, battleState) {
   return tweet;
 }
 
-function generateAllBossesDefeatedTweet(battleState) {
+export function generateAllBossesDefeatedTweet(battleState: BattleState): TweetWithImage {
   const formattedPrice = `$${battleState.currentPrice.toLocaleString()}`;
   
   let tweet = `🏆 LEGENDARY STATUS ACHIEVED! 🏆\n\n`;
@@ -197,10 +227,13 @@ function generateAllBossesDefeatedTweet(battleState) {
   tweet += `New all-time highs = NEW BOSSES! 📈\n\n`;
   tweet += `#ETHBossHunter #AllBossesDefeated #Legendary $ETH`;
   
-  return tweet;
+  return {
+    text: tweet,
+    image: null
+  };
 }
 
-function generateMilestoneTweet(battleState, milestone) {
+export function generateMilestoneTweet(battleState: BattleState, milestone: number): string {
   const { currentBoss, currentPrice, progress } = battleState;
   
   if (!currentBoss) return '';
@@ -237,13 +270,3 @@ function generateMilestoneTweet(battleState, milestone) {
   
   return tweet;
 }
-
-module.exports = {
-  analyzeBattleState,
-  generateDailyStatusTweet,
-  generateBossDefeatTweet,
-  generateAllBossesDefeatedTweet,
-  generateMilestoneTweet,
-  getBattleStatusEmoji,
-  getBattleStatusText
-};
