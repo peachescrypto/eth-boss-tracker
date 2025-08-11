@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 // Import TypeScript function
-import { testBossHunterAuth } from '../src/lib/twitter.js';
+import { testBossHunterAuth } from '../../../src/lib/twitter.js';
 
 async function main() {
   console.log('🔍 Testing Boss Hunter Twitter Authentication...\n');

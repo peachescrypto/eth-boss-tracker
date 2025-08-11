@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 dotenv.config({ path: path.join(process.cwd(), '.env.local') });
 
 // Import TypeScript functions
-import { postToBossHunterTwitter } from '../src/lib/twitter.js';
-import { analyzeBattleState, generateDailyStatusTweet } from '../src/lib/tweet-templates.js';
+import { postToBossHunterTwitter } from '../../../src/lib/twitter.js';
+import { analyzeBattleState, generateDailyStatusTweet } from '../../../src/lib/tweet-templates.js';
 
 async function main() {
   console.log('🎯 Testing ETH Boss Hunter Twitter Bot...\n');

@@ -9,7 +9,7 @@ import {
   generateMilestoneTweet,
   type BattleState,
   type BossData
-} from '../src/lib/tweet-templates.js';
+} from '../../../src/lib/tweet-templates.js';
 
 // Load environment variables
 dotenv.config({ path: '.env.local' });

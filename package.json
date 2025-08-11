@@ -10,11 +10,10 @@
     "fetch-data": "node scripts/fetch-eth-highs.js",
     "fetch-data-binance": "node scripts/fetch-eth-highs-binance.js",
     "fetch-weekly-data": "node scripts/fetch-eth-highs-binance.js",
-    "test-image-upload": "node scripts/test-image-upload.js",
-    "test-twitter": "tsx scripts/test-twitter.ts",
-    "test-boss-hunter": "tsx scripts/test-boss-hunter.ts",
-    "test-auth": "tsx scripts/test-auth.ts",
     "iterate-tweets": "tsx scripts/iterate-tweets.ts",
+    "test-auth": "tsx scripts/test-auth.ts",
+    "test-daily-status": "tsx scripts/test-daily-status.ts",
+    "test-dev-twitter": "tsx scripts/tests/e2e/test-dev-twitter.ts",
     "prepare": "husky"
   },
   "dependencies": {
