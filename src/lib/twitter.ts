@@ -1,10 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import { analyzeBattleState, generateDailyStatusTweet } from './tweet-templates';
 
 // Dedicated function for ETH Boss Hunter account with image support
 export async function postToBossHunterTwitter(
-  content: string | { text: string; image?: string }
+  price: number
 ): Promise<{ success: boolean; tweetId?: string; error?: string }> {
   // Check for required ETH Boss Hunter environment variables
   const requiredVars = [
@@ -23,9 +24,30 @@ export async function postToBossHunterTwitter(
   }
   
   try {
-    // Extract text and image from content
-    const tweetText = typeof content === 'string' ? content : content.text;
-    const imagePath = typeof content === 'object' ? content.image : undefined;
+    console.log('🐦 Starting daily status tweet posting process...');
+    console.log('💰 Current ETH price:', price);
+    
+    // Load boss data
+    const bossDataPath = path.join(process.cwd(), 'public', 'eth-weekly-highs.json');
+    const bossDataRaw = fs.readFileSync(bossDataPath, 'utf8');
+    const bossData = JSON.parse(bossDataRaw);
+    
+    // Analyze current battle state
+    const battleState = analyzeBattleState(price, bossData);
+    console.log('⚔️ Battle state:', {
+      currentBoss: battleState.currentBoss?.name || 'All Defeated',
+      progress: Math.round(battleState.progress * 100),
+      status: battleState.battleStatus,
+      bossesDefeated: battleState.bossesDefeated
+    });
+    
+    // Generate daily status tweet with boss image
+    const tweetContent = generateDailyStatusTweet(battleState);
+    const tweetText = tweetContent.text;
+    const imagePath = tweetContent.image;
+    
+    console.log('📝 Tweet text length:', tweetText.length);
+    console.log('📸 Image path:', imagePath || 'None');
     
     // If we have an image, we need to upload it first via Twitter Media API
     let mediaId = undefined;
@@ -60,8 +82,12 @@ export async function postToBossHunterTwitter(
       body: JSON.stringify(tweetPayload)
     });
     
+    console.log('📡 Response status:', response.status);
+    console.log('📡 Response headers:', Object.fromEntries(response.headers));
+    
     if (!response.ok) {
       const errorData = await response.json();
+      console.log('❌ Twitter API error response:', errorData);
        if (response.status === 429) {
         const resetTime = response.headers.get('x-rate-limit-reset');
         if (resetTime) {
@@ -204,6 +230,8 @@ export function generateBossDefeatTweet(price: number, bossLevel: number): strin
 
 #ETHBossHunter $ETH`;
 }
+
+
 
 // Test authentication by fetching tweets from @Ethbosshunter account
 export async function testBossHunterAuth(): Promise<{ success: boolean; user?: Record<string, unknown>; error?: string }> {

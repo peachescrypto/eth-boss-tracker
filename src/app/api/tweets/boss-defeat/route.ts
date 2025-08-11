@@ -63,14 +63,15 @@ export async function POST() {
       const battleState = analyzeBattleState(currentPrice, bossData);
       const tweetText = generateBossDefeatTweet(defeatedBoss, currentPrice, battleState);
       
-      const tweetResult = await postToBossHunterTwitter(tweetText);
+      // TODO: Implement boss defeat tweet posting
+      // const tweetResult = await postToBossHunterTwitter(tweetText);
       
       results.push({
         boss: defeatedBoss.name || `Level ${lastDefeatedBossIndex + 1}`,
         price: defeatedBoss.high,
-        success: tweetResult.success,
-        tweetId: tweetResult.tweetId,
-        error: tweetResult.error
+        success: false, // TODO: Implement
+        tweetId: undefined,
+        error: 'Boss defeat tweets not yet implemented'
       });
 
       // Add a small delay between tweets if multiple bosses defeated

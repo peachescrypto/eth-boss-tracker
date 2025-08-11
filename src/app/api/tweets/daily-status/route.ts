@@ -1,16 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { analyzeBattleState } from '@/lib/battle-analysis';
-import { generateDailyStatusTweet } from '@/lib/tweet-generator';
 import { postToBossHunterTwitter } from '@/lib/twitter';
-import fs from 'fs';
-import path from 'path';
-
-interface BossData {
-  date: string;
-  high: number;
-  name?: string;
-  image?: string;
-}
 
 interface PriceData {
   priceUsd: number;
@@ -36,37 +25,18 @@ export async function POST(request: NextRequest) {
     }
     const priceData: PriceData = await priceResponse.json();
 
-    // Load boss data
-    const bossDataPath = path.join(process.cwd(), 'public', 'eth-weekly-highs.json');
-    const bossDataRaw = fs.readFileSync(bossDataPath, 'utf8');
-    const bossData: BossData[] = JSON.parse(bossDataRaw);
-
-    // Analyze current battle state
-    const battleState = analyzeBattleState(priceData.priceUsd, bossData);
-
-    // Generate daily status tweet with boss image
-    const tweetContent = generateDailyStatusTweet(battleState);
-
-    // Post to Boss Hunter Twitter
-    const tweetResult = await postToBossHunterTwitter(tweetContent);
+    // Post daily status tweet (all logic handled inside the function)
+    const tweetResult = await postToBossHunterTwitter(priceData.priceUsd);
 
     if (tweetResult.success) {
       return NextResponse.json({
         success: true,
-        tweetId: tweetResult.tweetId,
-        tweetText: typeof tweetContent === 'string' ? tweetContent : tweetContent.text,
-        battleState: {
-          currentBoss: battleState.currentBoss?.name || 'All Defeated',
-          progress: Math.round(battleState.progress * 100),
-          status: battleState.battleStatus,
-          bossesDefeated: battleState.bossesDefeated
-        }
+        tweetId: tweetResult.tweetId
       });
     } else {
       return NextResponse.json({
         success: false,
-        error: tweetResult.error,
-        tweetText: typeof tweetContent === 'string' ? tweetContent : tweetContent.text
+        error: tweetResult.error
       }, { status: 500 });
     }
 
@@ -92,30 +62,11 @@ export async function GET() {
     }
     const priceData: PriceData = await priceResponse.json();
 
-    // Load boss data
-    const bossDataPath = path.join(process.cwd(), 'public', 'eth-weekly-highs.json');
-    const bossDataRaw = fs.readFileSync(bossDataPath, 'utf8');
-    const bossData: BossData[] = JSON.parse(bossDataRaw);
-
-    // Analyze current battle state
-    const battleState = analyzeBattleState(priceData.priceUsd, bossData);
-
-    // Generate daily status tweet (preview only)
-    const tweetContent = generateDailyStatusTweet(battleState);
-
+    // For preview, we'll just return the price and let the client handle the rest
     return NextResponse.json({
       preview: true,
-      tweetText: typeof tweetContent === 'string' ? tweetContent : tweetContent.text,
-      hasImage: typeof tweetContent === 'object' && tweetContent.image ? true : false,
-      imagePath: typeof tweetContent === 'object' ? tweetContent.image : null,
-      battleState: {
-        currentBoss: battleState.currentBoss?.name || 'All Defeated',
-        currentPrice: battleState.currentPrice,
-        progress: Math.round(battleState.progress * 100),
-        status: battleState.battleStatus,
-        bossesDefeated: battleState.bossesDefeated,
-        totalBosses: battleState.totalBosses
-      }
+      currentPrice: priceData.priceUsd,
+      message: 'Use POST endpoint to actually post the tweet'
     });
 
   } catch (error) {
