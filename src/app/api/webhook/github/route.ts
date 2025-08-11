@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateTweet, postToTwitter } from '@/lib/twitter';
+import { generateTweet, postToTwitter } from '@/lib/developer-updates';
 
 interface GitHubPushPayload {
   ref: string;
