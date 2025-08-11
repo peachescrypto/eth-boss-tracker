@@ -1,0 +1,211 @@
+/* ETH Boss Hunter Design System */
+
+:root {
+  /* ===== COLOR PALETTE ===== */
+  
+  /* Primary Brand Colors */
+  --color-primary-cyan: #06b6d4;
+  --color-primary-cyan-hover: #0891b2;
+  --color-primary-purple: #8b5cf6;
+  --color-primary-purple-hover: #7c3aed;
+  --color-primary-pink: #ec4899;
+  --color-primary-pink-hover: #db2777;
+  
+  /* Background Colors */
+  --color-bg-primary: #0f0729;
+  --color-bg-secondary: #1a1a2e;
+  --color-bg-card: rgba(0, 0, 0, 0.6);
+  --color-bg-overlay: rgba(0, 0, 0, 0.4);
+  
+  /* Text Colors */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #ededed;
+  --color-text-muted: #9ca3af;
+  --color-text-cyan: #06b6d4;
+  --color-text-purple: #a855f7;
+  --color-text-pink: #ec4899;
+  
+  /* Status Colors */
+  --color-success: #10b981;
+  --color-success-hover: #34d399;
+  --color-warning: #f97316;
+  --color-warning-hover: #ea580c;
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+  
+  /* Border Colors */
+  --color-border-primary: #06b6d4;
+  --color-border-secondary: #374151;
+  --color-border-muted: #6b7280;
+  
+  /* Shadow Colors */
+  --color-shadow-cyan: rgba(6, 182, 212, 0.5);
+  --color-shadow-purple: rgba(139, 92, 246, 0.5);
+  --color-shadow-pink: rgba(236, 72, 153, 0.5);
+  
+  /* ===== GRADIENTS ===== */
+  --gradient-primary: linear-gradient(45deg, var(--color-primary-cyan), var(--color-primary-purple));
+  --gradient-secondary: linear-gradient(45deg, var(--color-primary-purple), var(--color-primary-pink));
+  --gradient-bg: linear-gradient(to bottom right, #581c87, #1e3a8a, #3730a3);
+  --gradient-text: linear-gradient(to right, var(--color-primary-cyan), var(--color-primary-purple), var(--color-primary-pink));
+  
+  /* HP Bar Gradients */
+  --gradient-hp: linear-gradient(to right, var(--color-danger), var(--color-warning), #eab308);
+  --gradient-progress: linear-gradient(to right, var(--color-primary-cyan), #3b82f6);
+  --gradient-success: linear-gradient(to right, var(--color-success), var(--color-success-hover));
+  
+  /* ===== TYPOGRAPHY ===== */
+  --font-family-primary: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-mono: 'Geist Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+  --text-8xl: 6rem;
+  
+  /* Font Weights */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-black: 900;
+  
+  /* ===== SPACING ===== */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  
+  /* ===== BORDER RADIUS ===== */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+  
+  /* ===== SHADOWS ===== */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  /* ===== ANIMATIONS ===== */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Background Colors */
+.bg-primary { background-color: var(--color-bg-primary); }
+.bg-secondary { background-color: var(--color-bg-secondary); }
+.bg-card { background-color: var(--color-bg-card); }
+.bg-overlay { background-color: var(--color-bg-overlay); }
+
+/* Text Colors */
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+.text-cyan { color: var(--color-text-cyan); }
+.text-purple { color: var(--color-text-purple); }
+.text-pink { color: var(--color-text-pink); }
+
+/* Border Colors */
+.border-primary { border-color: var(--color-border-primary); }
+.border-secondary { border-color: var(--color-border-secondary); }
+.border-muted { border-color: var(--color-border-muted); }
+
+/* Gradients */
+.gradient-primary { background: var(--gradient-primary); }
+.gradient-secondary { background: var(--gradient-secondary); }
+.gradient-bg { background: var(--gradient-bg); }
+.gradient-text { background: var(--gradient-text); background-clip: text; -webkit-background-clip: text; color: transparent; }
+
+/* HP Bar Gradients */
+.gradient-hp { background: var(--gradient-hp); }
+.gradient-progress { background: var(--gradient-progress); }
+.gradient-success { background: var(--gradient-success); }
+
+/* Shadows */
+.shadow-cyan { box-shadow: 0 0 20px var(--color-shadow-cyan); }
+.shadow-purple { box-shadow: 0 0 20px var(--color-shadow-purple); }
+.shadow-pink { box-shadow: 0 0 20px var(--color-shadow-pink); }
+
+/* ===== COMPONENT STYLES ===== */
+
+/* Boss Card Styles */
+.boss-card {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border-primary);
+  border-radius: var(--radius-2xl);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-2xl);
+}
+
+.boss-card-current {
+  border-color: var(--color-primary-cyan);
+  box-shadow: 0 0 30px var(--color-shadow-cyan);
+}
+
+.boss-card-defeated {
+  border-color: var(--color-success);
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+}
+
+/* Button Styles */
+.btn-primary {
+  background: var(--gradient-primary);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  font-weight: var(--font-semibold);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Progress Bar Styles */
+.progress-bar {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+  box-shadow: var(--shadow-md);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  :root {
+    --text-8xl: 4rem;
+    --text-6xl: 2.5rem;
+    --text-4xl: 1.875rem;
+  }
+}
