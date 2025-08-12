@@ -21,61 +21,68 @@ Boss Status = Defeated when Current Price ≥ Boss Price
 
 **Template**:
 ```
-⚔️ Daily Boss Report
+⚔️ Daily Boss Battle Report
 
-Current Target: Gorath ($4,006)
-ETH Price: $3,891
-Progress: 73% 📊
+ULTIMATE Boss Buterion is on the brink of defeat! 🔥
 
-Battle Status: 🔥 HEATING UP
-Boss has been fighting for: 8h
-Remaining: $115 to victory
+Buterion will be defeated when ETH reaches $4,333
+📈 Current $ETH Price: $4,250.02
+🎯 only $82.98 to go!
 
-[ATTACH BOSS IMAGE TO POST]
+🚨 █████████░ 98%
 
 #ETHBossHunter $ETH
 ```
 
-**Variations by Status**:
-- **< 25%**: 😴 Boss is resting
-- **25-50%**: ⚡ Battle begins!  
-- **50-75%**: 🔥 Heating up
-- **75-90%**: 🚨 CRITICAL BATTLE
-- **90-99%**: ⚔️ FINAL ASSAULT
-- **100%+**: 💀 BOSS DEFEATED!
+**Battle Status Variations**:
+- **< 25%**: 😴 Boss is resting, unaware of what is about to happen...
+- **25-50%**: ⚡ Boss stands strong, barely wounded!
+- **50-75%**: 🔥 Boss is showing signs of damage!
+- **75-90%**: 🚨 Boss is on the ropes!
+- **90-99%**: ⚔️ Boss is on the brink of defeat!
+
+**Boss Tier System**:
+- **ULTIMATE**: 2024 weekly highs (Gorath, Volkan, Othrak, Voltaris, Buterion)
+- **LEGENDARY**: 2021 weekly highs (Nyxara, Maltherion, Tenebris, Baelgor, Abythra, Sevrath, Vexarion, Zepheros, Skathra)
+- **GODLIKE**: 2021 major peaks (Kronthar, Lurathos, Iskara, Athion)
+- **ASCENDED**: 2025+ milestones (Buterion)
+
+**Features**:
+- **HP Bar Visualization**: ASCII progress bar (█ for remaining HP, ░ for lost HP)
+- **Boss Images**: Each tweet includes the current boss's image
+- **Dynamic Flavor Text**: Boss-specific personality based on battle progress
+- **Damage Calculation**: Shows remaining damage needed to defeat boss
 
 ### 2. **Boss Defeat Celebrations** (Immediate when defeated)
 **Purpose**: Epic victory moments, viral potential
 
 **Template**:
 ```
-[INSERT BOSS TIER]
 💀 BOSS DEFEATED! 💀
 
-Gorath has fallen!
-Level 1 ✅ ($4,006)
+Buterion has fallen!
+Level 9 ✅ ($4,333)
 
-ETH Army dealt $125 damage!
+ETH Army dealt $83 damage!
 
-Next Target: Nyxara ($4,027)
-🏆 Progress: 1/18 bosses defeated
+Next Target: Kronthar ($4,372.72)
+🏆 Progress: 9/19 bosses defeated
 
 #ETHBossHunter #BossDefeated $ETH
 ```
-**Variations by Boss tiers**:
-- **Jan-June 2021%**: GODLIKE
-- **July-December 2021%**: LEGENDARY
-- **2024%**: ULTIMATE
-- **2025**: AWESOME
 
-### 3. **Special Event Tweets**
-**Purpose**: Narrative building, community engagement
+**Boss Tier System** (same as Daily Status):
+- **ULTIMATE**: 2024 weekly highs (Gorath, Volkan, Othrak, Voltaris, Buterion)
+- **LEGENDARY**: 2021 weekly highs (Nyxara, Maltherion, Tenebris, Baelgor, Abythra, Sevrath, Vexarion, Zepheros, Skathra)
+- **GODLIKE**: 2021 major peaks (Kronthar, Lurathos, Iskara, Athion)
+- **ASCENDED**: 2025+ milestones (Buterion)
 
-**Types**:
-- **New ATH**: "🏆 LEGENDARY STATUS ACHIEVED!"
-- **Boss Respawn**: When price drops below defeated boss
-- **Weekly Recap**: Battles fought, progress made
-- **Community Milestones**: App usage, social engagement
+**Features**:
+- **Damage Calculation**: Shows actual damage dealt (price difference)
+- **Progress Tracking**: Shows current boss level and total progress
+- **Next Target**: Automatically identifies the next boss to defeat
+
+
 
 ## 📊 **Posting Frequency Strategy**
 
@@ -96,10 +103,13 @@ Next Target: Nyxara ($4,027)
 ## 🎮 **Advanced Battle Features**
 
 ### Phase 1: Current Implementation
-- [x] Boss roster with names/images
-- [x] Progress calculation
-- [x] Weekly data structure
-- [ ] Twitter posting automation
+- [x] Boss roster with names/images (19 bosses with tiers: ULTIMATE, LEGENDARY, GODLIKE, ASCENDED)
+- [x] Progress calculation and battle state analysis
+- [x] Weekly data structure with boss metadata
+- [x] Daily status tweet automation (API route + GitHub Actions)
+- [x] Boss defeat detection system
+- [x] Milestone tweet generation (50%, 75%, 90% progress)
+- [x] All bosses defeated celebration tweet
 
 ### Phase 2: Enhanced Mechanics
 - [ ] **Battle Duration Tracking** - How long each boss takes
@@ -109,9 +119,11 @@ Next Target: Nyxara ($4,027)
 
 ## 💡 **Implementation Strategy**
 
-### Immediate (Next Push)
-1. **Daily Boss Status** automation
-2. **Boss Defeat Detection** with real-time tweets
+### Immediate (Completed ✅)
+1. **Daily Boss Status** automation - ✅ Implemented with GitHub Actions
+2. **Boss Defeat Detection** with real-time tweets - ✅ API route ready, posting logic pending
+3. **Twitter API Integration** - ✅ OAuth 1.0a authentication working
+4. **Image Upload System** - ✅ Boss images attached to tweets
 
 ### Short Term (2-4 weeks)
 1. Enhanced battle language and narratives

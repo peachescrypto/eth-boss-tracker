@@ -1,0 +1,51 @@
+name: Boss Defeat Check
+
+on:
+  schedule:
+    # Check every 15 minutes for boss defeats
+    - cron: '*/15 * * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  check-boss-defeat:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check for Boss Defeats
+      run: |
+        # Get the deployment URL
+        DEPLOYMENT_URL="https://eth-boss-tracker.vercel.app"
+        
+        echo "🔍 Checking for boss defeats at $(date)"
+        echo "🌐 API endpoint: $DEPLOYMENT_URL/api/tweets/boss-defeat"
+        
+        # Make the API call and capture both status code and response
+        RESPONSE=$(curl -s -w "%{http_code}" -X POST "https://eth-boss-tracker.vercel.app/api/tweets/boss-defeat" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json")
+        
+        # Extract the response body and status code
+        HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
+        RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
+        
+        echo "📡 HTTP Status: $HTTP_STATUS"
+        echo "📄 Response: $RESPONSE_BODY"
+        
+        # Check if the request was successful
+        if [ "$HTTP_STATUS" -ge 400 ]; then
+          echo "❌ API request failed with status $HTTP_STATUS"
+          echo "Response: $RESPONSE_BODY"
+          exit 1
+        fi
+        
+        # Parse the response to check if any bosses were defeated
+        NEWLY_DEFEATED=$(echo "$RESPONSE_BODY" | grep -o '"newlyDefeatedCount":[0-9]*' | cut -d':' -f2)
+        
+        if [ "$NEWLY_DEFEATED" -gt 0 ]; then
+          echo "🎉 Boss defeat detected! $NEWLY_DEFEATED boss(es) defeated"
+          echo "Full response: $RESPONSE_BODY"
+        else
+          echo "😴 No new boss defeats detected"
+        fi
+        
+        echo "✅ Boss defeat check completed successfully"

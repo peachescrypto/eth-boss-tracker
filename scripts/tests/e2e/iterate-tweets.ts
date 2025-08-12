@@ -35,6 +35,7 @@ function testTweets(): void {
   const NYXARA_HEATING_UP_PRICE = 4020;
   const NYXARA_CRITICAL_PRICE = 4025;
   const NYXARA_FINAL_ASSAULT_PRICE = 4026;
+  const KRONTHAR_DEFEATED_PRICE = 4373;
   const ALL_BOSS_DEFEATED_PRICE = 5000;
   
   const scenarios = [
@@ -79,12 +80,15 @@ function testTweets(): void {
 
   // Example 3: Boss Defeat Tweet
   printSeparator('Boss Defeat Tweet');
-  const defeatState = analyzeBattleState(NYXARA_FINAL_ASSAULT_PRICE, bossData);
   // Find the boss that would be defeated at this price
   const sortedBosses = [...bossData].sort((a, b) => a.high - b.high);
-  const defeatedBoss = sortedBosses.find(boss => boss.high <= NYXARA_FINAL_ASSAULT_PRICE);
+  // Find the boss that was just defeated (highest boss <= price)
+  const defeatedBoss = sortedBosses
+    .filter(boss => boss.high <= KRONTHAR_DEFEATED_PRICE)
+    .pop(); // Get the highest one that was defeated
   if (defeatedBoss) {
-    const defeatTweet = generateBossDefeatTweet(defeatedBoss, NYXARA_FINAL_ASSAULT_PRICE, defeatState);
+    const battleState = analyzeBattleState(KRONTHAR_DEFEATED_PRICE, bossData);
+    const defeatTweet = generateBossDefeatTweet(defeatedBoss, KRONTHAR_DEFEATED_PRICE, battleState, bossData);
     console.log(defeatTweet);
     console.log(`\nLength: ${defeatTweet.length}/280 characters`);
   }
@@ -125,10 +129,12 @@ function main(): void {
         // Specific defeat scenario
         const defeatState = analyzeBattleState(price, bossData);
         const sortedBosses = [...bossData].sort((a, b) => a.high - b.high);
-        const defeatedBoss = sortedBosses.find(boss => boss.high <= price);
+        const defeatedBoss = sortedBosses
+          .filter(boss => boss.high <= price)
+          .pop(); // Get the highest one that was defeated
         if (defeatedBoss) {
           printSeparator(`Boss Defeat Tweet at $${price.toLocaleString()}`);
-          const defeatTweet = generateBossDefeatTweet(defeatedBoss, price, defeatState);
+          const defeatTweet = generateBossDefeatTweet(defeatedBoss, price, defeatState, bossData);
           console.log(defeatTweet);
           console.log(`\nLength: ${defeatTweet.length}/280 characters`);
         } else {
@@ -141,10 +147,12 @@ function main(): void {
         defeatScenarios.forEach(p => {
           const state = analyzeBattleState(p, bossData);
           const sortedBosses = [...bossData].sort((a, b) => a.high - b.high);
-          const defeatedBoss = sortedBosses.find(boss => boss.high <= p);
+          const defeatedBoss = sortedBosses
+            .filter(boss => boss.high <= p)
+            .pop(); // Get the highest one that was defeated
           if (defeatedBoss) {
             console.log(`\n💰 Price: $${p.toLocaleString()}`);
-            const tweet = generateBossDefeatTweet(defeatedBoss, p, state);
+            const tweet = generateBossDefeatTweet(defeatedBoss, p, state, bossData);
             console.log(tweet.substring(0, 100) + '...');
           }
         });

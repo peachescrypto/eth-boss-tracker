@@ -58,24 +58,26 @@
   {
     "date": "2025-08-04",
     "high": 4333.00,
-    "tier": "AWESOME",
+    "tier": "ASCENDED",
     "name": "Buterion",
     "image": "/images/buterion.png",
-    "lore": "In the glow of a bull market’s crest, Buterion emerges — vast and luminescent, scales shimmering. He rises as Ethereum’s co-founder reclaims his legendary billionaire status, wielding both the light of triumph and the weight of wisdom. His breath courses with neon runes of growth and prosperity, while his eyes flicker with wary foresight. Though the market rallies behind him, his warning ring loud — dependency on institutional treasuries could fracture the network’s core. Thus, Buterion stands tall, guardian of progress—majestic yet mindful, urging balance even in moments of glory."
+    "lore": "On the 10 year anniversary of Ethereum, Buterion emerges — vast and luminescent, scales shimmering. He rises as Ethereum’s co-founder reclaiming his legendary billionaire status, wielding both the light of triumph and the weight of wisdom. His breath courses with words of growth and prosperity, while his eyes flicker with wary foresight. Though the market rallies behind him, his warning ring loud — dependency on institutional treasuries could fracture the network’s core. Thus, Buterion stands tall, guardian of progress — majestic yet mindful, urging balance even in moments of glory."
   },
   {
     "date": "2021-05-10",
     "high": 4372.72,
     "tier": "GODLIKE",
     "name": "Kronthar",
-    "image": "/images/kronthar.png"
+    "image": "/images/kronthar.png",
+    "lore": "Escaped from the underground lava yacht club, Kronthar is a towering golem-ape forged from molten obsidian, a blazing sun-core burning within his chest. He hunts NFT empires with searing solar flares, reducing worthless mints to ash. Each strike purifies the chain, sparing only the rare and worthy. In his presence, metadata warps, floors tremble, and JPEGs vanish into golden fire."
   },
   {
     "date": "2021-10-18",
     "high": 4375,
     "tier": "LEGENDARY",
     "name": "Abythra",
-    "image": "/images/abythra.png"
+    "image": "/images/abythra.png",
+    "lore": "Rising from the dark NFT seas of October 18, 2021—when 79 collections surfaced in a single day—Abythra is the water-zombie queen who feeds on trash mints and false promises. Each wave she summons drags worthless JPEGs into the abyss, leaving only salt and regret. Her gaze foretells the fate of countless alt-coin holders—destined to be forever underwater—while her tides swell with the froth of hype and speculation."
   },
   {
     "date": "2021-10-25",

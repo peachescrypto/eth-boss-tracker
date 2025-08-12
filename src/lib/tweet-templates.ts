@@ -9,6 +9,7 @@ export interface BossData {
   tier: string;
   name?: string;
   image?: string;
+  lore?: string;
 }
 
 export interface BattleState {
@@ -168,6 +169,8 @@ export function generateDailyStatusTweet(battleState: BattleState, options: Twee
   const hpEmpty = hpBarLength - hpFilled;
   const hpBar = '█'.repeat(hpEmpty) + '░'.repeat(hpFilled);
   tweet += `🚨 ${hpBar} ${progressPercent}%\n\n`;
+
+  tweet += `https://eth-boss-tracker.vercel.app/`
     
   // Return tweet with image path for media attachment
   return {
@@ -176,24 +179,49 @@ export function generateDailyStatusTweet(battleState: BattleState, options: Twee
   };
 }
 
-export function generateBossDefeatTweet(defeatedBoss: BossData, newPrice: number, battleState: BattleState): string {
+export function generateBossDefeatTweet(defeatedBoss: BossData, newPrice: number, battleState: BattleState, bossData?: BossData[]): string {
   const bossName = defeatedBoss.name || `Boss Level ${battleState.bossesDefeated}`;
-  const damageDealt = Math.round(newPrice - defeatedBoss.high);
-  const formattedTarget = `$${defeatedBoss.high.toLocaleString()}`;
+  const levelNumber = battleState.bossesDefeated;
   
   let tweet = `💀 BOSS DEFEATED! 💀\n\n`;
   tweet += `${bossName} has fallen!\n`;
-  tweet += `Level ${battleState.bossesDefeated} ✅ (${formattedTarget})\n\n`;
-  tweet += `ETH Army dealt $${damageDealt} damage!\n\n`;
+  tweet += `Level ${levelNumber}/${battleState.totalBosses} Achieved ✅\n`;
+  tweet += `One step closer to defeating #Athion\n\n`;
+  tweet += `But wait, a new boss is stirring...\n\n`;
   
-  if (battleState.nextBoss) {
-    const nextBossName = battleState.nextBoss.name || `Boss Level ${battleState.bossesDefeated + 1}`;
-    const nextTarget = `$${battleState.nextBoss.high.toLocaleString()}`;
-    tweet += `Next Target: ${nextBossName} (${nextTarget})\n`;
+  // Calculate the next boss based on the defeated boss
+  let nextBoss = battleState.nextBoss;
+  
+  if (bossData) {
+    const sortedBosses = [...bossData].sort((a, b) => a.high - b.high);
+    const defeatedBossIndex = sortedBosses.findIndex(boss => boss.high === defeatedBoss.high);
+    if (defeatedBossIndex >= 0 && defeatedBossIndex < sortedBosses.length - 1) {
+      nextBoss = sortedBosses[defeatedBossIndex + 1];
+    }
   }
   
-  tweet += `🏆 Progress: ${battleState.bossesDefeated}/${battleState.totalBosses} bosses defeated\n\n`;
-  tweet += `#ETHBossHunter #BossDefeated $ETH`;
+  if (nextBoss) {
+    const nextBossName = nextBoss.name?.toLocaleUpperCase() || `Boss Level ${levelNumber + 1}`;
+    const nextBossTier = nextBoss.tier;
+    const nextBossDate = nextBoss.date;
+    // Format the date nicely
+    const date = new Date(nextBossDate);
+    const prettyDate = date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+    tweet += `${nextBossName} is coming and is ${nextBossTier}, they spawned on ${prettyDate} \n\n`;
+    
+    // Add lore if available
+    // if (nextBoss.lore) {
+    //   tweet += `${nextBoss.lore}\n\n`;
+    // } else {
+    //   console.log('No lore available for next boss');
+    // }
+  }
+  
+  tweet += `See them here: https://eth-boss-tracker.vercel.app/`;
   
   return tweet;
 }

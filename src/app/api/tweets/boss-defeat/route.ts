@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { analyzeBattleState, generateBossDefeatTweet, type BossData } from '@/lib/tweet-templates';
-import fs from 'fs';
-import path from 'path';
+import { checkAndPostBossDefeats } from '@/lib/twitter';
 
 interface PriceData {
   priceUsd: number;
@@ -9,77 +7,32 @@ interface PriceData {
   ts: number;
 }
 
-// In-memory store for last checked price (in production, use Redis or database)
-let lastCheckedPrice = 0;
-let lastDefeatedBossIndex = -1;
-
 export async function POST() {
   try {
-    // This endpoint will be called by a cron job or price monitoring system
-    
-    // Get current ETH price
     const baseUrl = process.env.VERCEL_URL 
       ? `https://${process.env.VERCEL_URL}` 
       : 'http://localhost:3000';
-    const priceResponse = await fetch(`${baseUrl}/api/price`);
-    if (!priceResponse.ok) {
+
+    // Get current ETH price
+    const currentPriceResponse = await fetch(`${baseUrl}/api/price`);
+    if (!currentPriceResponse.ok) {
       throw new Error('Failed to fetch current price');
     }
-    const priceData: PriceData = await priceResponse.json();
-    const currentPrice = priceData.priceUsd;
+    const currentPriceData: PriceData = await currentPriceResponse.json();
+    const currentPrice = currentPriceData.priceUsd;
 
-    // Load boss data
-    const bossDataPath = path.join(process.cwd(), 'public', 'eth-weekly-highs.json');
-    const bossDataRaw = fs.readFileSync(bossDataPath, 'utf8');
-    const bossData: BossData[] = JSON.parse(bossDataRaw);
-    const sortedBosses = [...bossData].sort((a, b) => a.high - b.high);
-
-    // Check if any new bosses have been defeated
-    const newlyDefeatedBosses: BossData[] = [];
-    
-    for (let i = 0; i < sortedBosses.length; i++) {
-      const boss = sortedBosses[i];
-      
-      // If price is above this boss level and we haven't already posted about it
-      if (currentPrice >= boss.high && i > lastDefeatedBossIndex) {
-        newlyDefeatedBosses.push(boss);
-        lastDefeatedBossIndex = i;
-      }
+    // Get price 15 minutes ago
+    const lastPriceResponse = await fetch(`${baseUrl}/api/price?minutes_ago=15`);
+    if (!lastPriceResponse.ok) {
+      throw new Error('Failed to fetch last price');
     }
+    const lastPriceData: PriceData = await lastPriceResponse.json();
+    const lastPrice = lastPriceData.priceUsd;
 
-    const results = [];
+    // Check for boss defeats and post tweets
+    const result = await checkAndPostBossDefeats(currentPrice, lastPrice);
 
-    // Post a tweet for each newly defeated boss
-    for (const defeatedBoss of newlyDefeatedBosses) {
-      const battleState = analyzeBattleState(currentPrice, bossData);
-      const tweetText = generateBossDefeatTweet(defeatedBoss, currentPrice, battleState);
-      
-      // TODO: Implement boss defeat tweet posting
-      // const tweetResult = await postToBossHunterTwitter(tweetText);
-      
-      results.push({
-        boss: defeatedBoss.name || `Level ${lastDefeatedBossIndex + 1}`,
-        price: defeatedBoss.high,
-        success: false, // TODO: Implement
-        tweetId: undefined,
-        error: 'Boss defeat tweets not yet implemented'
-      });
-
-      // Add a small delay between tweets if multiple bosses defeated
-      if (newlyDefeatedBosses.length > 1) {
-        await new Promise(resolve => setTimeout(resolve, 5000));
-      }
-    }
-
-    lastCheckedPrice = currentPrice;
-
-    return NextResponse.json({
-      success: true,
-      currentPrice,
-      newlyDefeatedCount: newlyDefeatedBosses.length,
-      results,
-      lastDefeatedBossIndex
-    });
+    return NextResponse.json(result);
 
   } catch (error) {
     console.error('Boss defeat detection error:', error);
@@ -93,45 +46,38 @@ export async function POST() {
 // GET endpoint for manual checking/testing
 export async function GET() {
   try {
-    // Get current ETH price
     const baseUrl = process.env.VERCEL_URL 
       ? `https://${process.env.VERCEL_URL}` 
       : 'http://localhost:3000';
-    const priceResponse = await fetch(`${baseUrl}/api/price`);
-    if (!priceResponse.ok) {
+
+    // Get current ETH price
+    const currentPriceResponse = await fetch(`${baseUrl}/api/price`);
+    if (!currentPriceResponse.ok) {
       throw new Error('Failed to fetch current price');
     }
-    const priceData: PriceData = await priceResponse.json();
-    const currentPrice = priceData.priceUsd;
+    const currentPriceData: PriceData = await currentPriceResponse.json();
+    const currentPrice = currentPriceData.priceUsd;
 
-    // Load boss data
-    const bossDataPath = path.join(process.cwd(), 'public', 'eth-weekly-highs.json');
-    const bossDataRaw = fs.readFileSync(bossDataPath, 'utf8');
-    const bossData: BossData[] = JSON.parse(bossDataRaw);
-    const sortedBosses = [...bossData].sort((a, b) => a.high - b.high);
-
-    // Analyze what bosses would be defeated
-    const defeatedBosses = sortedBosses.filter(boss => currentPrice >= boss.high);
-    const nextBoss = sortedBosses.find(boss => currentPrice < boss.high);
+    // Get price 15 minutes ago
+    const lastPriceResponse = await fetch(`${baseUrl}/api/price?minutes_ago=15`);
+    if (!lastPriceResponse.ok) {
+      throw new Error('Failed to fetch last price');
+    }
+    const lastPriceData: PriceData = await lastPriceResponse.json();
+    const lastPrice = lastPriceData.priceUsd;
 
     return NextResponse.json({
-      preview: true,
       currentPrice,
-      lastCheckedPrice,
-      lastDefeatedBossIndex,
-      defeatedBossCount: defeatedBosses.length,
-      nextBoss: nextBoss ? {
-        name: nextBoss.name || 'Unknown',
-        price: nextBoss.high,
-        remaining: nextBoss.high - currentPrice
-      } : null,
-      wouldTrigger: defeatedBosses.length > (lastDefeatedBossIndex + 1)
+      lastPrice,
+      priceDifference: currentPrice - lastPrice,
+      currentPriceData,
+      lastPriceData
     });
 
   } catch (error) {
     console.error('Boss defeat preview error:', error);
     return NextResponse.json({
-      error: 'Failed to preview boss defeat detection',
+      error: 'Failed to fetch prices',
       details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }

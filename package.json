@@ -13,6 +13,7 @@
     "iterate-tweets": "tsx scripts/tests/e2e/iterate-tweets.ts",
     "test-auth": "tsx scripts/tests/e2e/test-auth.ts",
     "test-daily-status": "tsx scripts/tests/e2e/test-daily-status.ts",
+    "test-boss-defeat": "tsx scripts/tests/e2e/test-boss-defeat.ts",
     "test-dev-twitter": "tsx scripts/tests/e2e/test-dev-twitter.ts",
     "prepare": "husky"
   },
