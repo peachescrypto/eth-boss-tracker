@@ -1,16 +1,7 @@
 import { NextResponse } from 'next/server';
-import { analyzeBattleState } from '@/lib/battle-analysis';
-import { generateBossDefeatTweet } from '@/lib/tweet-generator';
-import { postToBossHunterTwitter } from '@/lib/twitter';
+import { analyzeBattleState, generateBossDefeatTweet, type BossData } from '@/lib/tweet-templates';
 import fs from 'fs';
 import path from 'path';
-
-interface BossData {
-  date: string;
-  high: number;
-  name?: string;
-  image?: string;
-}
 
 interface PriceData {
   priceUsd: number;

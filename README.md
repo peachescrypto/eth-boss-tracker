@@ -60,8 +60,8 @@ npm start
 npm run fetch-weekly-data
 
 # Twitter Bot Testing
-npm run test-twitter        # Test development account (commit tweets)
-npm run test-boss-hunter    # Test ETH Boss Hunter account (battle tweets)
+npm run test-dev-twitter    # Test development account (commit tweets)
+npm run test-daily-status   # Test ETH Boss Hunter daily-status
 npm run test-auth           # Test Twitter authentication
 npm run iterate-tweets      # Preview all tweet types without posting
 

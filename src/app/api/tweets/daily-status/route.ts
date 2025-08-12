@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { postToBossHunterTwitter } from '@/lib/twitter';
+import { postDailyStatusToTwitter } from '@/lib/twitter';
 
 interface PriceData {
   priceUsd: number;
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     const priceData: PriceData = await priceResponse.json();
 
     // Post daily status tweet (all logic handled inside the function)
-    const tweetResult = await postToBossHunterTwitter(priceData.priceUsd);
+    const tweetResult = await postDailyStatusToTwitter(priceData.priceUsd);
 
     if (tweetResult.success) {
       return NextResponse.json({

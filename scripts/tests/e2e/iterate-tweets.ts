@@ -30,14 +30,20 @@ function testTweets(): void {
   // Test different price scenarios
   // Nyxara: 4027.88
   // Othrak: 4071.00
+  const NYXARA_RESTING_PRICE = 4009;
+  const NYXARA_APPROACHING_PRICE = 4015;
+  const NYXARA_HEATING_UP_PRICE = 4020;
+  const NYXARA_CRITICAL_PRICE = 4025;
+  const NYXARA_FINAL_ASSAULT_PRICE = 4026;
+  const ALL_BOSS_DEFEATED_PRICE = 5000;
+  
   const scenarios = [
-    { price: 4035, desc: '<0.25 - Resting - Othrak' }, 
-    { price: 4045, desc: '<0.5 - Approaching - Othrak' },
-    { price: 4055, desc: '<0.75 - Heating Up - Othrak' },
-    { price: 4065, desc: '<0.9 - Critical - Othrak' },
-    { price: 4070.9, desc: '<1.0 - Final Assault - Othrak' },
-    { price: 4071, desc: '1.0 - Defeatured Othrak' },    
-    { price: 5000, desc: 'Legendary status (all defeated)' }
+    { price: NYXARA_RESTING_PRICE, desc: '<0.25 - Resting - Nyxara' }, 
+    { price: NYXARA_APPROACHING_PRICE, desc: '<0.5 - Approaching - Nyxara' },
+    { price: NYXARA_HEATING_UP_PRICE, desc: '<0.75 - Heating Up - Nyxara' },
+    { price: NYXARA_CRITICAL_PRICE, desc: '<0.9 - Critical - Nyxara' },
+    { price: NYXARA_FINAL_ASSAULT_PRICE, desc: '<1.0 - Final Assault - Nyxara' },    
+    { price: ALL_BOSS_DEFEATED_PRICE, desc: 'Legendary status (all defeated)' }
   ];
 
   scenarios.forEach(({ price, desc }) => {
@@ -57,7 +63,7 @@ function testTweets(): void {
 
   // Example 1: Daily Status Tweet (resting state)
   printSeparator('Daily Status Tweet - Resting State');
-  const restingState = analyzeBattleState(4050, bossData);
+  const restingState = analyzeBattleState(NYXARA_RESTING_PRICE, bossData);
   const dailyTweet = generateDailyStatusTweet(restingState);
   console.log(dailyTweet.text);
   console.log(`\nLength: ${dailyTweet.text.length}/280 characters`);
@@ -65,7 +71,7 @@ function testTweets(): void {
 
   // Example 2: Daily Status Tweet (critical battle)
   printSeparator('Daily Status Tweet - Critical Battle');
-  const criticalState = analyzeBattleState(4350, bossData);
+  const criticalState = analyzeBattleState(NYXARA_CRITICAL_PRICE, bossData);
   const criticalTweet = generateDailyStatusTweet(criticalState);
   console.log(criticalTweet.text);
   console.log(`\nLength: ${criticalTweet.text.length}/280 characters`);
@@ -73,12 +79,12 @@ function testTweets(): void {
 
   // Example 3: Boss Defeat Tweet
   printSeparator('Boss Defeat Tweet');
-  const defeatState = analyzeBattleState(4400, bossData);
+  const defeatState = analyzeBattleState(NYXARA_FINAL_ASSAULT_PRICE, bossData);
   // Find the boss that would be defeated at this price
   const sortedBosses = [...bossData].sort((a, b) => a.high - b.high);
-  const defeatedBoss = sortedBosses.find(boss => boss.high <= 4400);
+  const defeatedBoss = sortedBosses.find(boss => boss.high <= NYXARA_FINAL_ASSAULT_PRICE);
   if (defeatedBoss) {
-    const defeatTweet = generateBossDefeatTweet(defeatedBoss, 4400, defeatState);
+    const defeatTweet = generateBossDefeatTweet(defeatedBoss, NYXARA_FINAL_ASSAULT_PRICE, defeatState);
     console.log(defeatTweet);
     console.log(`\nLength: ${defeatTweet.length}/280 characters`);
   }

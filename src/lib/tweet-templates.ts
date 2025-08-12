@@ -6,6 +6,7 @@ export type BattleStatus = 'resting' | 'approaching' | 'heating_up' | 'critical'
 export interface BossData {
   date: string;
   high: number;
+  tier: string;
   name?: string;
   image?: string;
 }
@@ -142,51 +143,32 @@ export function generateDailyStatusTweet(battleState: BattleState, options: Twee
   // Build the enhanced tweet with boss personality
   let tweet = `⚔️ Daily Boss Battle Report\n\n`;
   
+  // Add boss-specific flavor text based on progress
   if (currentBoss.name) {
-    tweet += `👹 Boss: ${bossName}\n`;
-  } else {
-    tweet += `👹 Boss: Level ${battleState.bossesDefeated + 1}\n`;
+    if (battleState.battleStatus === 'final_assault') {
+      tweet += `${currentBoss.tier} Boss ${currentBoss.name} is on the brink of defeat! 🔥\n\n`;
+    } else if (battleState.battleStatus === 'critical') {
+      tweet += `${currentBoss.tier} Boss ${currentBoss.name} is on the ropes! 🥊\n\n`;
+    } else if (battleState.battleStatus === 'heating_up') {
+      tweet += `${currentBoss.tier} Boss ${currentBoss.name} is showing signs of damage! ⚔️\n\n`;
+    } else if (battleState.battleStatus === 'approaching') {
+      tweet += `${currentBoss.tier} Boss ${currentBoss.name} stands strong, barely wounded! 👀\n\n`;
+    } else {
+      tweet += `${currentBoss.tier} Boss ${currentBoss.name} rests, unaware of what is about to happen... 😴\n\n`;
+    }
   }
-  
-  tweet += `💰 Target: ${formattedTarget}\n`;
-  tweet += `📈 ETH: ${formattedPrice}\n\n`;
+
+  tweet += `${bossName} will be defeated when ETH reaches $${currentBoss.high.toLocaleString()}\n`;
+  tweet += `📈 Current $ETH Price: ${formattedPrice}\n`;
+  tweet += `🎯 only $${formattedRemaining} to go!\n\n`;
   
   // HP Bar visualization
   const hpBarLength = 10;
   const hpFilled = Math.round((1 - progress) * hpBarLength);
   const hpEmpty = hpBarLength - hpFilled;
   const hpBar = '█'.repeat(hpEmpty) + '░'.repeat(hpFilled);
-  
-  tweet += `❤️ HP: ${currentHP}/${totalHP}\n`;
-  tweet += `${hpBar} ${progressPercent}%\n\n`;
-  
-  tweet += `⚔️ Status: ${emoji} ${statusText}\n`;
-  
-  if (damageDealtFormatted > 0) {
-    tweet += `💥 Damage Dealt: $${damageDealtFormatted}\n`;
-  }
-  
-  tweet += `🎯 To Victory: ${formattedRemaining}\n\n`;
-  
-  // Add boss-specific flavor text based on progress
-  if (currentBoss.name) {
-    if (progress >= 0.9) {
-      tweet += `${currentBoss.name} is on the brink of defeat! 🔥\n\n`;
-    } else if (progress >= 0.75) {
-      tweet += `${currentBoss.name} is weakening! ⚡\n\n`;
-    } else if (progress >= 0.5) {
-      tweet += `${currentBoss.name} has engaged in battle! ⚔️\n\n`;
-    } else if (progress >= 0.25) {
-      tweet += `${currentBoss.name} stirs from slumber... 👀\n\n`;
-    } else {
-      tweet += `${currentBoss.name} rests, unaware of the approaching ETH army... 😴\n\n`;
-    }
-  }
-  
-  // Add hashtags
-  const hashtags = options.customHashtags || ['#ETHBossHunter', '$ETH'];
-  tweet += hashtags.join(' ');
-  
+  tweet += `🚨 ${hpBar} ${progressPercent}%\n\n`;
+    
   // Return tweet with image path for media attachment
   return {
     text: tweet,

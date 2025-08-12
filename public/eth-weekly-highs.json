@@ -2,60 +2,63 @@
   {
     "date": "2024-12-09",
     "high": 4006.17,
+    "tier": "ULTIMATE",
     "name": "Gorath",
     "image": "/images/gorath.png"
   },
   {
     "date": "2021-08-30",
     "high": 4027.88,
+    "tier": "LEGENDARY",
     "name": "Nyxara",
     "image": "/images/nyxara.png"
   },
   {
-    "date": "2025-08-04",
-    "high": 4071,
-    "name": "Othrak",
-    "image": "/images/othrak.png"
-  },
-  {
     "date": "2024-12-02",
     "high": 4087.73,
+    "tier": "ULTIMATE",
     "name": "Volkan",
     "image": "/images/volkan.png"
   },
   {
     "date": "2024-03-11",
     "high": 4093.92,
-    "name": "Drenchmaw",
-    "image": "/images/drenchmaw.png"
+    "tier": "ULTIMATE",
+    "name": "Othrak",
+    "image": "/images/othrak.png"
   },
   {
     "date": "2024-12-16",
     "high": 4107.8,
+    "tier": "ULTIMATE",
     "name": "Voltaris",
     "image": "/images/voltaris.png"
   },
   {
     "date": "2021-12-27",
     "high": 4127.46,
+    "tier": "LEGENDARY",
     "name": "Maltherion",
     "image": "/images/maltherion.png"
   },
   {
     "date": "2021-12-13",
     "high": 4142.75,
+    "tier": "LEGENDARY",
     "name": "Tenebris",
     "image": "/images/tenebris.png"
   },
   {
     "date": "2021-12-20",
     "high": 4150,
+    "tier": "LEGENDARY",
     "name": "Baelgor",
     "image": "/images/baelgor.png"
   },
   {
     "date": "2025-08-04",
     "high": 4333.00,
+    "tier": "AWESOME",
     "name": "Buterion",
     "image": "/images/buterion.png",
     "lore": "In the glow of a bull market’s crest, Buterion emerges — vast and luminescent, scales shimmering. He rises as Ethereum’s co-founder reclaims his legendary billionaire status, wielding both the light of triumph and the weight of wisdom. His breath courses with neon runes of growth and prosperity, while his eyes flicker with wary foresight. Though the market rallies behind him, his warning ring loud — dependency on institutional treasuries could fracture the network’s core. Thus, Buterion stands tall, guardian of progress—majestic yet mindful, urging balance even in moments of glory."
@@ -63,54 +66,63 @@
   {
     "date": "2021-05-10",
     "high": 4372.72,
+    "tier": "GODLIKE",
     "name": "Kronthar",
     "image": "/images/kronthar.png"
   },
   {
     "date": "2021-10-18",
     "high": 4375,
+    "tier": "LEGENDARY",
     "name": "Abythra",
     "image": "/images/abythra.png"
   },
   {
     "date": "2021-10-25",
     "high": 4460.47,
+    "tier": "LEGENDARY",
     "name": "Sevrath",
     "image": "/images/sevrath.png"
   },
   {
     "date": "2021-12-06",
     "high": 4488,
+    "tier": "LEGENDARY",
     "name": "Vexarion",
     "image": "/images/vexarion.png"
   },
   {
     "date": "2021-11-22",
     "high": 4551,
+    "tier": "LEGENDARY",
     "name": "Zepheros",
     "image": "/images/zepheros.png"
   },
   {
     "date": "2021-11-01",
     "high": 4665.87,
+    "tier": "LEGENDARY",
     "name": "Skathra",
     "image": "/images/skathra.png"
   },
   {
     "date": "2021-11-15",
-    "high": 4772.01,
+    "high": 4772.01,  
+    "tier": "GODLIKE",
     "name": "Lurathos",
     "image": "/images/lurathos.png"
   },
   {
     "date": "2021-11-29",
     "high": 4778.75,
+    "tier": "GODLIKE",
     "name": "Iskara",
     "image": "/images/iskara.png"
   },
   {
     "date": "2021-11-08",
     "high": 4868,
+    "tier": "GODLIKE",
     "name": "Athion",
     "image": "/images/athion.png"
   }

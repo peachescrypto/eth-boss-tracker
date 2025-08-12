@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: path.join(process.cwd(), '.env.local') });
 
 // Import TypeScript functions
-import { postToBossHunterTwitter } from '../../../src/lib/twitter.js';
+import { postDailyStatusToTwitter } from '../../../src/lib/twitter.js';
 
 async function main() {
   console.log('🎯 Testing ETH Boss Hunter Twitter Bot...\n');
@@ -18,7 +18,7 @@ async function main() {
 
   // Post to Twitter (all logic handled inside the function)
   console.log('🚀 Posting to Twitter...');
-  const result = await postToBossHunterTwitter(mockPrice);
+  const result = await postDailyStatusToTwitter(mockPrice);
 
   if (result.success) {
     console.log('✅ Tweet posted successfully!');

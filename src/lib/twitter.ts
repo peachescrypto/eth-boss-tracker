@@ -3,8 +3,118 @@ import path from 'path';
 import crypto from 'crypto';
 import { analyzeBattleState, generateDailyStatusTweet } from './tweet-templates';
 
-// Dedicated function for ETH Boss Hunter account with image support
-export async function postToBossHunterTwitter(
+// Post daily status tweet to Boss Hunter Twitter account
+export async function postDailyStatusToTwitter(
+  price: number
+): Promise<{ success: boolean; tweetId?: string; error?: string }> {
+  // Check for required ETH Boss Hunter environment variables
+  const requiredVars = [
+    'BOSS_HUNTER_API_KEY',
+    'BOSS_HUNTER_API_SECRET', 
+    'BOSS_HUNTER_ACCESS_TOKEN',
+    'BOSS_HUNTER_ACCESS_TOKEN_SECRET'
+  ];
+  
+  const missingVars = requiredVars.filter(varName => !process.env[varName]);
+  if (missingVars.length > 0) {
+    return { 
+      success: false, 
+      error: `Missing Boss Hunter Twitter credentials: ${missingVars.join(', ')}` 
+    };
+  }
+  
+  try {
+    console.log('🐦 Starting daily status tweet posting process...');
+    console.log('💰 Current ETH price:', price);
+    
+    // Load boss data
+    const bossDataPath = path.join(process.cwd(), 'public', 'eth-weekly-highs.json');
+    const bossDataRaw = fs.readFileSync(bossDataPath, 'utf8');
+    const bossData = JSON.parse(bossDataRaw);
+    
+    // Analyze current battle state
+    const battleState = analyzeBattleState(price, bossData);
+    console.log('⚔️ Battle state:', {
+      currentBoss: battleState.currentBoss?.name || 'All Defeated',
+      progress: Math.round(battleState.progress * 100),
+      status: battleState.battleStatus,
+      bossesDefeated: battleState.bossesDefeated
+    });
+    
+    // Generate daily status tweet with boss image
+    const tweetContent = generateDailyStatusTweet(battleState);
+    const tweetText = tweetContent.text;
+    const imagePath = tweetContent.image;
+    
+    console.log('📝 Tweet text length:', tweetText.length);
+    console.log('📸 Image path:', imagePath || 'None');
+    
+    // If we have an image, we need to upload it first via Twitter Media API
+    let mediaId = undefined;
+    if (imagePath) {
+      try {
+        mediaId = await uploadImageToTwitter(imagePath);
+      } catch (imageError) {
+        console.warn('Failed to upload image, posting without:', imageError);
+        // Continue without image rather than failing the entire tweet
+      }
+    }
+    
+    // Post tweet with optional media
+    const tweetPayload: { text: string; media?: { media_ids: string[] } } = {
+      text: tweetText
+    };
+    
+    if (mediaId) {
+      tweetPayload.media = { media_ids: [mediaId] };
+    }
+    
+    // Use OAuth 2.0 Bearer token if available, otherwise fall back to OAuth 1.0a
+    const headers =  
+    {
+      'Authorization': generateBossHunterOAuthSignatureForTweets().authHeader,
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch('https://api.twitter.com/2/tweets', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(tweetPayload)
+    });
+    
+    console.log('📡 Response status:', response.status);
+    console.log('📡 Response headers:', Object.fromEntries(response.headers));
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.log('❌ Twitter API error response:', errorData);
+       if (response.status === 429) {
+        const resetTime = response.headers.get('x-rate-limit-reset');
+        if (resetTime) {
+          // const resetDate = new Date(parseInt(resetTime) * 1000);
+          // const minutesUntilReset = Math.ceil((resetDate.getTime() - Date.now()) / (1000 * 60));
+        }
+      }
+      throw new Error(`Boss Hunter Twitter API error: ${response.status} - ${JSON.stringify(errorData)}`);
+    }
+    
+    const result = await response.json();
+    
+    return {
+      success: true,
+      tweetId: result.data?.id
+    };
+    
+  } catch (error) {
+    console.error('Failed to post Boss Hunter tweet:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+export async function postBossDefeatedToTwitter(
   price: number
 ): Promise<{ success: boolean; tweetId?: string; error?: string }> {
   // Check for required ETH Boss Hunter environment variables
