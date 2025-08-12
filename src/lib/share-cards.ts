@@ -76,20 +76,16 @@ ${data.bossName} (Level ${data.bossLevel}) has fallen!
 Target: ${data.targetPrice}
 Victory Price: ${data.currentPrice}
 
-Another boss down in the ETH Boss Hunter! 💪
-
-#ETH #BossHunter #DeFi #Ethereum`;
+Another boss down in the ETH Boss Hunter! 💪`;
   } else {
-    return `⚔️ ETH Boss Battle Update!
+    return `⚔️ $ETH Boss Battle Update!
 
 Current Boss: ${data.bossName} (Level ${data.bossLevel})
 Target: ${data.targetPrice}
 Current ETH: ${data.currentPrice}
 Progress: ${data.progress || 0}%
 
-Will ETH defeat this boss? 🎯
-
-#ETH #BossHunter #DeFi #Ethereum`;
+Will $ETH defeat this boss? 🎯`;
   }
 }
 
