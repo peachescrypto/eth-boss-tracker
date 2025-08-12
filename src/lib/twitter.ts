@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
-import { analyzeBattleState, generateDailyStatusTweet, generateBossDefeatTweet } from './tweet-templates';
+import { analyzeBattleState, generateDailyStatusTweet, generateBossDefeatTweet, type BossData, type BattleState } from './tweet-templates';
 
 // Upload image to Twitter
 async function uploadImageToTwitter(imagePath: string): Promise<string> {
@@ -251,7 +251,7 @@ export async function checkAndPostBossDefeats(
     const sortedBosses = [...bossData].sort((a, b) => a.high - b.high);
 
     // Find bosses that were defeated between lastCheckedPrice and currentPrice
-    const newlyDefeatedBosses: any[] = [];
+    const newlyDefeatedBosses: BossData[] = [];
     let lastDefeatedBossIndex = -1;
     
     for (let i = 0; i < sortedBosses.length; i++) {
@@ -323,10 +323,10 @@ export async function checkAndPostBossDefeats(
 
 // Post boss defeat tweet to Boss Hunter Twitter account
 async function postBossDefeatTweet(
-  defeatedBoss: any,
+  defeatedBoss: BossData,
   currentPrice: number,
-  battleState: any,
-  bossData: any[]
+  battleState: BattleState,
+  bossData: BossData[]
 ): Promise<{ success: boolean; tweetId?: string; error?: string }> {
   const requiredVars = [
     'BOSS_HUNTER_API_KEY', 'BOSS_HUNTER_API_SECRET',
