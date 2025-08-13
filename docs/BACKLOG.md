@@ -13,7 +13,6 @@ How to use:
 
 ## In Progress
 - [ ] Improve boss card design, each should have a HP (target price minus previos boss price), Tier (based on age), Number, spawn date
-- [ ] **Real-time Notifications** - Alert when bosses are defeated
 - [ ] **Share Cards Improvements** - Add share card to each boss, they will each need their own url, but also one each for defeated, active and hiding states so that cards are up-to-date when they are shared. Sharing the home page should share the current boss. Remove price and progress from these cards as they change too often.
 
 # Backlog
@@ -46,6 +45,7 @@ How to use:
 - [ ] **Boss Lore** - Backstories for each boss character
 
 ## Done
+- [x] **Real-time Notifications** - Alert when bosses are defeated
 - [x] Fix tweets, test-image-upload works, but test-boss-hunter and twitter.ts doesnt. unify those all
 - [x] Consolidate tweet-templates
 - [x] **Share Cards** - Generate beautiful social media images for sharing using Open Graph/Twitter card 
