@@ -17,8 +17,8 @@
     "date": "2024-12-02",
     "high": 4087.73,
     "tier": "ULTIMATE",
-    "name": "Volkan",
-    "image": "/images/volkan.png"
+    "name": "Voltaris",
+    "image": "/images/voltaris.png"
   },
   {
     "date": "2024-03-11",
@@ -52,8 +52,8 @@
     "date": "2021-12-20",
     "high": 4150,
     "tier": "LEGENDARY",
-    "name": "Baelgor",
-    "image": "/images/baelgor.png"
+    "name": "Lurathos",
+    "image": "/images/lurathos.png"
   },
   {
     "date": "2025-08-04",
@@ -104,16 +104,17 @@
     "date": "2021-11-01",
     "high": 4665.87,
     "tier": "LEGENDARY",
-    "name": "Voltaris",
-    "image": "/images/voltaris.png",
+    "name": "Volkan",
+    "image": "/images/Volkan.png",
     "lore": "Volkan rose in a blaze embodying Ken Griffin’s spirit, seizing the rare first printing of the U.S. Constitution with a $43.2M strike, shattering the Constitution DAO's bid"    
   },
   {
     "date": "2021-11-15",
     "high": 4772.01,  
     "tier": "GODLIKE",
-    "name": "Lurathos",
-    "image": "/images/lurathos.png"
+    "name": "Baelgor",
+    "image": "/images/baelgor.png",
+    "lore": "Baelgor, the dread Ox of 2021, rose as Evergrande crumbled. Forged from debt and dread, he tramples markets, goring bullish dreams and heralding storms of risk across the crypto plains."
   },
   {
     "date": "2021-11-29",

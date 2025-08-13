@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Check for Boss Defeats
+    - name: Check for Boss Defeats and Boss Switches
       run: |
         # Get the deployment URL
         DEPLOYMENT_URL="https://eth-boss-tracker.vercel.app"
         
-        echo "🔍 Checking for boss defeats at $(date)"
+        echo "🔍 Checking for boss defeats and boss switches at $(date)"
         echo "🌐 API endpoint: $DEPLOYMENT_URL/api/tweets/boss-defeat"
         
         # Make the API call and capture response
@@ -41,12 +41,18 @@ jobs:
         
         # Parse the response to check if any bosses were defeated
         NEWLY_DEFEATED=$(echo "$RESPONSE_BODY" | grep -o '"newlyDefeatedCount":[0-9]*' | cut -d':' -f2)
+        BOSS_SWITCHES=$(echo "$RESPONSE_BODY" | grep -o '"bossSwitchCount":[0-9]*' | cut -d':' -f2)
         
         if [ "$NEWLY_DEFEATED" -gt 0 ]; then
           echo "🎉 Boss defeat detected! $NEWLY_DEFEATED boss(es) defeated"
-          echo "Full response: $RESPONSE_BODY"
-        else
-          echo "😴 No new boss defeats detected"
         fi
         
-        echo "✅ Boss defeat check completed successfully"
+        if [ "$BOSS_SWITCHES" -gt 0 ]; then
+          echo "🎯 Boss switch detected! $BOSS_SWITCHES new target(s)"
+        fi
+        
+        if [ "$NEWLY_DEFEATED" -eq 0 ] && [ "$BOSS_SWITCHES" -eq 0 ]; then
+          echo "😴 No boss defeats or boss switches detected"
+        fi
+        
+        echo "✅ Boss defeat and boss switch check completed successfully"

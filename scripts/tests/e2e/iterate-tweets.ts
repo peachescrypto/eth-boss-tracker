@@ -5,6 +5,7 @@ import {
   analyzeBattleState,
   generateDailyStatusTweet,
   generateBossDefeatTweet,
+  generateBossSwitchTweet,
   generateAllBossesDefeatedTweet,
   generateMilestoneTweet,
   type BattleState,
@@ -93,13 +94,25 @@ function testTweets(): void {
     console.log(`\nLength: ${defeatTweet.length}/280 characters`);
   }
 
-  // Example 4: Milestone Tweet
+  // Example 4: Boss Switch Tweet (price drop)
+  printSeparator('Boss Switch Tweet - Price Drop');
+  const switchPrice = 4100; // Current price (lower)
+  const previousPrice = 4090; // Previous price (higher)
+  const switchState = analyzeBattleState(switchPrice, bossData);
+  const currentTargetBoss = switchState.currentBoss;
+  if (currentTargetBoss) {
+    const switchTweet = generateBossSwitchTweet(currentTargetBoss, switchPrice, previousPrice, switchState);
+    console.log(switchTweet);
+    console.log(`\nLength: ${switchTweet.length}/280 characters`);
+  }
+
+  // Example 5: Milestone Tweet
   printSeparator('Milestone Tweet - 90%');
   const milestoneTweet = generateMilestoneTweet(criticalState, 90);
   console.log(milestoneTweet);
   console.log(`\nLength: ${milestoneTweet.length}/280 characters`);
 
-  // Example 5: All Bosses Defeated
+  // Example 6: All Bosses Defeated
   printSeparator('Legendary Status Tweet');
   const legendaryState = analyzeBattleState(5000, bossData);
   const legendaryTweet = generateAllBossesDefeatedTweet(legendaryState);
@@ -120,6 +133,7 @@ function main(): void {
   const command = args[0];
   const price = args[1] ? parseFloat(args[1]) : 4200;
   const milestone = args[2] ? parseInt(args[2]) : 90;
+  const previousPrice = args[3] ? parseFloat(args[3]) : price + 200; // For focus change
 
   console.log('🎯 ETH Boss Hunter Tweet Generator\n');
 
@@ -159,6 +173,19 @@ function main(): void {
       }
       break;
 
+    case 'switch':
+      printSeparator(`Boss Switch Tweet at $${price.toLocaleString()} (from $${previousPrice.toLocaleString()})`);
+      const switchState = analyzeBattleState(price, bossData);
+      const currentTargetBoss = switchState.currentBoss;
+      if (currentTargetBoss) {
+        const switchTweet = generateBossSwitchTweet(currentTargetBoss, price, previousPrice, switchState);
+        console.log(switchTweet);
+        console.log(`\nLength: ${switchTweet.length}/280 characters`);
+      } else {
+        console.log('❌ No current target boss at this price');
+      }
+      break;
+
     case 'daily':
       printSeparator(`Daily Status Tweet at $${price.toLocaleString()}`);
       const dailyState = analyzeBattleState(price, bossData);
@@ -183,6 +210,7 @@ function main(): void {
     default:
       console.log('❌ Unknown command. Available commands:');
       console.log('  defeat [price]     - Boss defeat tweet');
+      console.log('  switch [price] [previous] - Boss switch tweet');
       console.log('  daily [price]      - Daily status tweet');
       console.log('  milestone [price] [percent] - Milestone tweet');
       console.log('  (no args)          - Show all examples');

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
-import { analyzeBattleState, generateDailyStatusTweet, generateBossDefeatTweet, type BossData, type BattleState } from './tweet-templates';
+import { analyzeBattleState, generateDailyStatusTweet, generateBossDefeatTweet, generateBossSwitchTweet, type BossData, type BattleState } from './tweet-templates';
 
 // Upload image to Twitter
 async function uploadImageToTwitter(imagePath: string): Promise<string> {
@@ -229,18 +229,20 @@ export async function checkAndPostBossDefeats(
   success: boolean; 
   currentPrice: number; 
   newlyDefeatedCount: number; 
+  bossSwitchCount: number;
   results: Array<{
     boss: string;
     price: number;
     success: boolean;
     tweetId?: string;
     error?: string;
+    type: 'defeat' | 'boss_switch';
   }>;
   lastDefeatedBossIndex: number;
   failedCount: number;
 }> {
   try {
-    console.log('🔍 Checking for boss defeats...');
+    console.log('🔍 Checking for boss defeats and switches...');
     console.log('💰 Current price:', currentPrice);
     console.log('📊 Last checked price:', lastCheckedPrice);
 
@@ -266,7 +268,22 @@ export async function checkAndPostBossDefeats(
       }
     }
 
+    // Find boss switches (when price drops and a new boss becomes current target)
+    const bossSwitchBosses: BossData[] = [];
+    
+    // Get current and previous target bosses
+    const currentTargetBoss = sortedBosses.find(boss => currentPrice < boss.high);
+    const previousTargetBoss = sortedBosses.find(boss => lastCheckedPrice < boss.high);
+    
+    // If we have a different target boss and price dropped, it's a boss switch
+    if (currentTargetBoss && previousTargetBoss && 
+        currentTargetBoss.high !== previousTargetBoss.high && 
+        currentPrice < lastCheckedPrice) {
+      bossSwitchBosses.push(currentTargetBoss);
+    }
+
     console.log('🎯 Newly defeated bosses:', newlyDefeatedBosses.length);
+    console.log('🎯 Boss switch bosses:', bossSwitchBosses.length);
 
     const results = [];
 
@@ -282,11 +299,34 @@ export async function checkAndPostBossDefeats(
         price: defeatedBoss.high,
         success: tweetResult.success,
         tweetId: tweetResult.tweetId,
-        error: tweetResult.error
+        error: tweetResult.error,
+        type: 'defeat' as const
       });
 
       // Add a small delay between tweets if multiple bosses defeated
       if (newlyDefeatedBosses.length > 1) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
+    }
+
+    // Post a tweet for each boss switch
+    for (const switchBoss of bossSwitchBosses) {
+      const battleState = analyzeBattleState(currentPrice, bossData);
+      
+      // Post the boss switch tweet
+      const tweetResult = await postBossSwitchTweet(switchBoss, currentPrice, lastCheckedPrice, battleState);
+      
+      results.push({
+        boss: switchBoss.name || 'Unknown Boss',
+        price: switchBoss.high,
+        success: tweetResult.success,
+        tweetId: tweetResult.tweetId,
+        error: tweetResult.error,
+        type: 'boss_switch' as const
+      });
+
+      // Add a small delay between tweets
+      if (bossSwitchBosses.length > 1) {
         await new Promise(resolve => setTimeout(resolve, 5000));
       }
     }
@@ -296,24 +336,26 @@ export async function checkAndPostBossDefeats(
     const failedTweets = results.filter(result => !result.success);
     
     if (failedTweets.length > 0) {
-      console.log('❌ Some boss defeat tweets failed:', failedTweets.map(r => `${r.boss}: ${r.error}`));
+      console.log('❌ Some tweets failed:', failedTweets.map(r => `${r.boss} (${r.type}): ${r.error}`));
     }
 
     return {
       success: allTweetsSuccessful,
       currentPrice,
       newlyDefeatedCount: newlyDefeatedBosses.length,
+      bossSwitchCount: bossSwitchBosses.length,
       results,
       lastDefeatedBossIndex,
       failedCount: failedTweets.length
     };
 
   } catch (error) {
-    console.error('Failed to check for boss defeats:', error);
+    console.error('Failed to check for boss defeats and boss switches:', error);
     return {
       success: false,
       currentPrice,
       newlyDefeatedCount: 0,
+      bossSwitchCount: 0,
       results: [],
       lastDefeatedBossIndex: -1,
       failedCount: 0
@@ -371,6 +413,61 @@ async function postBossDefeatTweet(
 
   } catch (error) {
     console.error('Failed to post boss defeat tweet:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
+// Post boss switch tweet to Boss Hunter Twitter account
+async function postBossSwitchTweet(
+  newTargetBoss: BossData,
+  currentPrice: number,
+  lastCheckedPrice: number,
+  battleState: BattleState
+): Promise<{ success: boolean; tweetId?: string; error?: string }> {
+  const requiredVars = [
+    'BOSS_HUNTER_API_KEY', 'BOSS_HUNTER_API_SECRET',
+    'BOSS_HUNTER_ACCESS_TOKEN', 'BOSS_HUNTER_ACCESS_TOKEN_SECRET'
+  ];
+  const missingVars = requiredVars.filter(varName => !process.env[varName]);
+  if (missingVars.length > 0) {
+    return { success: false, error: `Missing Boss Hunter Twitter credentials: ${missingVars.join(', ')}` };
+  }
+
+  try {
+    console.log('🎯 Starting boss switch tweet posting...');
+    console.log('🎯 New target boss:', newTargetBoss.name);
+    console.log('💰 Current ETH price:', currentPrice);
+    console.log('📊 Last checked price:', lastCheckedPrice);
+
+    // Generate boss switch tweet
+    const tweetText = generateBossSwitchTweet(newTargetBoss, currentPrice, lastCheckedPrice, battleState);
+    console.log('📝 Tweet text length:', tweetText.length);
+
+    // Post tweet using OAuth 1.0a signature
+    const headers = {
+      'Authorization': generateBossHunterOAuthSignatureForTweets().authHeader,
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch('https://api.twitter.com/2/tweets', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ text: tweetText })
+    });
+
+    console.log('📡 Response status:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.log('❌ Twitter API error response:', errorData);
+      throw new Error(`Boss Hunter Twitter API error: ${response.status} - ${JSON.stringify(errorData)}`);
+    }
+
+    const result = await response.json();
+    return { success: true, tweetId: result.data?.id };
+
+  } catch (error) {
+    console.error('Failed to post boss switch tweet:', error);
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 }

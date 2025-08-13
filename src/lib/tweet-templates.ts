@@ -182,16 +182,15 @@ export function generateDailyStatusTweet(battleState: BattleState, options: Twee
 export function generateBossDefeatTweet(defeatedBoss: BossData, newPrice: number, battleState: BattleState, bossData?: BossData[]): string {
   const bossName = defeatedBoss.name || `Boss Level ${battleState.bossesDefeated}`;
   const levelNumber = battleState.bossesDefeated;
-  
+
   let tweet = `💀 BOSS DEFEATED! 💀\n\n`;
   tweet += `${bossName} has fallen!\n`;
   tweet += `Level ${levelNumber}/${battleState.totalBosses} Achieved ✅\n`;
   tweet += `One step closer to defeating #Athion\n\n`;
   tweet += `But wait, a new boss is stirring...\n\n`;
-  
-  // Calculate the next boss based on the defeated boss
+
   let nextBoss = battleState.nextBoss;
-  
+
   if (bossData) {
     const sortedBosses = [...bossData].sort((a, b) => a.high - b.high);
     const defeatedBossIndex = sortedBosses.findIndex(boss => boss.high === defeatedBoss.high);
@@ -199,29 +198,64 @@ export function generateBossDefeatTweet(defeatedBoss: BossData, newPrice: number
       nextBoss = sortedBosses[defeatedBossIndex + 1];
     }
   }
-  
+
   if (nextBoss) {
     const nextBossName = nextBoss.name?.toLocaleUpperCase() || `Boss Level ${levelNumber + 1}`;
     const nextBossTier = nextBoss.tier;
     const nextBossDate = nextBoss.date;
-    // Format the date nicely
     const date = new Date(nextBossDate);
-    const prettyDate = date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    const prettyDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     });
     tweet += `${nextBossName} is coming and is ${nextBossTier}, they spawned on ${prettyDate} \n\n`;
-    
-    // Add lore if available
+
     // if (nextBoss.lore) {
     //   tweet += `${nextBoss.lore}\n\n`;
     // } else {
     //   console.log('No lore available for next boss');
     // }
   }
+
+  tweet += `https://eth-boss-tracker.vercel.app/`;
+
+  return tweet;
+}
+
+export function generateBossSwitchTweet(
+  newTargetBoss: BossData, 
+  currentPrice: number, 
+  lastCheckedPrice: number, 
+  battleState: BattleState
+): string {
+  const bossName = newTargetBoss.name || `Boss Level ${battleState.bossesDefeated + 1}`;
+  const priceDrop = lastCheckedPrice - currentPrice;
+  const priceDropPercent = ((priceDrop / lastCheckedPrice) * 100).toFixed(1);
   
-  tweet += `See them here: https://eth-boss-tracker.vercel.app/`;
+  let tweet = `↔️ BOSS SWITCH OUT! ↔️\n\n`;
+  tweet += `Back to level ${battleState.bossesDefeated} 😤\n`;
+  
+  if (newTargetBoss) {
+    const nextBossName = newTargetBoss.name?.toLocaleUpperCase() || `Boss Level ${battleState.bossesDefeated}`;
+    const nextBossTier = newTargetBoss.tier;
+    const nextBossDate = newTargetBoss.date;
+    const date = new Date(nextBossDate);
+    const prettyDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    tweet += `${nextBossName} is coming and is ${nextBossTier}, they spawned on ${prettyDate} \n\n`;
+
+    // if (newTargetBoss.lore) {
+    //   tweet += `${newTargetBoss.lore}\n\n`;
+    // } else {
+    //   console.log('No lore available for next boss');
+    // }
+  }
+  
+  tweet += `https://eth-boss-tracker.vercel.app/`;
   
   return tweet;
 }
@@ -231,11 +265,10 @@ export function generateAllBossesDefeatedTweet(battleState: BattleState): TweetW
   
   let tweet = `🏆 LEGENDARY STATUS ACHIEVED! 🏆\n\n`;
   tweet += `ALL ${battleState.totalBosses} BOSSES DEFEATED!\n\n`;
-  tweet += `ETH Price: ${formattedPrice}\n`;
+  tweet += `$ETH Price: ${formattedPrice}\n`;
   tweet += `Status: 👑 LEGENDARY WARRIOR\n\n`;
   tweet += `The ETH Army has conquered every boss!\n`;
   tweet += `New all-time highs = NEW BOSSES! 📈\n\n`;
-  tweet += `#ETHBossHunter #AllBossesDefeated #Legendary $ETH`;
   
   return {
     text: tweet,
