@@ -31,8 +31,8 @@
     "date": "2024-12-16",
     "high": 4107.8,
     "tier": "ULTIMATE",
-    "name": "Voltaris",
-    "image": "/images/voltaris.png"
+    "name": "Othrak",
+    "image": "/images/othrak.png"
   },
   {
     "date": "2021-12-27",
@@ -104,8 +104,9 @@
     "date": "2021-11-01",
     "high": 4665.87,
     "tier": "LEGENDARY",
-    "name": "Skathra",
-    "image": "/images/skathra.png"
+    "name": "Voltaris",
+    "image": "/images/voltaris.png",
+    "lore": "Volkan rose in a blaze embodying Ken Griffin’s spirit, seizing the rare first printing of the U.S. Constitution with a $43.2M strike, shattering the Constitution DAO's bid"    
   },
   {
     "date": "2021-11-15",
