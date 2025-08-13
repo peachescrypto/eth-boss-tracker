@@ -13,29 +13,48 @@ export async function POST() {
       ? `https://${process.env.VERCEL_URL}` 
       : 'http://localhost:3000';
 
+    console.log('🔍 Starting boss defeat check...');
+    console.log('🌐 Using base URL:', baseUrl);
+
     // Get current ETH price
+    console.log('📊 Fetching current price...');
     const currentPriceResponse = await fetch(`${baseUrl}/api/price`);
+    console.log('📡 Current price response status:', currentPriceResponse.status);
+    
     if (!currentPriceResponse.ok) {
-      throw new Error('Failed to fetch current price');
+      const errorText = await currentPriceResponse.text();
+      console.error('❌ Current price fetch failed:', errorText);
+      throw new Error(`Failed to fetch current price: ${currentPriceResponse.status} - ${errorText}`);
     }
+    
     const currentPriceData: PriceData = await currentPriceResponse.json();
     const currentPrice = currentPriceData.priceUsd;
+    console.log('💰 Current price:', currentPrice);
 
     // Get price 15 minutes ago
+    console.log('📊 Fetching price from 15 minutes ago...');
     const lastPriceResponse = await fetch(`${baseUrl}/api/price?minutes_ago=15`);
+    console.log('📡 Last price response status:', lastPriceResponse.status);
+    
     if (!lastPriceResponse.ok) {
-      throw new Error('Failed to fetch last price');
+      const errorText = await lastPriceResponse.text();
+      console.error('❌ Last price fetch failed:', errorText);
+      throw new Error(`Failed to fetch last price: ${lastPriceResponse.status} - ${errorText}`);
     }
+    
     const lastPriceData: PriceData = await lastPriceResponse.json();
     const lastPrice = lastPriceData.priceUsd;
+    console.log('💰 Last price:', lastPrice);
 
     // Check for boss defeats and post tweets
+    console.log('⚔️ Checking for boss defeats...');
     const result = await checkAndPostBossDefeats(currentPrice, lastPrice);
+    console.log('✅ Boss defeat check completed:', result);
 
     return NextResponse.json(result);
 
   } catch (error) {
-    console.error('Boss defeat detection error:', error);
+    console.error('💥 Boss defeat detection error:', error);
     return NextResponse.json({
       error: 'Failed to check for boss defeats',
       details: error instanceof Error ? error.message : 'Unknown error'

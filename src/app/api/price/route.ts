@@ -171,6 +171,7 @@ async function fetchFromCoinGecko(minutesAgo?: number): Promise<PriceResponse | 
 async function getCurrentPrice(minutesAgo?: number): Promise<PriceResponse> {
   // Only use cache for current prices, not historical
   if (!minutesAgo && cache && (Date.now() - cacheTime) < CACHE_DURATION) {
+    console.log('📦 Using cached price:', cache.priceUsd);
     return cache;
   }
 
@@ -182,22 +183,31 @@ async function getCurrentPrice(minutesAgo?: number): Promise<PriceResponse> {
   ];
 
   for (const provider of providers) {
-    const result = await provider.fn();
-    if (result) {
-      // Only cache current prices, not historical
-      if (!minutesAgo) {
-        cache = result;
-        cacheTime = Date.now();
+    try {
+      console.log(`🔄 Trying ${provider.name}...`);
+      const result = await provider.fn();
+      if (result) {
+        console.log(`✅ ${provider.name} succeeded:`, result.priceUsd);
+        // Only cache current prices, not historical
+        if (!minutesAgo) {
+          cache = result;
+          cacheTime = Date.now();
+        }
+        return result;
       }
-      return result;
+      console.log(`❌ ${provider.name} returned null`);
+    } catch (error) {
+      console.error(`❌ ${provider.name} failed:`, error);
     }
   }
 
   // If all providers fail, return cached value or error
   if (!minutesAgo && cache) {
+    console.log('📦 All providers failed, using cached price:', cache.priceUsd);
     return cache;
   }
 
+  console.error('💥 All price providers failed');
   throw new Error('All price providers failed');
 }
 

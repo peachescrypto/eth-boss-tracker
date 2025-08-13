@@ -19,10 +19,11 @@ jobs:
         echo "🔍 Checking for boss defeats at $(date)"
         echo "🌐 API endpoint: $DEPLOYMENT_URL/api/tweets/boss-defeat"
         
-        # Make the API call and capture both status code and response
-        RESPONSE=$(curl -s -w "%{http_code}" -X POST "https://eth-boss-tracker.vercel.app/api/tweets/boss-defeat" \
+        # Make the API call and capture response
+        RESPONSE=$(curl -s -X POST "https://eth-boss-tracker.vercel.app/api/tweets/boss-defeat" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            -H "Content-Type: application/json")
+            -H "Content-Type: application/json" \
+            -w "\n%{http_code}")
         
         # Extract the response body and status code
         HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
