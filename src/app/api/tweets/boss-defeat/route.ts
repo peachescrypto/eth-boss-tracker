@@ -9,9 +9,8 @@ interface PriceData {
 
 export async function POST() {
   try {
-    const baseUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
-      : 'http://localhost:3000';
+    // Use the public URL instead of the internal Vercel URL
+    const baseUrl = 'https://eth-boss-tracker.vercel.app';
 
     console.log('🔍 Starting boss defeat check...');
     console.log('🌐 Using base URL:', baseUrl);
@@ -65,9 +64,8 @@ export async function POST() {
 // GET endpoint for manual checking/testing
 export async function GET() {
   try {
-    const baseUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
-      : 'http://localhost:3000';
+    // Use the public URL instead of the internal Vercel URL
+    const baseUrl = 'https://eth-boss-tracker.vercel.app';
 
     // Get current ETH price
     const currentPriceResponse = await fetch(`${baseUrl}/api/price`);
