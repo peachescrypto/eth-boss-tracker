@@ -11,19 +11,15 @@ interface BossDetailCardProps {
     lore?: string;
   };
   index: number;
-  isComplete: boolean;
   isFutureBoss: boolean;
   hp: number;
-  progress: number;
 }
 
 export const BossDetailCard: React.FC<BossDetailCardProps> = ({
   boss,
   index,
-  isComplete,
   isFutureBoss,
   hp,
-  progress,
 }) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -63,7 +59,7 @@ export const BossDetailCard: React.FC<BossDetailCardProps> = ({
         {/* Boss Card Section */}
         <div className="flex justify-center relative">
           {/* Glow Effect - positioned behind the BossCard */}
-          <div className="absolute rounded-full blur-lg opacity-75 animate-pulse z-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500" style={{ width: '320px', height: '480px', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}></div>
+          <div className="absolute rounded-full blur-lg opacity-75 animate-pulse z-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500" style={{ width: '320px', height: '460px', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}></div>
           
           <BossCard
             boss={boss}

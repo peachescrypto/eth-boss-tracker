@@ -244,19 +244,14 @@ export default function Home() {
             );
             const currentBoss = currentBossIndex >= 0 ? dailyHighs[currentBossIndex] : dailyHighs[dailyHighs.length - 1];
             const previousHigh = currentBossIndex > 0 ? dailyHighs[currentBossIndex - 1].high : 0;
-            const progress = priceData 
-              ? calculateProgress(priceData.priceUsd, previousHigh, currentBoss.high)
-              : 0;
-            const currentHP = Math.max(0, Math.round((1 - progress) * 100));
+            const currentHP = currentBoss.high - previousHigh;
             
             return (
               <BossDetailCard
                 boss={currentBoss}
                 index={currentBossIndex}
-                isComplete={false}
                 isFutureBoss={false}
                 hp={currentHP}
-                progress={progress}
               />
             );
           })()}
@@ -295,7 +290,7 @@ export default function Home() {
                       ? calculateProgress(priceData.priceUsd, previousHigh, boss.high)
                       : 0;
                     const isComplete = Boolean(priceData && priceData.priceUsd >= boss.high);
-                    const hp = Math.max(0, Math.round((1 - progress) * 100));
+                    const hp = dailyHighs[index].high - previousHigh
                     
                     // Determine if this is the current boss (first incomplete boss)
                     const isCurrentBoss = Boolean(!isComplete && dailyHighs.slice(0, index).every(prevBoss => 
