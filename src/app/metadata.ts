@@ -13,10 +13,13 @@ export async function generateMetadata(): Promise<Metadata> {
       currentPrice: '$3,850',
       progress: 75,
       hp: 25,
-      image: '/images/gorath.png'
+      image: '/images/gorath.png',
+      date: '2024-12-09',
+      tier: 'ULTIMATE',
+      lore: 'The legendary Gorath has been defeated! ETH reached the target of $4,006, marking another victory in the climb to All-Time High. The battle was fierce, but the community prevailed.'
     };
 
-                const shareCardUrl = `/api/share/current-boss?boss=${encodeURIComponent(defaultBoss.name)}&level=${defaultBoss.level}&target=${encodeURIComponent(defaultBoss.targetPrice)}&current=${encodeURIComponent(defaultBoss.currentPrice)}&progress=${defaultBoss.progress}&hp=${defaultBoss.hp}&image=${encodeURIComponent(defaultBoss.image)}&v=3`;
+    const shareCardUrl = `/api/share/boss-detail?boss=${encodeURIComponent(defaultBoss.name)}&level=${defaultBoss.level}&target=${encodeURIComponent(defaultBoss.targetPrice)}&current=${encodeURIComponent(defaultBoss.currentPrice)}&progress=${defaultBoss.progress}&hp=${defaultBoss.hp}&image=${encodeURIComponent(defaultBoss.image)}&date=${encodeURIComponent(defaultBoss.date)}&tier=${encodeURIComponent(defaultBoss.tier)}&lore=${encodeURIComponent(defaultBoss.lore)}&v=1`;
 
     return {
       title: "ETH Boss Hunter",

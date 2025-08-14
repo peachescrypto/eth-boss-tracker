@@ -7,6 +7,8 @@ export interface ShareCardData {
   hp?: number;
   date?: string;
   image?: string;
+  tier?: string;
+  lore?: string;
 }
 
 export function getCurrentBossShareUrl(data: ShareCardData): string {
@@ -24,7 +26,19 @@ export function getCurrentBossShareUrl(data: ShareCardData): string {
     params.set('image', data.image);
   }
   
-  return `${baseUrl}/api/share/current-boss?${params.toString()}`;
+  if (data.date) {
+    params.set('date', data.date);
+  }
+  
+  if (data.tier) {
+    params.set('tier', data.tier);
+  }
+  
+  if (data.lore) {
+    params.set('lore', data.lore);
+  }
+  
+  return `${baseUrl}/api/share/boss-detail?${params.toString()}`;
 }
 
 export function getBossDefeatedShareUrl(data: ShareCardData): string {

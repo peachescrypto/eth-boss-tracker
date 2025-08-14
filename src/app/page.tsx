@@ -5,13 +5,16 @@ import useSWR from 'swr';
 import { CarouselCard } from '@/components/CarouselCard';
 import { PriceBar } from '@/components/PriceBar';
 import { BossDetailCard } from '@/components/BossDetailCard';
-import { generateTwitterShareText } from '@/lib/share-cards';
+import { generateTwitterShareText, getCurrentBossShareUrl } from '@/lib/share-cards';
 
 interface DailyHigh {
   date: string;
   high: number;
   name?: string;
   image?: string;
+  tier?: string;
+  lore?: string;
+  index?: number;
 }
 
 interface PriceData {
@@ -187,7 +190,7 @@ export default function Home() {
                 <div className="flex justify-center gap-3 pb-10">
                   <button
                     onClick={() => {
-                      const twitterText = generateTwitterShareText('current', {
+                      const shareData = {
                         bossName: currentBoss.name || `Boss #${currentBossIndex + 1}`,
                         bossLevel: currentBossIndex + 1,
                         targetPrice: formatPrice(currentBoss.high),
@@ -195,8 +198,14 @@ export default function Home() {
                         progress: Math.round(progress * 100),
                         hp: currentHP,
                         image: currentBoss.image,
-                      });
-                      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}&url=${encodeURIComponent(window.location.href)}`;
+                        date: currentBoss.date,
+                        tier: currentBoss.tier || 'COMMON',
+                        lore: currentBoss.lore || `The battle against ${currentBoss.name || `Boss #${currentBossIndex + 1}`} has begun. This boss guards the weekly high of ${formatPrice(currentBoss.high)} from ${new Date(currentBoss.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}. The journey to defeat this foe has just started.`
+                      };
+                      
+                      const twitterText = generateTwitterShareText('current', shareData);
+                      const shareUrl = getCurrentBossShareUrl(shareData);
+                      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}&url=${encodeURIComponent(shareUrl)}`;
                       window.open(twitterUrl, '_blank');
                     }}
                     className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-black to-gray-800 hover:from-gray-800 hover:to-black text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-sm"
