@@ -3,7 +3,7 @@
 ## 🎯 Core Battle Mechanics
 
 ### Boss Progression System
-- **18 Weekly Boss Levels** ($4,006 → $4,868)
+- **Dynamic Weekly Boss Levels** ($4,006 → $4,868) - Count updates automatically as new bosses spawn
 - **Progressive Difficulty** - Each boss's hit points are based on the price between the last boss and its own price
 - **Battle States**: Approaching, In Battle, Defeated, Legendary (All-Time High)
 
@@ -30,8 +30,7 @@ Buterion will be defeated when ETH reaches $4,333
 🎯 only $82.98 to go!
 
 🚨 █████████░ 98%
-
-#ETHBossHunter $ETH
+https://eth-boss-tracker.vercel.app/
 ```
 
 **Battle Status Variations**:
@@ -61,14 +60,15 @@ Buterion will be defeated when ETH reaches $4,333
 💀 BOSS DEFEATED! 💀
 
 Buterion has fallen!
-Level 9 ✅ ($4,333)
+Level 9 Achieved ✅
 
-ETH Army dealt $83 damage!
+But wait, a new boss is stiring...
 
-Next Target: Kronthar ($4,372.72)
-🏆 Progress: 9/19 bosses defeated
+LEGENDARY KRONTHAR
 
-#ETHBossHunter #BossDefeated $ETH
+Lore: [insert lore here]
+
+https://eth-boss-tracker.vercel.app/
 ```
 
 **Boss Tier System** (same as Daily Status):
@@ -78,10 +78,7 @@ Next Target: Kronthar ($4,372.72)
 - **ASCENDED**: 2025+ milestones (Buterion)
 
 **Features**:
-- **Damage Calculation**: Shows actual damage dealt (price difference)
-- **Progress Tracking**: Shows current boss level and total progress
 - **Next Target**: Automatically identifies the next boss to defeat
-
 
 
 ## 📊 **Posting Frequency Strategy**

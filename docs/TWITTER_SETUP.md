@@ -126,7 +126,7 @@ Current Price: $4,160
 Current Boss: Boss Level 10
 Progress: 5%
 Status: resting
-Bosses Defeated: 9/18
+Bosses Defeated: 9/{totalBosses}
 
 🐦 Posting to ETH Boss Hunter Twitter...
 ✅ Tweet posted successfully!

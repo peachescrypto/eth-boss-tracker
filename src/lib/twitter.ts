@@ -182,7 +182,7 @@ export async function postDailyStatusToTwitter(
       'Authorization': generateBossHunterOAuthSignatureForTweets().authHeader,
       'Content-Type': 'application/json',
     };
-
+    
     const response = await fetch('https://api.twitter.com/2/tweets', {
       method: 'POST',
       headers,
@@ -395,7 +395,7 @@ async function postBossDefeatTweet(
     };
 
     const response = await fetch('https://api.twitter.com/2/tweets', {
-      method: 'POST',
+    method: 'POST',
       headers,
       body: JSON.stringify({ text: tweetText })
     });

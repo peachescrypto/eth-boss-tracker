@@ -38,6 +38,11 @@
   --color-border-secondary: #374151;
   --color-border-muted: #6b7280;
   
+  /* Boss Card Colors */
+  --color-boss-border-light: #fecaca;
+  --color-boss-border-medium: #6b7280;
+  --color-boss-border-dark: #4b5563;
+  
   /* Shadow Colors */
   --color-shadow-cyan: rgba(6, 182, 212, 0.5);
   --color-shadow-purple: rgba(139, 92, 246, 0.5);
@@ -48,6 +53,9 @@
   --gradient-secondary: linear-gradient(45deg, var(--color-primary-purple), var(--color-primary-pink));
   --gradient-bg: linear-gradient(to bottom right, #581c87, #1e3a8a, #3730a3);
   --gradient-text: linear-gradient(to right, var(--color-primary-cyan), var(--color-primary-purple), var(--color-primary-pink));
+  
+  /* Boss Card Border Gradient */
+  --gradient-boss-border: linear-gradient(to right, #fecaca, #6b7280, #4b5563);
   
   /* HP Bar Gradients */
   --gradient-hp: linear-gradient(to right, var(--color-danger), var(--color-warning), #eab308);
@@ -138,6 +146,7 @@
 .gradient-secondary { background: var(--gradient-secondary); }
 .gradient-bg { background: var(--gradient-bg); }
 .gradient-text { background: var(--gradient-text); background-clip: text; -webkit-background-clip: text; color: transparent; }
+.gradient-boss-border { background: var(--gradient-boss-border); }
 
 /* HP Bar Gradients */
 .gradient-hp { background: var(--gradient-hp); }
@@ -154,7 +163,7 @@
 /* Boss Card Styles */
 .boss-card {
   background: var(--color-bg-card);
-  border: 2px solid var(--color-border-primary);
+  border: 4px solid var(--color-border-primary);
   border-radius: var(--radius-2xl);
   backdrop-filter: blur(8px);
   box-shadow: var(--shadow-2xl);
