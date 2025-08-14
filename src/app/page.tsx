@@ -191,7 +191,12 @@ export default function Home() {
                   <button
                     onClick={() => {
                       const shareData = {
-                        bossName: currentBoss.name || `Boss #${currentBossIndex + 1}`
+                        bossName: currentBoss.name || `Boss #${currentBossIndex + 1}`,
+                        bossLevel: currentBossIndex + 1,
+                        targetPrice: formatPrice(currentBoss.high),
+                        currentPrice: formatPrice(priceData?.priceUsd || 0),
+                        progress: Math.round(progress * 100),
+                        hp: currentHP
                       };
                       
                       const twitterText = generateTwitterShareText('current', shareData);
