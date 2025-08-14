@@ -74,7 +74,6 @@ export const CarouselCard: React.FC<CarouselCardProps> = ({
         <BossCard
           boss={boss}
           index={index}
-          isComplete={isComplete}
           isFutureBoss={isFutureBoss}
           hp={hp}
         />

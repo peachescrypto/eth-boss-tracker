@@ -10,7 +10,6 @@ interface BossCardProps {
     tier?: string;
   };
   index: number;
-  isComplete: boolean;
   isFutureBoss: boolean;
   hp: number;
   className?: string;
@@ -20,7 +19,6 @@ interface BossCardProps {
 export const BossCard: React.FC<BossCardProps> = ({
   boss,
   index,
-  isComplete,
   isFutureBoss,
   hp,
   className = '',
@@ -60,16 +58,16 @@ export const BossCard: React.FC<BossCardProps> = ({
 
                 {/* HP */}    
                 <div className="text-right mr-2">
-                  <div className="font-bold text-purple-300 text-lg leading-tight">{hp}</div>
+                  <div className="font-bold text-purple-300 text-lg leading-tight">{hp.toFixed(0)}</div>
                   <div className="font-bold text-gray-300 text-[8px] leading-tight">HP</div>
                 </div>
               </div>
           </div>
 
           {/* Level */}  
-          <div className="absolute top-10 left-1 backdrop-blur-md rounded-lg p-1 z-10">
-            <div className="text-white text-xs">
-                <div className="font-bold text-white">{index + 1}/18</div>
+          <div className="absolute bottom-1 left-1 backdrop-blur-md rounded-lg p-1 z-10">
+            <div className="text-white text-[8px]">
+                <div className="font-bold text-white">{index+1}</div>
             </div>
           </div>
 

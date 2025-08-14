@@ -1,75 +1,20 @@
 [
   {
-    "date": "2024-12-09",
-    "high": 4006.17,
-    "tier": "ULTIMATE",
-    "name": "Gorath",
-    "image": "/images/gorath.png"
+    "date": "2021-05-10",
+    "high": 4372.72,
+    "tier": "GODLIKE",
+    "name": "Kronthar",
+    "image": "/images/kronthar.png",
+    "lore": "Escaped from the underground lava yacht club, Kronthar is a towering golem-ape forged from molten obsidian, a blazing sun-core burning within his chest. He hunts NFT empires with searing solar flares, reducing worthless mints to ash. Each strike purifies the chain, sparing only the rare and worthy. In his presence, metadata warps, floors tremble, and JPEGs vanish into golden fire.",
+    "index": 1
   },
   {
     "date": "2021-08-30",
     "high": 4027.88,
     "tier": "LEGENDARY",
     "name": "Nyxara",
-    "image": "/images/nyxara.png"
-  },
-  {
-    "date": "2024-12-02",
-    "high": 4087.73,
-    "tier": "ULTIMATE",
-    "name": "Voltaris",
-    "image": "/images/voltaris.png"
-  },
-  {
-    "date": "2024-03-11",
-    "high": 4093.92,
-    "tier": "ULTIMATE",
-    "name": "Drenchmaw",
-    "image": "/images/drenchmaw.png"
-  },
-  {
-    "date": "2024-12-16",
-    "high": 4107.8,
-    "tier": "ULTIMATE",
-    "name": "Othrak",
-    "image": "/images/othrak.png"
-  },
-  {
-    "date": "2021-12-27",
-    "high": 4127.46,
-    "tier": "LEGENDARY",
-    "name": "Maltherion",
-    "image": "/images/maltherion.png"
-  },
-  {
-    "date": "2021-12-13",
-    "high": 4142.75,
-    "tier": "LEGENDARY",
-    "name": "Tenebris",
-    "image": "/images/tenebris.png"
-  },
-  {
-    "date": "2021-12-20",
-    "high": 4150,
-    "tier": "LEGENDARY",
-    "name": "Lurathos",
-    "image": "/images/lurathos.png"
-  },
-  {
-    "date": "2025-08-04",
-    "high": 4333.00,
-    "tier": "ASCENDED",
-    "name": "Buterion",
-    "image": "/images/buterion.png",
-    "lore": "On the 10 year anniversary of Ethereum, Buterion emerges — vast and luminescent, scales shimmering. He rises as Ethereum’s co-founder reclaiming his legendary billionaire status, wielding both the light of triumph and the weight of wisdom. His breath courses with words of growth and prosperity, while his eyes flicker with wary foresight. Though the market rallies behind him, his warning ring loud — dependency on institutional treasuries could fracture the network’s core. Thus, Buterion stands tall, guardian of progress — majestic yet mindful, urging balance even in moments of glory."
-  },
-  {
-    "date": "2021-05-10",
-    "high": 4372.72,
-    "tier": "GODLIKE",
-    "name": "Kronthar",
-    "image": "/images/kronthar.png",
-    "lore": "Escaped from the underground lava yacht club, Kronthar is a towering golem-ape forged from molten obsidian, a blazing sun-core burning within his chest. He hunts NFT empires with searing solar flares, reducing worthless mints to ash. Each strike purifies the chain, sparing only the rare and worthy. In his presence, metadata warps, floors tremble, and JPEGs vanish into golden fire."
+    "image": "/images/nyxara.png",
+    "index": 2
   },
   {
     "date": "2021-10-18",
@@ -77,28 +22,16 @@
     "tier": "LEGENDARY",
     "name": "Abythra",
     "image": "/images/abythra.png",
-    "lore": "Rising from the dark NFT seas of October 18, 2021—when 79 collections surfaced in a single day—Abythra is the water-zombie queen who feeds on trash mints and false promises. Each wave she summons drags worthless JPEGs into the abyss, leaving only salt and regret. Her gaze foretells the fate of countless alt-coin holders—destined to be forever underwater—while her tides swell with the froth of hype and speculation."
+    "lore": "Rising from the dark NFT seas of October 18, 2021—when 79 collections surfaced in a single day—Abythra is the water-zombie queen who feeds on trash mints and false promises. Each wave she summons drags worthless JPEGs into the abyss, leaving only salt and regret. Her gaze foretells the fate of countless alt-coin holders—destined to be forever underwater—while her tides swell with the froth of hype and speculation.",
+    "index": 3
   },
   {
     "date": "2021-10-25",
     "high": 4460.47,
     "tier": "LEGENDARY",
     "name": "Sevrath",
-    "image": "/images/sevrath.png"
-  },
-  {
-    "date": "2021-12-06",
-    "high": 4488,
-    "tier": "LEGENDARY",
-    "name": "Vexarion",
-    "image": "/images/vexarion.png"
-  },
-  {
-    "date": "2021-11-22",
-    "high": 4551,
-    "tier": "LEGENDARY",
-    "name": "Zepheros",
-    "image": "/images/zepheros.png"
+    "image": "/images/sevrath.png",
+    "index": 4
   },
   {
     "date": "2021-11-01",
@@ -106,28 +39,113 @@
     "tier": "LEGENDARY",
     "name": "Volkan",
     "image": "/images/volkan.png",
-    "lore": "Volkan rose in a blaze embodying Ken Griffin’s spirit, seizing the rare first printing of the U.S. Constitution with a $43.2M strike, shattering the Constitution DAO's bid"    
-  },
-  {
-    "date": "2021-11-15",
-    "high": 4772.01,  
-    "tier": "GODLIKE",
-    "name": "Baelgor",
-    "image": "/images/baelgor.png",
-    "lore": "Baelgor, the dread Ox of 2021, rose as Evergrande crumbled. Forged from debt and dread, he tramples markets, goring bullish dreams and heralding storms of risk across the crypto plains."
-  },
-  {
-    "date": "2021-11-29",
-    "high": 4778.75,
-    "tier": "GODLIKE",
-    "name": "Iskara",
-    "image": "/images/iskara.png"
+    "lore": "Volkan rose in a blaze embodying Ken Griffin’s spirit, seizing the rare first printing of the U.S. Constitution with a $43.2M strike, shattering the Constitution DAO's bid",
+    "index": 5
   },
   {
     "date": "2021-11-08",
     "high": 4868,
     "tier": "GODLIKE",
     "name": "Athion",
-    "image": "/images/athion.png"
+    "image": "/images/athion.png",
+    "index": 6
+  },
+  {
+    "date": "2021-11-15",
+    "high": 4772.01,
+    "tier": "GODLIKE",
+    "name": "Baelgor",
+    "image": "/images/baelgor.png",
+    "lore": "Baelgor, the dread Ox of 2021, rose as Evergrande crumbled. Forged from debt and dread, he tramples markets, goring bullish dreams and heralding storms of risk across the crypto plains.",
+    "index": 7
+  },
+  {
+    "date": "2021-11-22",
+    "high": 4551,
+    "tier": "LEGENDARY",
+    "name": "Zepheros",
+    "image": "/images/zepheros.png",
+    "index": 8
+  },
+  {
+    "date": "2021-11-29",
+    "high": 4778.75,
+    "tier": "GODLIKE",
+    "name": "Iskara",
+    "image": "/images/iskara.png",
+    "index": 9
+  },
+  {
+    "date": "2021-12-06",
+    "high": 4488,
+    "tier": "LEGENDARY",
+    "name": "Vexarion",
+    "image": "/images/vexarion.png",
+    "index": 10
+  },
+  {
+    "date": "2021-12-13",
+    "high": 4142.75,
+    "tier": "LEGENDARY",
+    "name": "Tenebris",
+    "image": "/images/tenebris.png",
+    "index": 11
+  },
+  {
+    "date": "2021-12-20",
+    "high": 4150,
+    "tier": "LEGENDARY",
+    "name": "Lurathos",
+    "image": "/images/lurathos.png",
+    "index": 12
+  },
+  {
+    "date": "2021-12-27",
+    "high": 4127.46,
+    "tier": "LEGENDARY",
+    "name": "Maltherion",
+    "image": "/images/maltherion.png",
+    "index": 13
+  },
+  {
+    "date": "2024-03-11",
+    "high": 4093.92,
+    "tier": "ULTIMATE",
+    "name": "Drenchmaw",
+    "image": "/images/drenchmaw.png",
+    "index": 14
+  },
+  {
+    "date": "2024-12-02",
+    "high": 4087.73,
+    "tier": "ULTIMATE",
+    "name": "Voltaris",
+    "image": "/images/voltaris.png",
+    "index": 15
+  },
+  {
+    "date": "2024-12-09",
+    "high": 4006.17,
+    "tier": "ULTIMATE",
+    "name": "Gorath",
+    "image": "/images/gorath.png",
+    "index": 16
+  },
+  {
+    "date": "2024-12-16",
+    "high": 4107.8,
+    "tier": "ULTIMATE",
+    "name": "Othrak",
+    "image": "/images/othrak.png",
+    "index": 17
+  },
+  {
+    "date": "2025-08-04",
+    "high": 4333,
+    "tier": "ASCENDED",
+    "name": "Buterion",
+    "image": "/images/buterion.png",
+    "lore": "On the 10 year anniversary of Ethereum, Buterion emerges — vast and luminescent, scales shimmering. He rises as Ethereum’s co-founder reclaiming his legendary billionaire status, wielding both the light of triumph and the weight of wisdom. His breath courses with words of growth and prosperity, while his eyes flicker with wary foresight. Though the market rallies behind him, his warning ring loud — dependency on institutional treasuries could fracture the network’s core. Thus, Buterion stands tall, guardian of progress — majestic yet mindful, urging balance even in moments of glory.",
+    "index": 18
   }
 ]

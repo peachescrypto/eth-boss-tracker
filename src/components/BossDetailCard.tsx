@@ -23,7 +23,7 @@ export const BossDetailCard: React.FC<BossDetailCardProps> = ({
   isComplete,
   isFutureBoss,
   hp,
-  progress
+  progress,
 }) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -43,29 +43,18 @@ export const BossDetailCard: React.FC<BossDetailCardProps> = ({
     }).format(price);
   };
 
-  // Generate lore based on boss tier and progress
+  // Generate lore based on boss tier
   const generateLore = () => {
     // Use custom lore if available in the JSON data
     if (boss.lore) {
       return boss.lore;
     }
     
-    if (isComplete) {
-      return `The legendary ${boss.name} has been defeated! ETH reached the target of ${formatPrice(boss.high)}, marking another victory in the climb to All-Time High. The battle was fierce, but the community prevailed.`;
-    }
-    
     if (isFutureBoss) {
       return `A mysterious force awaits at ${formatPrice(boss.high)}. This boss represents the weekly high from ${formatDate(boss.date)}. Will ETH have the strength to overcome this challenge when the time comes?`;
     }
 
-    const progressPercent = Math.round(progress * 100);
-    if (progress >= 0.9) {
-      return `The battle against ${boss.name} reaches its climax! At ${progressPercent}% progress, ETH is on the verge of victory. The target of ${formatPrice(boss.high)} is within reach.`;
-    } else if (progress >= 0.5) {
-      return `The fight intensifies! ${boss.name} is feeling the pressure as ETH approaches ${progressPercent}% of the target ${formatPrice(boss.high)}. The community's determination grows stronger.`;
-    } else {
-      return `The battle against ${boss.name} has begun. This boss guards the weekly high of ${formatPrice(boss.high)} from ${formatDate(boss.date)}. The journey to defeat this foe has just started.`;
-    }
+    return `The battle against ${boss.name} has begun. This boss guards the weekly high of ${formatPrice(boss.high)} from ${formatDate(boss.date)}. The journey to defeat this foe has just started.`;
   };
 
   return (
@@ -79,7 +68,6 @@ export const BossDetailCard: React.FC<BossDetailCardProps> = ({
           <BossCard
             boss={boss}
             index={index}
-            isComplete={isComplete}
             isFutureBoss={isFutureBoss}
             hp={hp}
             style={{ transform: 'scale(1.2)' }}
