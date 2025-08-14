@@ -1,61 +1,27 @@
 export interface ShareCardData {
   bossName: string;
-  bossLevel: number;
-  targetPrice: string;
-  currentPrice: string;
+  bossLevel?: number;
+  targetPrice?: string;
+  currentPrice?: string;
   progress?: number;
   hp?: number;
   date?: string;
   image?: string;
   tier?: string;
-  lore?: string;
 }
 
 export function getCurrentBossShareUrl(data: ShareCardData): string {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  const params = new URLSearchParams({
-    boss: data.bossName,
-    level: data.bossLevel.toString(),
-    target: data.targetPrice,
-    current: data.currentPrice,
-    progress: (data.progress || 0).toString(),
-    hp: (data.hp || 0).toString(),
-  });
-  
-  if (data.image) {
-    params.set('image', data.image);
-  }
-  
-  if (data.date) {
-    params.set('date', data.date);
-  }
-  
-  if (data.tier) {
-    params.set('tier', data.tier);
-  }
-  
-  if (data.lore) {
-    params.set('lore', data.lore);
-  }
-  
-  return `${baseUrl}/api/share/boss-detail?${params.toString()}`;
+  const baseUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://eth-boss-tracker.vercel.app'
+    : 'http://localhost:3000';
+  return `${baseUrl}/api/share/boss-detail?boss=${encodeURIComponent(data.bossName)}`;
 }
 
 export function getBossDefeatedShareUrl(data: ShareCardData): string {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  const params = new URLSearchParams({
-    boss: data.bossName,
-    level: data.bossLevel.toString(),
-    price: data.targetPrice,
-    current: data.currentPrice,
-    date: data.date || new Date().toLocaleDateString(),
-  });
-  
-  if (data.image) {
-    params.set('image', data.image);
-  }
-  
-  return `${baseUrl}/api/share/boss-defeated?${params.toString()}`;
+  const baseUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://eth-boss-tracker.vercel.app'
+    : 'http://localhost:3000';
+  return `${baseUrl}/api/share/boss-defeated?boss=${encodeURIComponent(data.bossName)}`;
 }
 
 export function formatPrice(price: number): string {
@@ -121,6 +87,8 @@ export function generateOpenGraphTags(type: 'current' | 'defeated', data: ShareC
     title,
     description,
     image: imageUrl,
-    url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+    url: process.env.NODE_ENV === 'production' 
+      ? 'https://eth-boss-tracker.vercel.app'
+      : 'http://localhost:3000',
   };
 }

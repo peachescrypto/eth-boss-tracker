@@ -9,13 +9,44 @@ export async function GET(request: NextRequest) {
     
     // Get parameters from URL
     const bossName = searchParams.get('boss') || 'Unknown Boss';
-    const bossLevel = searchParams.get('level') || '1';
-    const targetPrice = searchParams.get('target') || '$4,000';
-    const hp = Math.min(100, Math.max(0, parseInt(searchParams.get('hp') || '50')));
-    const bossImage = searchParams.get('image') || null;
-    const bossDate = searchParams.get('date') || '2024-01-01';
-    const bossTier = searchParams.get('tier') || 'COMMON';
-    const bossLore = searchParams.get('lore') || `The battle against ${bossName} has begun. This boss guards the weekly high of ${targetPrice}. The journey to defeat this foe has just started.`;
+    
+    // Fetch boss data from API
+    let bossData = null;
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eth-boss-tracker.vercel.app';
+      const bossResponse = await fetch(`${baseUrl}/api/boss/${encodeURIComponent(bossName)}`);
+      if (bossResponse.ok) {
+        bossData = await bossResponse.json();
+      }
+    } catch (error) {
+      console.log('Failed to fetch boss data:', error);
+    }
+    
+    // Use fetched data or fallback to defaults
+    const bossDate = bossData?.date || '2024-01-01';
+    const bossTier = bossData?.tier || 'COMMON';
+    const bossLevel = bossData?.index || 1;
+    const targetPrice = bossData ? `$${bossData.high.toLocaleString()}` : '$4,000';
+    const actualBossImage = bossData?.image || null;
+    const hp = 100; // Default HP for OpenGraph
+    
+    // Generate lore based on boss tier and available data
+    const generateLore = () => {
+      // Use custom lore if available in the JSON data
+      if (bossData?.lore) {
+        return bossData.lore;
+      }
+      
+      if (bossTier === 'ASCENDED' || bossTier === 'GODLIKE') {
+        return `The legendary ${bossName} awaits at ${targetPrice}. This ${bossTier.toLowerCase()} boss represents the weekly high from ${formatDate(bossDate)}. Will ETH have the strength to overcome this challenge when the time comes?`;
+      } else if (bossTier === 'ULTIMATE') {
+        return `A mighty ${bossName} guards the path to ${targetPrice}. This ${bossTier.toLowerCase()} boss from ${formatDate(bossDate)} stands as a formidable obstacle in ETH's climb to All-Time High.`;
+      } else {
+        return `The battle against ${bossName} has begun. This ${bossTier.toLowerCase()} boss guards the weekly high of ${targetPrice} from ${formatDate(bossDate)}. The journey to defeat this foe has just started.`;
+      }
+    };
+    
+    const bossLore = generateLore();
     
     // Format date
     const formatDate = (dateString: string) => {
@@ -29,10 +60,10 @@ export async function GET(request: NextRequest) {
 
     // Fetch boss image if provided
     let imageData = null;
-    if (bossImage) {
+    if (actualBossImage) {
       try {
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eth-boss-tracker.vercel.app';
-        const imageUrl = `${baseUrl}${bossImage}`;
+        const imageUrl = `${baseUrl}${actualBossImage}`;
         const imageResponse = await fetch(imageUrl);
         if (imageResponse.ok) {
           const arrayBuffer = await imageResponse.arrayBuffer();

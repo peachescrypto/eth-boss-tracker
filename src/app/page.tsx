@@ -191,16 +191,7 @@ export default function Home() {
                   <button
                     onClick={() => {
                       const shareData = {
-                        bossName: currentBoss.name || `Boss #${currentBossIndex + 1}`,
-                        bossLevel: currentBossIndex + 1,
-                        targetPrice: formatPrice(currentBoss.high),
-                        currentPrice: formatPrice(priceData?.priceUsd || 0),
-                        progress: Math.round(progress * 100),
-                        hp: currentHP,
-                        image: currentBoss.image,
-                        date: currentBoss.date,
-                        tier: currentBoss.tier || 'COMMON',
-                        lore: currentBoss.lore || `The battle against ${currentBoss.name || `Boss #${currentBossIndex + 1}`} has begun. This boss guards the weekly high of ${formatPrice(currentBoss.high)} from ${new Date(currentBoss.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}. The journey to defeat this foe has just started.`
+                        bossName: currentBoss.name || `Boss #${currentBossIndex + 1}`
                       };
                       
                       const twitterText = generateTwitterShareText('current', shareData);

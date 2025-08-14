@@ -20,7 +20,9 @@ export async function GET(request: NextRequest) {
     let imageData = null;
     if (bossImage) {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eth-boss-tracker.vercel.app';
+        const baseUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://eth-boss-tracker.vercel.app'
+        : 'http://localhost:3000';
         const imageUrl = `${baseUrl}${bossImage}`;
         const imageResponse = await fetch(imageUrl);
         if (imageResponse.ok) {

@@ -10,7 +10,9 @@ interface PriceData {
 export async function POST() {
   try {
     // Use the public URL instead of the internal Vercel URL
-    const baseUrl = 'https://eth-boss-tracker.vercel.app';
+    const baseUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://eth-boss-tracker.vercel.app'
+    : 'http://localhost:3000';
 
     console.log('🔍 Starting boss defeat check...');
     console.log('🌐 Using base URL:', baseUrl);
