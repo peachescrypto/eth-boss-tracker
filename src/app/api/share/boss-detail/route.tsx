@@ -1,6 +1,6 @@
 import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';
-import { BossDetailCardOG } from '@/components/BossDetailCardOG';
+import { BossDetailCard } from '@/components/BossDetailCard';
 
 export const runtime = 'edge';
 
@@ -59,40 +59,44 @@ export async function GET(request: NextRequest) {
       });
     };
 
-    // Fetch boss image if provided
-    let imageData = null;
-    if (actualBossImage) {
-      try {
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eth-boss-tracker.vercel.app';
-        const imageUrl = `${baseUrl}${actualBossImage}`;
-        const imageResponse = await fetch(imageUrl);
-        if (imageResponse.ok) {
-          const arrayBuffer = await imageResponse.arrayBuffer();
-          imageData = `data:image/png;base64,${Buffer.from(arrayBuffer).toString('base64')}`;
-        }
-      } catch (error) {
-        console.log('Failed to fetch boss image:', error);
-      }
-    }
+
+
+    // Convert relative image path to absolute URL for @vercel/og
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eth-boss-tracker.vercel.app';
+    const absoluteImageUrl = actualBossImage ? `${baseUrl}${actualBossImage}` : undefined;
 
     // Prepare boss data for the component
     const boss = {
       name: bossName,
       high: bossData?.high || 4000,
       date: bossDate,
-      image: actualBossImage,
+      image: absoluteImageUrl,
       tier: bossTier,
       lore: bossLore
     };
 
     return new ImageResponse(
-      <BossDetailCardOG
-        boss={boss}
-        index={bossLevel - 1}
-        isFutureBoss={false}
-        hp={hp}
-        imageData={imageData}
-      />,
+      (
+        <div
+          style={{
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%)',
+            fontFamily: 'Arial, sans-serif',
+            padding: '40px',
+          }}
+        >
+          <BossDetailCard
+            boss={boss}
+            index={bossLevel - 1}
+            isFutureBoss={false}
+            hp={hp}
+          />
+        </div>
+      ),
       {
         width: 1200,
         height: 630,
